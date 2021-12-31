@@ -21,6 +21,15 @@ class Usuario {
         usuarioService.registrar(this, res);
     }
 
+    registrarTrabajador(res){
+        var hash = encrypt(this.getPassword);
+        var partesHashUnidas = concatenarPartesClave(hash); 
+        this.setPassword = partesHashUnidas;
+
+        var usuarioService = new UsuarioService();
+        usuarioService.registrarTrabajador(this, res);
+    }
+
     login(res){
         if(this.getEmail == undefined || this.getPassword == undefined){
             res.status(400).send("Petición incorrecta");

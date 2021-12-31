@@ -27,6 +27,17 @@ app.post('/registro', function(req, res) {
         usuario.registrar(res);
     }
 });
+
+app.post('/registroTrabajador', chequeaJWT, chequeaAdmin, function(req, res) {
+    var nuevoUsuario = req.body;
+    var usuario = new Usuario(nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.nombre, nuevoUsuario.tipo);
+    
+    if(usuario.getEmail == undefined || usuario.getPassword == undefined || usuario.getNombre == undefined || usuario.getTipo == undefined){
+        res.status(400).send("Petición incorrecta");
+    }else{
+        usuario.registrar(res);
+    }
+});
   
 app.post('/login', function(req, res) {
     var login = req.body;

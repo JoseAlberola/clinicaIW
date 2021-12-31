@@ -5,13 +5,72 @@
         <v-data-table :headers="headers" :items="listaUsuarios" class="elevation-1" style="width:90%; margin:auto; margin-top:30px;">
             <template v-slot:top>
                 <v-toolbar flat>
-                    <v-dialog v-model="dialog" max-width="500px">                        
+                    <v-dialog v-model="dialogCrear" max-width="500px">                        
                         <template v-slot:activator="{ on, attrs }">
                             <v-spacer></v-spacer>
                             <v-btn color="primary" dark class="mb-2" v-bind="attrs" v-on="on">
                                 Crear
                             </v-btn>
                         </template>
+
+                        <v-card ref="formCrear">
+                            <v-card-title>
+                                <span class="text-h5">Crear usuario</span>
+                            </v-card-title>
+
+                            <v-card-text>
+                                <v-container>
+                                    <v-row>                                        
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                            ref="email"
+                                            v-model="editedItem.email"
+                                            label="Email"
+                                            :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                            ref="nombre"
+                                            v-model="editedItem.nombre"
+                                            label="Nombre"
+                                            :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                            ref="password"
+                                            v-model="editedItem.password"
+                                            label="Password"
+                                            :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-select
+                                            ref="tipo"
+                                            v-model="editedItem.tipo"
+                                            :items="tiposUsuario"
+                                            label="Tipo de usuario"
+                                            :rules="[rules.required]"
+                                            ></v-select>
+                                        </v-col>
+                                    </v-row>
+                                </v-container>
+                            </v-card-text>
+
+                            <v-card-actions>
+                                <v-spacer></v-spacer>
+                                <v-btn color="blue darken-1" text @click="closeCrear">
+                                    CANCELAR
+                                </v-btn>
+                                <v-btn color="blue darken-1" text @click="saveCrear">
+                                    ACEPTAR
+                                </v-btn>
+                            </v-card-actions>
+                        </v-card>
+                    </v-dialog>
+                    
+                    <v-dialog v-model="dialog" max-width="500px">                        
 
                         <v-card ref="form">
                             <v-card-title>
@@ -111,6 +170,14 @@ export default {
                 nombre: this.editedItem.nombre,
             }
         },
+        formCrear () {
+            return {
+                email: this.editedItem.email,
+                nombre: this.editedItem.nombre,
+                password: this.editedItem.password,
+                tipo: this.editedItem.tipo
+            }
+        },
     },
     data: () => ({ 
         listaUsuarios:[],
@@ -118,7 +185,9 @@ export default {
             required: value => !!value || 'Required.',
         },
         formHasErrors: false,
+        formCrearHasErrors: false,
         dialog: false,
+        dialogCrear: false,
         dialogDelete: false,
         headers: [
             { text: 'ID', align: 'start', value: 'id', sortable: false },
@@ -126,16 +195,21 @@ export default {
             { text: 'Nombre', value: 'nombre', sortable: false },
             { text: 'Acción', value: 'accion', sortable: false },
         ],
+        tiposUsuario: ['administrador', 'fisio', 'recepcionista', 'usuario'],
         editedIndex: -1,
         editedItem: {
             id: 0,
             email: '',
-            nombre: ''
+            nombre: '',
+            password: '',
+            tipo: ''
         },
         defaultItem: {
             id: 0,
             email: '',
-            nombre: ''
+            nombre: '',
+            password: '',
+            tipo: ''
         },
     }),
     methods: {        
@@ -199,7 +273,7 @@ export default {
                         };
 
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                        let urlModificarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;
+                        let urlModificarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;                        
                         axios.put(urlModificarUsuario, json).then(response => {
                             console.log(response);                        
                         })
@@ -207,8 +281,53 @@ export default {
                     this.close();
                 }
             },
+            saveCrear () {            
+                this.formCrearHasErrors = false
+
+                Object.keys(this.formCrear).forEach(f => {
+                    if (!this.formCrear[f]) this.formCrearHasErrors = true
+                    this.$refs[f].validate(true)
+                })
+
+                if(!this.formCrearHasErrors){
+                    
+                    if (!this.currentUser) {
+                        this.$router.push('/');
+                    }else{
+                        let json = {
+                            "email" : this.editedItem.email,
+                            "password": this.editedItem.password,
+                            "nombre" : this.editedItem.nombre,
+                            "tipo": this.editedItem.tipo
+                        };
+
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+                        let urlCrearUsuario = "http://localhost:3000/clinica/registroTrabajador";
+                        axios.post(urlCrearUsuario, json).then(response => {
+                            console.log(response);
+                            this.editedItem.id = response.data.id; 
+                            this.editedItem.email = response.data.email;
+                            this.editedItem.nombre = response.data.nombre;                             
+                            if (this.editedIndex > -1) {
+                                Object.assign(this.listaUsuarios[this.editedIndex], this.editedItem)
+                            } else {
+                                console.log(this.editedItem.id);
+                                this.listaUsuarios.push(this.editedItem)
+                            }
+                        })
+                    }
+                    this.closeCrear();
+                }
+            },
             close () {
                 this.dialog = false
+                this.$nextTick(() => {
+                this.editedItem = Object.assign({}, this.defaultItem)
+                this.editedIndex = -1
+                })
+            },
+            closeCrear () {
+                this.dialogCrear = false
                 this.$nextTick(() => {
                 this.editedItem = Object.assign({}, this.defaultItem)
                 this.editedIndex = -1
