@@ -23,6 +23,9 @@ CREATE TABLE `clinicaiw`.`usuario` (
     REFERENCES `clinicaiw`.`tipousuario` (`tipo`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION);
+    
+ALTER TABLE `clinicaiw`.`usuario` 
+ADD COLUMN `imagen` VARCHAR(255) NULL AFTER `tipo`;
 
 CREATE TABLE `clinicaiw`.`sala` (
   `nombre` VARCHAR(255) NOT NULL,
