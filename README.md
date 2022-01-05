@@ -14,4 +14,3 @@
 Desde la rama main
 1. `$ git checkout -b nombre-rama`
 2. `$ git push -u origin nombre-rama` 
-3. 
