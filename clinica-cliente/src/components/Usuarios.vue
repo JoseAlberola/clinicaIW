@@ -193,6 +193,8 @@ export default {
             { text: 'ID', align: 'start', value: 'id', sortable: false },
             { text: 'Email', value: 'email', sortable: false },
             { text: 'Nombre', value: 'nombre', sortable: false },
+            { text: 'Password', value: 'password', sortable: false, align: ' d-none'},
+            { text: 'Tipo', value: 'tipo', sortable: false, align: ' d-none'},
             { text: 'Acción', value: 'accion', sortable: false },
         ],
         tiposUsuario: ['administrador', 'fisio', 'recepcionista', 'usuario'],
@@ -212,7 +214,18 @@ export default {
             tipo: ''
         },
     }),
-    methods: {        
+    methods: {
+            initialize(){
+                if (!this.currentUser) {
+                    this.$router.push('/');
+                }else{
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+                    let urlListarUsuarios = "http://localhost:3000/clinica/usuarios";
+                    axios.get(urlListarUsuarios).then(response => {
+                        this.listaUsuarios = response.data;
+                    })
+                }
+            },
             editItem (item) {
                 this.editedIndex = this.listaUsuarios.indexOf(item)
                 this.editedItem = Object.assign({}, item)
@@ -232,13 +245,12 @@ export default {
                 }else{
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
                     let urlEliminarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;
-                    axios.delete(urlEliminarUsuario).then(response => {
-                        console.log(response);
-                        if(response.status == 204){
+                    axios.delete(urlEliminarUsuario).then(response => {                        
+                        if(response.status == 204){                        
                             this.listaUsuarios.splice(this.editedIndex, 1);
                         }
+                        this.closeDelete();
                     })
-                    this.closeDelete();
                 }
             },
             closeDelete () {
@@ -275,7 +287,7 @@ export default {
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
                         let urlModificarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;                        
                         axios.put(urlModificarUsuario, json).then(response => {
-                            console.log(response);                        
+                            console.log(response);                      
                         })
                     }
                     this.close();
@@ -289,8 +301,7 @@ export default {
                     this.$refs[f].validate(true)
                 })
 
-                if(!this.formCrearHasErrors){
-                    
+                if(!this.formCrearHasErrors){                  
                     if (!this.currentUser) {
                         this.$router.push('/');
                     }else{
@@ -307,16 +318,16 @@ export default {
                             console.log(response);
                             this.editedItem.id = response.data.id; 
                             this.editedItem.email = response.data.email;
-                            this.editedItem.nombre = response.data.nombre;                             
+                            this.editedItem.nombre = response.data.nombre;
+                            this.editedItem.tipo = response.data.tipo;                                                       
                             if (this.editedIndex > -1) {
                                 Object.assign(this.listaUsuarios[this.editedIndex], this.editedItem)
                             } else {
-                                console.log(this.editedItem.id);
                                 this.listaUsuarios.push(this.editedItem)
                             }
+                            this.closeCrear();
                         })
                     }
-                    this.closeCrear();
                 }
             },
             close () {
@@ -329,8 +340,8 @@ export default {
             closeCrear () {
                 this.dialogCrear = false
                 this.$nextTick(() => {
-                this.editedItem = Object.assign({}, this.defaultItem)
-                this.editedIndex = -1
+                    this.editedItem = Object.assign({}, this.defaultItem)                  
+                    this.editedIndex = -1
                 })
             },
     },

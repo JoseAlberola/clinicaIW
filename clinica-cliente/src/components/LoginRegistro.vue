@@ -199,13 +199,9 @@ export default {
         "nombre" : this.nombre
       };
       axios.post('http://localhost:3000/clinica/registro', json)
-      .then(response => {
-        if (response.data.accessToken) {
-          var user = response.data
-          localStorage.setItem("token", response.data.accessToken);
-          this.$store.commit('login', user);
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-          this.$router.push('/home');
+      .then(response => {      
+        if (response.status == 201) {         
+          this.step--;
         }
       }).catch(() => {
           this.mensajeRegistro = "Registro incorrecto";
