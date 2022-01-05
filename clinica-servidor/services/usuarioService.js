@@ -40,11 +40,8 @@ class UsuarioService {
                         throw error;
                     }
                     var idInsertado = resultado.insertId;
-                    usuario.setId = idInsertado;
-                    var token = generaToken(usuario)
-                    guardarAutenticacionCliente(usuario, token);
-                    res.status(201).location('http://localhost:3000/clinica/usuarios/' + idInsertado).send({
-                        accessToken: token,
+                    usuario.setId = idInsertado;                    
+                    res.status(201).location('http://localhost:3000/clinica/usuarios/' + idInsertado).send({                        
                         id: usuario.getId,
                         email: usuario.getEmail,
                         nombre: usuario.getNombre,
