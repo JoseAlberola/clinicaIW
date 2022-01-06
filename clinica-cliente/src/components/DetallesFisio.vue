@@ -24,6 +24,7 @@
         </div>
        
     </div>
+
 </template>
 <script>
 import axios from 'axios';
@@ -43,13 +44,25 @@ export default {
             return require('../assets/'+ img)
         },
         fechaSeleccionada(date) {
+            //Metodo donde vamos a consultar las citas disponibles para un dia
+            var pad = function(num) { return ('00'+num).slice(-2) };
+            var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
             console.log(date);
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+            let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+            axios.get(urlCitas).then(response => {
+                this.citas = response;
+            })
+            this.currentTab = null;
+            this.activeTabName = null;
         }
     },
     data () {
       return {
+        franjas: {"Horas":[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]},
         fisio:null,
         respuesta:null,
+        citas:null,
         date: new Date()
       }
     },
