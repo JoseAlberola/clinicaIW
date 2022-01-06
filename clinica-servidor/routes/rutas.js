@@ -90,7 +90,6 @@ app.get('/usuarios', chequeaJWT, chequeaAdmin, function(req, res) {
 });
 
 app.get('/fisios', chequeaJWT, function(req, res) {
-
     const {page, size} = req.query;
     
     const limit = size;
@@ -102,6 +101,21 @@ app.get('/fisios', chequeaJWT, function(req, res) {
         res.status(500).send({error:error});
     }
 });
+
+app.get('/fisios/:fisioId', chequeaJWT, function(req, res) {
+    //console.log("hola");
+    var usuarioId = req.params.fisioId;
+
+    try{
+        var usuario = new Usuario();
+        console.log("A");
+        usuario.id = usuarioId;
+        console.log("b");
+        usuario.datosId(res);
+    }catch(error){console.log(error);
+        res.status(500).send({error:error});
+    }
+})
 
 module.exports = app;
 

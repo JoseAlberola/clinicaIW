@@ -192,6 +192,24 @@ class UsuarioService {
         });
     }
 
+    usuarioId(res, id){
+        connection.query("SELECT * FROM usuario where id='" + id + "';"
+        , function (err, result) {
+            if (err) {
+                console.log
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                console.log("ghjs");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
 }
 
 module.exports = UsuarioService;

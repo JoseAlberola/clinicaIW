@@ -65,6 +65,11 @@ class Usuario {
         usuarioService.listarFisios(res, limit, offset);
     }
 
+    datosId(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.usuarioId(res, this.getId); 
+    }
+
     get getId(){
         return this.id;
     }
