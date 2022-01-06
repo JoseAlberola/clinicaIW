@@ -203,7 +203,23 @@ class UsuarioService {
             if(result.length == 0){
                 res.status(500).send({error:err});
             } else{
-                console.log("ghjs");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
+
+
+    listarCitasEmailFecha(res,date, email) {
+   
+        connection.query("SELECT * FROM reserva where fecha='" + date + "' AND emailfisio='"+email+"' ;"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                console.log("Hay "+result.length+ " citas");
                 res.status(200).send(result);
             }
         });

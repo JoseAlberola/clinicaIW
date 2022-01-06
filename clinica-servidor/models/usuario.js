@@ -70,6 +70,11 @@ class Usuario {
         usuarioService.usuarioId(res, this.getId); 
     }
 
+    citasEmailFecha(res, date){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarCitasEmailFecha(res,date, this.getEmail); 
+    }
+
     get getId(){
         return this.id;
     }

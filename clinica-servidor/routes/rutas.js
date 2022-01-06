@@ -108,10 +108,22 @@ app.get('/fisios/:fisioId', chequeaJWT, function(req, res) {
 
     try{
         var usuario = new Usuario();
-        console.log("A");
         usuario.id = usuarioId;
-        console.log("b");
         usuario.datosId(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+})
+
+app.get('/citas/:fisioEmail/:fecha', chequeaJWT, function(req, res) {
+    //console.log("hola");
+    var usuarioEmail = req.params.fisioEmail;
+    var date = req.params.fecha;
+
+    try{
+        var usuario = new Usuario();
+        usuario.email = usuarioEmail;
+        usuario.citasEmailFecha(res,date);
     }catch(error){console.log(error);
         res.status(500).send({error:error});
     }
