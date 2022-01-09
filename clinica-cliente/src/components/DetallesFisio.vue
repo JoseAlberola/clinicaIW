@@ -22,8 +22,9 @@
                 @selected="fechaSeleccionada"
              ></datepicker>
         </div>
-       
     </div>
+    
+
 
 </template>
 <script>
@@ -37,7 +38,32 @@ export default {
     computed:{
         currentUser() {
             return this.$store.state.user;
-        }
+        },
+        /*franjasDispobibles: function(franjas) {
+            var result = [];
+            
+            if(this.citas==null){
+                return franjas;
+            }else if(this.citas.length == 0){
+                return franjas;
+            }else{
+                var encontrada;
+                for(var i=0; i<franjas.length;i++){
+                    encontrada = false;
+                    for(var x=0; x<this.citas.length;x++){
+                        if(franjas[i]==this.citas[x].hora){
+                            encontrada = true;
+                        }  
+                    }
+                    if(encontrada==false){
+                        result.add(franjas[i]);
+                    }  
+                }
+                
+                return result;
+            }
+
+        } */
     },
     methods: {
         getImgUrl(img) {
@@ -45,6 +71,8 @@ export default {
         },
         fechaSeleccionada(date) {
             //Metodo donde vamos a consultar las citas disponibles para un dia
+
+            //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
             var pad = function(num) { return ('00'+num).slice(-2) };
             var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
             console.log(date);
@@ -55,14 +83,52 @@ export default {
             })
             this.currentTab = null;
             this.activeTabName = null;
+
+            //LISTAMOS LAS CITAS DISPONIBLES
+
+            
+            var tabla = document.querySelector("body");
+            console.log(tabla);
+            if(this.citas==null || this.citas.length == 0) {
+                for(var z=0; z<this.franjas.length;z++){
+                    var nCita = document.createElement("table");
+                    nCita.innerHTML += '<tr><th>' + this.franjas[z] + '</th> <th> <button v-on:click="reservar">Reservar</button> </th></tr>';
+                    tabla.append(nCita);
+                }
+            }else{
+                var encontrada;
+                
+                
+                for(var i=0; i<this.franjas.length;i++){
+                    encontrada = false;
+                    for(var x=0; x<this.citas.length;x++){
+                        if(this.franjas[i]==this.citas[x].hora){
+                            encontrada = true;
+                        }  
+                    }
+                    if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
+                        var nuevaCita = document.createElement("tr");
+                        nuevaCita.innerHTML += '<tr><th>' + this.franjas[i] + '</th></tr>';
+                        tabla.append(nuevaCita);
+                    }  
+                }
+                
+            
+            }
+
+
+
+        }, reservar(Event){
+            console.log(Event);
+            console.log("hjagslkfh");
         }
     },
     data () {
       return {
-        franjas: {"Horas":[10, 11, 12, 13, 14, 15, 16, 17, 18, 19]},
+        franjas: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
         fisio:null,
         respuesta:null,
-        citas:null,
+        citas: null,
         date: new Date()
       }
     },
@@ -80,6 +146,8 @@ export default {
         }
     }
 }
+
+
 </script>
 <style>
 
