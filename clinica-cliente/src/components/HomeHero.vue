@@ -1,9 +1,8 @@
 <template>
     <v-container fluid fill-height class="home-hero" style="max-height: 100vh;">
         <v-layout justify-center align-center column pa-5>
-            <div class="display-4 font-weight-black white--text text-xs-center">Chetón de clínica</div>
-            <div class="display-4 font-weight-black white--text text-xs-center mb-3">Pa el cuerpo</div>
-            <div class="display-1 font-weight-bold white--text text-xs-center">Que haces taca, y ya no duele.</div>
+            <div class="display-4 font-weight-black white--text text-xs-center">Clínica de Fisioterapia IW</div>
+            <div class="display-3 font-weight-black white--text text-xs-center mb-3">Tu salud es nuestra prioridad.</div>
         </v-layout>
     </v-container>
 </template>

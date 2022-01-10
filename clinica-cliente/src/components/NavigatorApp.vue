@@ -3,7 +3,7 @@
         <v-toolbar color="blue darken-1" dark app>
             <v-app-bar-nav-icon color="white lighten-1" @click="drawer = !drawer"></v-app-bar-nav-icon>
             <v-spacer></v-spacer>
-            <v-toolbar-title>Clínica IW</v-toolbar-title>
+            <v-toolbar-title>Clínica de Fisioterapia IW</v-toolbar-title>
             <v-spacer></v-spacer>
             <div v-if="!this.currentUser" class="hidden-sm-and-down">
                 <v-btn flat color="blue lighten-1" a v-bind:href="'/login'">Iniciar Sesión</v-btn>
@@ -30,14 +30,14 @@
                     <v-list-item-icon>
                     <v-icon>mdi-account</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title a v-bind:href="'/home'">Mi perfil</v-list-item-title>
+                    <v-list-item-title >Mi perfil</v-list-item-title>
                 </v-list-item>
 
                 <v-list-item @click="irReservar">
                     <v-list-item-icon>
                     <v-icon>mdi-calendar</v-icon>
                     </v-list-item-icon>
-                    <v-list-item-title a v-bind:href="'/home'">Reservar</v-list-item-title>
+                    <v-list-item-title>Reservar</v-list-item-title>
                 </v-list-item>
                 </v-list-item-group>
             </v-list>

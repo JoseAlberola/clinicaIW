@@ -7,10 +7,10 @@ import '@mdi/font/css/materialdesignicons.css'
 import router from './router'
 import store from './store'
 import Vuex from 'vuex';
-
 Vue.config.productionTip = false
 
 Vue.use(Vuex);
+
 
 new Vue({
   vuetify,
