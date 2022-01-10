@@ -75,6 +75,11 @@ class Usuario {
         usuarioService.listarCitasEmailFecha(res,date, this.getEmail); 
     }
 
+    reservarCitasUser(res,date ,hora, cliente){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
+    }
+
     get getId(){
         return this.id;
     }
