@@ -240,6 +240,19 @@ class UsuarioService {
 
     }
 
+    listadoFisios(res){
+        connection.query("SELECT id, nombre, imagen FROM usuario WHERE tipo='fisio';"
+        , function (err, result) {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                res.status(500).send({error:err});
+            }else{
+                res.status(200).send(result);
+            }   
+        });
+    }
+
 }
 
 module.exports = UsuarioService;

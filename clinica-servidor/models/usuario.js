@@ -80,6 +80,13 @@ class Usuario {
         usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
     }
 
+    listadoFisios(res, limit, offset){
+        console.log("hola");
+        var usuarioService = new UsuarioService();
+        console.log("hola2");
+        usuarioService.listadoFisios(res, limit, offset);
+    }
+
     get getId(){
         return this.id;
     }

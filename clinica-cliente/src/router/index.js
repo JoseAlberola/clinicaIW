@@ -39,6 +39,11 @@ const routes = [
       path: '/',
       name: 'Home',
       component: Home
+    },
+    {
+      path: '/recepcionista/reservar',
+      name: 'reservaRecepcionista',
+      component: RecepcionistaReserva
     }
 ]
   

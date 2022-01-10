@@ -139,5 +139,15 @@ app.post('/reservar', chequeaJWT,  function(req, res) {
 
     fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario);
 });
+
+app.get('/listadofisios', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listadoFisios(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
 module.exports = app;
 
