@@ -2,10 +2,10 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginRegistro from '../components/LoginRegistro.vue'
 import DetallesFisio from '../components/DetallesFisio.vue'
-import Contenido from '../components/Contenido.vue'
 import ContenidoAdmin from '../components/ContenidoAdmin.vue'
 import Reservar from '../components/Reservar.vue'
 import Home from '../views/Home.vue'
+import Usuario from '../components/Home.vue'
 
 Vue.use(VueRouter)
 
@@ -17,8 +17,8 @@ const routes = [
     },
     {
       path: '/home',
-      name: 'Contenido',
-      component: Contenido
+      name: 'Usuario',
+      component: Usuario
     },
     {
       path: '/fisios/:idFisio',

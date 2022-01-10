@@ -132,7 +132,7 @@ export default {
                                     axios.post('http://localhost:3000/clinica/reservar', json)
                                         .then(response => {
                                             console.log(response);
-                                            document.location.href="/";
+                                            document.location.href="/home";
                                         }).catch(function(error) {
                                             console.log('Hubo un problema' + error.message);
                                         });
