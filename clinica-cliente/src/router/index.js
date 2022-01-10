@@ -5,12 +5,13 @@ import DetallesFisio from '../components/DetallesFisio.vue'
 import Contenido from '../components/Contenido.vue'
 import ContenidoAdmin from '../components/ContenidoAdmin.vue'
 import Reservar from '../components/Reservar.vue'
+import Home from '../views/Home.vue'
 
 Vue.use(VueRouter)
 
 const routes = [
     {
-      path: '/',
+      path: '/login',
       name: 'LoginRegistro',
       component: LoginRegistro
     },
@@ -33,6 +34,11 @@ const routes = [
       path: '/reservar',
       name: 'ReservarUsuario',
       component: Reservar
+    },
+    {
+      path: '/',
+      name: 'Home',
+      component: Home
     }
 ]
   
