@@ -129,5 +129,15 @@ app.get('/citas/:fisioEmail/:fecha', chequeaJWT, function(req, res) {
     }
 })
 
+
+app.post('/reservar', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario);
+});
 module.exports = app;
 

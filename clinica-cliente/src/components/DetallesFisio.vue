@@ -22,10 +22,11 @@
                 <v-app id="inspire">
                     <v-content>
                     <v-layout justify-center>
+                    <v-icon>mdi-calendar</v-icon>
                        <datepicker v-model="date"  popover-align="center"
                             @selected="fechaSeleccionada"
-                            @input="fechaSeleccionada2"
-                        ></datepicker>
+                        >
+                        </datepicker>
                     </v-layout>
                     </v-content>
                 </v-app>
@@ -54,193 +55,113 @@ export default {
             return require('../assets/'+ img)
         },
         fechaSeleccionada(date) {
-            //Metodo donde vamos a consultar las citas disponibles para un dia
-
-            //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
-            var pad = function(num) { return ('00'+num).slice(-2) };
-            var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
-            console.log(date);
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
-            axios.get(urlCitas).then(response => {
-                this.citas = response;
-            })
-            this.currentTab = null;
-            this.activeTabName = null;
-
-            //LISTAMOS LAS CITAS DISPONIBLES
-
-            var tabla = document.querySelector("body");
-            var divs = tabla.getElementsByTagName("divs");
-            while(divs.length > 1){
-                var contador = 1;
-                divs[contador].remove();
-                contador++;
-            }
-            
-            //console.log(tabla);
-            if(this.citas==null || this.citas.length == 0) {
-                for(var z=0; z<this.franjas.length;z++){
-                    var nDiv = document.createElement("div");
-                    nDiv.style.margin = "auto";
-                    nDiv.style.width = "45%";
-                    nDiv.style.textAlign = "center";
-                    var nCita = document.createElement("Button");
-                    nCita.innerHTML = this.franjas[z] + ":00 Reservar";
-                    nCita.onclick = function(){
-                        fetch("https://es.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro&explaintext&continue&titles=madrid")
-                            .then( (respuesta) => {
-                                if(respuesta.ok){
-                                    respuesta.json()
-                                    .then( function(data){
-                                            var datos = JSON.stringify(data.query);
-                        
-                                            //Comprobar si nos devuelve informacion
-                                            var indiceExiste = datos.indexOf('"pages":');
-                                            var negativoPositivo = datos.slice(indiceExiste + 10, indiceExiste + 11);
-                                            if(negativoPositivo == '-'){
-                                                console.log("mal");
-                                            }
-                        
-                                            var indiceDescripcion = datos.indexOf('"extract":');
-                                            var finalDescripcion = datos.indexOf('"}}');
-                                            var descripcion = datos.slice(indiceDescripcion + 11, finalDescripcion);
-                                            var descripcionSitio = descripcion;
-                                            var regex = /\[[0-9]+\]/g;
-                                            var resultado = descripcionSitio.replace(regex, "");
-                                            var regex2 = /\\{1}[n]?/g;
-                                            resultado = resultado.replace(regex2, "");                        
-                                            console.log(resultado);
-                                        }    
-                                    );
-                                }else{
-                                    console.log("mal");
-                                }
-                            }).catch(function(error) {
-                                console.log('Hubo un problema con la petición Fetch:' + error.message);
-                            });
-                    }
-                    nDiv.appendChild(nCita);
-                    tabla.append(nDiv);
-                }
+            var actualDate = new Date();
+            if(date < actualDate ){
+                window.alert("Elige fecha posterior a la actual por favor"); 
+                 //Primero borramos las citas disponibles mostradas si estan
+                var citasError = document.querySelectorAll(".botonReserva");
+                //console.log(citasListadas);
+                for(var k = 0; k < citasError.length ; k++){
+                    citasError[k].remove();
+                }   
             }else{
-                var encontrada;
-                
-                
-                for(var i=0; i<this.franjas.length;i++){
-                    encontrada = false;
-                    for(var x=0; x<this.citas.length;x++){
-                        if(this.franjas[i]==this.citas[x].hora){
-                            encontrada = true;
-                        }  
-                    }
-                    if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
-                        var nuevaCita = document.createElement("tr");
-                        nuevaCita.innerHTML += '<tr><th>' + this.franjas[i] + '</th></tr>';
-                        tabla.append(nuevaCita);
-                    }  
+                 //Primero borramos las citas disponibles mostradas si estan
+                var citasListadas = document.querySelectorAll(".botonReserva");
+                //console.log(citasListadas);
+                for(var i = 0; i < citasListadas.length ; i++){
+                    citasListadas[i].remove();
                 }
-                
             
-            }
+                    this.citas = [];
+                    //Metodo donde vamos a consultar las citas disponibles para un dia
+
+                    //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
+                    var pad = function(num) { return ('00'+num).slice(-2) };
+                    var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
+                    //console.log(date);
+                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+                    let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+                    axios.get(urlCitas).then(response => {
+                        
+                        var tabla = document.querySelector("body");
+
+                        for(var c=0; c < response.data.length; c++){
+
+                            this.citas.push(response.data[c].hora);
+                            
+                        }
+
+                        //BUcle de las franajs
+                        for(var z=0; z<this.franjas.length;z++){
+                            
+                            var encontrada = false;
+
+                            for(var x=0; x<this.citas.length;x++){
+                                
+                                
+                                if(this.franjas[z]===this.citas[x]){
+                                    
+                                    encontrada = true;
+                                }
+                            }
+                            if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
+                                
+                                var nDiv = document.createElement("div");
+                                nDiv.style.margin = "auto";
+                                nDiv.style.width = "45%";
+                                nDiv.style.textAlign = "center";
+                                nDiv.classList.add('botonReserva');
+                                var nCita = document.createElement("Button");
+                                nCita.setAttribute("data-hora", this.franjas[z]);
+                                nCita.innerHTML = this.franjas[z] + ":00 Reservar";
+                                
+                                var fisio = this.fisio.email;
+                                var usuario = this.currentUser.email;
+                            
+                                nCita.onclick = function(event){
+                                    
+                                    
+                                    let json = {
+                                        "fisio": fisio,
+                                        "usuario": usuario,
+                                        "Fecha": fecha,
+                                        "hora": event.target.getAttribute("data-hora")
+                                    };
+                                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+
+                                    axios.post('http://localhost:3000/clinica/reservar', json)
+                                        .then(response => {
+                                            console.log(response);
+                                            document.location.href="/";
+                                        }).catch(function(error) {
+                                            console.log('Hubo un problema' + error.message);
+                                        });
+
+                                
+                            }
+                            nDiv.appendChild(nCita);
+                            tabla.append(nDiv);
+                        }
+
+                    }
+                        
+                    })
+                    this.currentTab = null;
+                    this.activeTabName = null;
+
+                    
+
+                    
+
         }
-    },fechaSeleccionada2(date) {
-            //Metodo donde vamos a consultar las citas disponibles para un dia
-
-            //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
-            var pad = function(num) { return ('00'+num).slice(-2) };
-            var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
-            console.log(date);
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
-            axios.get(urlCitas).then(response => {
-                this.citas = response;
-            })
-            this.currentTab = null;
-            this.activeTabName = null;
-
-            //LISTAMOS LAS CITAS DISPONIBLES
-
-            
-            var tabla = document.querySelector("body");
-            var divs = tabla.getElementsByTagName("divs");
-            while(divs.length > 1){
-                var contador = 1;
-                divs[contador].remove();
-                contador++;
-            }
-            //console.log(tabla);
-            if(this.citas==null || this.citas.length == 0) {
-                for(var z=0; z<this.franjas.length;z++){
-                    var nDiv = document.createElement("div");
-                    nDiv.style.margin = "auto";
-                    nDiv.style.width = "45%";
-                    nDiv.style.textAlign = "center";
-                    var nCita = document.createElement("Button");
-                    nCita.innerHTML = this.franjas[z] + ":00 Reservar";
-                    nCita.onclick = function(){
-                        fetch("https://es.wikipedia.org/w/api.php?origin=*&format=json&action=query&prop=extracts&exintro&explaintext&continue&titles=madrid")
-                            .then( (respuesta) => {
-                                if(respuesta.ok){
-                                    respuesta.json()
-                                    .then( function(data){
-                                            var datos = JSON.stringify(data.query);
-                        
-                                            //Comprobar si nos devuelve informacion
-                                            var indiceExiste = datos.indexOf('"pages":');
-                                            var negativoPositivo = datos.slice(indiceExiste + 10, indiceExiste + 11);
-                                            if(negativoPositivo == '-'){
-                                                console.log("mal");
-                                            }
-                        
-                                            var indiceDescripcion = datos.indexOf('"extract":');
-                                            var finalDescripcion = datos.indexOf('"}}');
-                                            var descripcion = datos.slice(indiceDescripcion + 11, finalDescripcion);
-                                            var descripcionSitio = descripcion;
-                                            var regex = /\[[0-9]+\]/g;
-                                            var resultado = descripcionSitio.replace(regex, "");
-                                            var regex2 = /\\{1}[n]?/g;
-                                            resultado = resultado.replace(regex2, "");                        
-                                            console.log(resultado);
-                                        }    
-                                    );
-                                }else{
-                                    console.log("mal");
-                                }
-                            }).catch(function(error) {
-                                console.log('Hubo un problema con la petición Fetch:' + error.message);
-                            });
-                    }
-                    nDiv.appendChild(nCita);
-                    tabla.append(nDiv);
-                }
-            }else{
-                var encontrada;
-                
-                
-                for(var i=0; i<this.franjas.length;i++){
-                    encontrada = false;
-                    for(var x=0; x<this.citas.length;x++){
-                        if(this.franjas[i]==this.citas[x].hora){
-                            encontrada = true;
-                        }  
-                    }
-                    if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
-                        var nuevaCita = document.createElement("tr");
-                        nuevaCita.innerHTML += '<tr><th>' + this.franjas[i] + '</th></tr>';
-                        tabla.append(nuevaCita);
-                    }  
-                }
-                
-            
-            }
-        },
+        }
+    },
     data () {
       return {
         franjas: [10, 11, 12, 13, 14, 15, 16, 17, 18, 19],
         fisio:null,
         respuesta:null,
-        citas: null,
+        citas: [],
         date: new Date()
       }
     },

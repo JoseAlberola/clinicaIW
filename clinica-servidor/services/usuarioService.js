@@ -226,6 +226,20 @@ class UsuarioService {
 
     }
 
+    ReservarCitasUser(res, fisio, date, hora, cliente){
+        connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' ) ;"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                console.log("Se ha insertado con exito la cita");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
 }
 
 module.exports = UsuarioService;
