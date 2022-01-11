@@ -14,8 +14,22 @@
 						<div class="data">
 						<h3>Teléfono</h3>
 							<p>{{this.$store.state.user.telefono}}</p>
-					</div>
-					</div>
+						</div>
+					
+						<h3>Modificar Datos Usuario</h3>
+						<div display:inline-block style="margin-bottom: 15px">
+							<input type="text" id="cambioemail" value="Introduce Nuevo Email">
+							<button type="button" @click="cambiarEmail" style="border: solid 1px">Actualizar</button>
+						</div>
+						<div display:inline-block style="margin-bottom: 15px">
+							<input type="text" id="cambiotelefono" value="Introduce Nuevo Telefono" style="top: 20px" >
+							<button type="button" @click="cambiarTelefono" style="border: solid 1px">Actualizar</button>
+						</div>
+						<div display:inline-block style="margin-bottom: 15px">
+							<input type="text" id="cambionombre" value="Introduce Nuevo Nombre">
+							<button type="button" @click="cambiarNombre" style="border: solid 1px">Actualizar</button>
+						</div>
+				</div>
 				</div>
 			</div>
 			<div class="right">
@@ -149,13 +163,6 @@ export default {
       this.editedItem = Object.assign({}, item)
       this.dialog = true
     },
-
-    deleteItem (item) {
-      this.editedIndex = this.listaCategorias.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialogDelete = true
-    },
-
     deleteItemConfirm () {
       // Borrar categoria
       if (!this.currentUser) {
@@ -246,7 +253,33 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
         })
-    }
+    },
+	cambiarEmail(){
+		if (!this.currentUser) {
+          this.$router.push('/');
+		}else{
+		
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+		
+		let urlCambiarEmail = "http://localhost:3000/clinica/cambiarEmail/" + this.$store.state.user.email + document.getElementById("cambioemail").value;
+		console.log(urlCambiarEmail );
+		axios.delete(urlCambiarEmail ).then(response => {
+			console.log(response);
+			if(response.status == 204){
+				location.reload();
+				window.alert("Email Cambiado");
+			}else{
+				window.alert("No se puede cambiar el email");
+			}
+		})
+		}
+	},
+	cambiarTelefono(){
+		console.log("Prueba2");
+	},
+	cambiarNombre(){
+		console.log("Prueba");
+	}
   },
 	mounted:function(){
 	if (!this.currentUser) {
