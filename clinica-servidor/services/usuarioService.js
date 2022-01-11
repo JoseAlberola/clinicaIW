@@ -222,18 +222,28 @@ class UsuarioService {
 
 
     listarCitasEmailFecha(res,date, email) {
-   
-        connection.query("SELECT * FROM reserva where fecha='" + date + "' AND emailfisio='"+email+"' ;"
+
+        connection.query("SELECT * FROM festivo where fecha='" + date +"' ;"
         , function (err, result) {
             if (err) {
                 console.log(err);
                 res.status(500).send({error:err});
+            }else if(result.length === 0){
+                connection.query("SELECT * FROM reserva where fecha='" + date + "' AND emailfisio='"+email+"' ;"
+                , function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send({error:err});
+                    }else{
+                        console.log("Hay "+result.length+ " citas");
+                        res.statusText("KO")
+                        res.status(200).send(result);
+                    }
+                });
             }else{
-                console.log("Hay "+result.length+ " citas");
-                res.status(200).send(result);
+                res.status(200).send("dia festivo");
             }
         });
-
     }
 
     ReservarCitasUser(res, fisio, date, hora, cliente){
