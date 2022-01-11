@@ -13,9 +13,14 @@
                         >
                         </datepicker>
                     </v-layout>
-                    <select >
-                        <option :value="i" v-for="i in listaFisios" :key="i.id">{{ i.nombre }}</option>
+                    Seleccionar fisio: 
+                    <select @change="elegirFisio" >
+                        <option  v-for="i in listaFisios" v-bind:value="i.id" :key="i.id">{{ i.nombre }}</option>
                     </select>
+
+                    <div>
+                        <button @click="buscarCitas">Listar citas disponibles</button>
+                    </div>
                     </v-content>
                 </v-app>
 
@@ -42,33 +47,43 @@ export default {
         getImgUrl(img) {
             return require('../assets/'+ img)
         },
-        fechaSeleccionada(date) {
+        fechaSeleccionada( f ) {
+            this.date = f;
+            
+        },elegirFisio(e) {
+            console.log(e);
+            console.log(document.getElementById('fisio').value);
+        },
+        buscarCitas(){
+            console.log("gHola");
+
             var actualDate = new Date();
-            if(date < actualDate ){
+            if(this.date < actualDate ){
                 window.alert("Elige fecha posterior a la actual por favor"); 
                  //Primero borramos las citas disponibles mostradas si estan
                 var citasError = document.querySelectorAll(".botonReserva");
-                //console.log(citasListadas);
                 for(var k = 0; k < citasError.length ; k++){
                     citasError[k].remove();
                 }   
+
             }else{
-                 //Primero borramos las citas disponibles mostradas si estan
+                var idprovincia = document.getElementById("fisio");
+                console.log(idprovincia.key);
+                
+                //Primero borramos las citas disponibles mostradas si estan
                 var citasListadas = document.querySelectorAll(".botonReserva");
-                //console.log(citasListadas);
+                
                 for(var i = 0; i < citasListadas.length ; i++){
                     citasListadas[i].remove();
                 }
             
                     this.citas = [];
                     //Metodo donde vamos a consultar las citas disponibles para un dia
-
                     //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
                     var pad = function(num) { return ('00'+num).slice(-2) };
-                    var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
-                    //console.log(date);
+                    var fecha = this.date.getUTCFullYear()+ '-' +pad(this.date.getUTCMonth() + 1)  + '-' + pad(this.date.getUTCDate());
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+                    let urlCitas = "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
                     axios.get(urlCitas).then(response => {
                         
                         var tabla = document.querySelector("body");
@@ -139,9 +154,9 @@ export default {
 
                     
 
-                    
+                   
 
-        }
+            }
         }
     },
     data () {
