@@ -82,11 +82,21 @@ class Usuario {
         usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
     }
 
+    reservarCitasRecepcionista(res,date ,hora, cliente,recepcionista){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarCitasRecepcionista(res, this.getEmail, date, hora, cliente,recepcionista); 
+    }
+
     listadoFisios(res, limit, offset){
         console.log("hola");
         var usuarioService = new UsuarioService();
         console.log("hola2");
         usuarioService.listadoFisios(res, limit, offset);
+    }
+
+    listarUsuarios(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarUsuarios(res);
     }
 
     get getId(){

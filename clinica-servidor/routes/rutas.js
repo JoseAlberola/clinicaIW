@@ -149,5 +149,24 @@ app.get('/listadofisios', chequeaJWT, function(req, res) {
     }
 });
 
+app.get('/listadoclientes', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listarUsuarios(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.post('/reservarRecepcionista', chequeaJWT,  function(req, res) {
+console.log("hola");
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarCitasRecepcionista(res,body.Fecha,body.hora,body.usuario,body.recepcionista);
+});
+
 module.exports = app;
 
