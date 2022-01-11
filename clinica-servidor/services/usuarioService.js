@@ -250,8 +250,22 @@ class UsuarioService {
 
     }
 
+    ReservarCitasRecepcionista(res, fisio, date, hora, cliente, recepcionista){
+        connection.query("INSERT INTO reserva (emailcliente, emailfisio, emailrecepcionista, fecha, hora) VALUES ('" + cliente + "' , '" + fisio + "' , '" + recepcionista + "' , '" + date + "' , '" + hora + "' ) ;"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                console.log("Se ha insertado con exito la cita");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
     listadoFisios(res){
-        connection.query("SELECT id, nombre, imagen FROM usuario WHERE tipo='fisio';"
+        connection.query("SELECT id, email, nombre, imagen FROM usuario WHERE tipo='fisio';"
         , function (err, result) {
             console.log(err);
             console.log(result);
@@ -260,6 +274,19 @@ class UsuarioService {
             }else{
                 res.status(200).send(result);
             }   
+        });
+    }
+
+    listarUsuarios(res){
+        connection.query("SELECT * FROM usuario WHERE tipo='usuario';"
+        , function (err, result) {
+            
+            console.log(result);
+            if (err) {
+                res.status(500).send({error:err});
+            }else{
+                res.status(200).send(result);
+            }
         });
     }
 

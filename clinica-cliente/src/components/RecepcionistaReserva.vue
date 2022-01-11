@@ -14,8 +14,13 @@
                         </datepicker>
                     </v-layout>
                     Seleccionar fisio: 
-                    <select @change="elegirFisio" >
-                        <option  v-for="i in listaFisios" v-bind:value="i.id" :key="i.id">{{ i.nombre }}</option>
+                    <select @change="elegirFisio" id="fisio" >
+                        <option  v-for="i in listaFisios" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                    </select>
+
+                    Seleccionar cliente: 
+                    <select @change="elegirFisio" id="cliente" >
+                        <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
                     </select>
 
                     <div>
@@ -55,7 +60,7 @@ export default {
             console.log(document.getElementById('fisio').value);
         },
         buscarCitas(){
-            console.log("gHola");
+            
 
             var actualDate = new Date();
             if(this.date < actualDate ){
@@ -67,8 +72,7 @@ export default {
                 }   
 
             }else{
-                var idprovincia = document.getElementById("fisio");
-                console.log(idprovincia.key);
+                var mail = document.getElementById('fisio').value;
                 
                 //Primero borramos las citas disponibles mostradas si estan
                 var citasListadas = document.querySelectorAll(".botonReserva");
@@ -83,7 +87,7 @@ export default {
                     var pad = function(num) { return ('00'+num).slice(-2) };
                     var fecha = this.date.getUTCFullYear()+ '-' +pad(this.date.getUTCMonth() + 1)  + '-' + pad(this.date.getUTCDate());
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCitas = "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+                    let urlCitas = "http://localhost:3000/clinica/citas/" + mail +"/"+fecha;
                     axios.get(urlCitas).then(response => {
                         
                         var tabla = document.querySelector("body");
@@ -118,21 +122,23 @@ export default {
                                 nCita.setAttribute("data-hora", this.franjas[z]);
                                 nCita.innerHTML = this.franjas[z] + ":00 Reservar";
                                 
-                                var fisio = this.fisio.email;
-                                var usuario = this.currentUser.email;
-                            
+                                var fisio = mail;
+                                //var usuario = this.currentUser.email;
+                                var usuario = document.getElementById('cliente').value;
+                                var recep = this.currentUser.email;
+
                                 nCita.onclick = function(event){
-                                    
                                     
                                     let json = {
                                         "fisio": fisio,
                                         "usuario": usuario,
                                         "Fecha": fecha,
-                                        "hora": event.target.getAttribute("data-hora")
+                                        "hora": event.target.getAttribute("data-hora"),
+                                        "recepcionista": recep
                                     };
                                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                                    axios.post('http://localhost:3000/clinica/reservar', json)
+                                    axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
                                         .then(response => {
                                             console.log(response);
                                             document.location.href="/";
@@ -166,7 +172,8 @@ export default {
         respuesta:null,
         citas: [],
         date: new Date(),
-        listaFisios:null
+        listaFisios:null,
+        listaClientes:null
       }
     },
     mounted:function(){
@@ -179,6 +186,16 @@ export default {
                 this.listaFisios = response.data;
                 console.log(this.listaFisios);
             })
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+            let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
+            axios.get(urlListarClientes).then(response => {
+                this.listaClientes = response.data;
+                console.log(this.listaClientes);
+            })
+
+
+
             this.currentTab = null;
             this.activeTabName = null;
         }
