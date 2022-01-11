@@ -178,13 +178,33 @@ export default {
       }else{
 		console.log(item);
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		let urlCancelarReserva = "http://localhost:3000/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora;
-		axios.delete(urlCancelarReserva).then(response => {
-			console.log(response);
-			if(response.status == 204){
-				this.listaCategorias.splice(this.editedIndex, 1);
-			}
-		})
+		var d = new Date(),
+					month = '' + (d.getMonth() + 1),
+					day = '' + d.getDate(),
+					year = d.getFullYear();
+				if (month.length < 2) 
+					month = '0' + month;
+				if (day.length < 2) 
+					day = '0' + day;
+				var fecha2 = [year,month,day].join('-');
+		console.log(item.fecha);
+		console.log(fecha2);
+		if(item.fecha < fecha2 ){
+            window.alert("Elige fecha posterior a la actual por favor"); 
+        }else{
+			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
+			console.log(urlCancelarReserva);
+			axios.delete(urlCancelarReserva).then(response => {
+				console.log(response);
+				if(response.status == 204){
+					location.reload();
+					window.alert("Cita eliminada");
+
+				}else{
+					window.alert("No se pudo eliminar la cita. Citas pasadas no se puede eliminar");
+				}
+			})
+		}
       }
     },
     save () {            
@@ -239,11 +259,22 @@ export default {
 			this.listarCitas = response.data;
 			var i;
 			for(i = 0; i< this.listarCitas.length; i++){
-				console.log("Dentro");
-				var d = new Date(this.listarCitas[i].fecha);
-				var pad = function(num) { return ('00'+num).slice(-2) };
-                var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
-				console.log(fecha);
+				//var d = new Date(this.listarCitas[i].fecha);
+				//console.log(d);
+				var d = new Date(this.listarCitas[i].fecha),
+					month = '' + (d.getMonth() + 1),
+					day = '' + d.getDate(),
+					year = d.getFullYear();
+				if (month.length < 2) 
+					month = '0' + month;
+				if (day.length < 2) 
+					day = '0' + day;
+				var fecha = [year,month,day].join('-');
+
+				console.log(this.listarCitas[i].fecha);
+				//var pad = function(num) { return ('00'+num).slice(-2) };
+                //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
+				console.log(fecha)
 				this.listarCitas[i].fecha = fecha;
 				this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
 			}

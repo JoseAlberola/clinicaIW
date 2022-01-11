@@ -169,7 +169,7 @@ console.log("hola");
 });
 
 app.get('/citasUsuario/:email', chequeaJWT, function(req, res) {
-    console.log("sfdgdsfsdfdfsdfdsdfg")
+    
     try{
         var usuario = new Usuario();
         usuario.email = req.params.email;
@@ -177,6 +177,20 @@ app.get('/citasUsuario/:email', chequeaJWT, function(req, res) {
         console.log("sfdgdfg");
         usuario.listarReservas(res,req.params.email);
     }catch(error){
+        console.log(error);
+        res.status(500).send({error:error});
+    }
+});
+
+app.delete('/cancelarReserva/:email/:fecha/:hora', chequeaJWT, async function(req, res) {
+    
+    try{
+        console.log("aqui");
+        var usuario = new Usuario();
+        usuario.email = req.params.email;
+        usuario.cancelarReserva(res,req.params.email,req.params.fecha,req.params.hora);
+    }catch(error){
+        console.log("aqui2");
         console.log(error);
         res.status(500).send({error:error});
     }

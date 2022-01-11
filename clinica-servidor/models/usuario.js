@@ -104,6 +104,11 @@ class Usuario {
         var usuarioService = new UsuarioService();
         usuarioService.listarReservas(res,email);
     }
+
+    cancelarReserva(res,email,dia,hora){
+        var usuarioService = new UsuarioService();
+        usuarioService.cancelarReserva(res,email,dia,hora);
+    }
     get getId(){
         return this.id;
     }

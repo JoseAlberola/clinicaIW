@@ -313,6 +313,17 @@ class UsuarioService {
         });
     }
 
+    cancelarReserva(res,email,dia,hora){
+        console.log("aqui");
+        var query = "DELETE FROM reserva WHERE emailcliente=" + "'" + email + "' AND fecha=" + "'" + dia + "' AND hora=" + hora + ";";
+        connection.query(query, function (err, result) {
+            if (err) {
+                res.status(500).send({mensaje:err});
+            }
+            res.status(204).send({mensaje:"Cita eliminada"});
+        });
+    }
+
 }
 
 module.exports = UsuarioService;
