@@ -2,7 +2,7 @@
   <v-app id="inspire">
 		<div class="wrapper">
 			<div class="left">
-				<img src='{{this.$store.state.user.imagen}}' alt="user" width="100">
+				<img src="https://i.imgur.com/cMy8V5j.png" alt="user" width="100">
 				<h4>{{this.$store.state.user.nombre}}</h4>
 				
 			</div>
