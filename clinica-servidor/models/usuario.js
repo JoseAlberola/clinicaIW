@@ -99,6 +99,11 @@ class Usuario {
         usuarioService.listarUsuarios(res);
     }
 
+    listarReservas(res, email){
+        console.log("hola");
+        var usuarioService = new UsuarioService();
+        usuarioService.listarReservas(res,email);
+    }
     get getId(){
         return this.id;
     }

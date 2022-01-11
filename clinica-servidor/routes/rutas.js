@@ -168,5 +168,19 @@ console.log("hola");
     fisio.reservarCitasRecepcionista(res,body.Fecha,body.hora,body.usuario,body.recepcionista);
 });
 
+app.get('/citasUsuario/:email', chequeaJWT, function(req, res) {
+    console.log("sfdgdsfsdfdfsdfdsdfg")
+    try{
+        var usuario = new Usuario();
+        usuario.email = req.params.email;
+        console.log(req.params.email);
+        console.log("sfdgdfg");
+        usuario.listarReservas(res,req.params.email);
+    }catch(error){
+        console.log(error);
+        res.status(500).send({error:error});
+    }
+});
+
 module.exports = app;
 

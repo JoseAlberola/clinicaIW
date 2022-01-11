@@ -3,23 +3,23 @@
 		<div class="wrapper">
 			<div class="left">
 				<img src="https://i1.wp.com/mundowin.com/wp-content/uploads/2019/06/windows-computer-user-profile.png?w=832&ssl=1" alt="user" width="300px">
-				<h4>{{this.$store.state.user.nombre}}</h4>
-				
-			</div>
-			<div class="right">
+				<h2>{{this.$store.state.user.nombre}}</h2>
 				<div class="info">
 					<h3>Información de contacto</h3>
 					<div class="info_data">
 						<div class="data">
-							<h4>Email</h4>
+							<h3>Email</h3>
 							<p>{{this.$store.state.user.email}}</p>
 						</div>
 						<div class="data">
-						<h4>Teléfono</h4>
+						<h3>Teléfono</h3>
 							<p>{{this.$store.state.user.telefono}}</p>
 					</div>
 					</div>
 				</div>
+			</div>
+			<div class="right">
+				
 			
 			<div class="projects">
 					<h3>Mis citas</h3>
@@ -37,20 +37,29 @@
 											<v-row>
 												<v-col cols="12" sm="6" md="4">
 													<v-text-field
-														ref="idcategoria"
+														ref="fecha"
 														v-model="editedItem.idcategoria"
-														label="Fecha"                                    
+														label="fecha"                                    
 														readonly
-														></v-text-field>
-														</v-col>
-														<v-col cols="12" sm="6" md="4">
-														<v-text-field
-														ref="nombre"
+														>
+													</v-text-field>
+												</v-col>
+												<v-col cols="12" sm="6" md="4">
+													<v-text-field
+														ref="hora"
 														v-model="editedItem.nombre"
-														label="Nombre"
+														label="hora"
 														:rules="[rules.required]">
 													</v-text-field>
-												</v-col>                          
+												</v-col>
+												<v-col cols="12" sm="6" md="4">
+													<v-text-field
+														ref="emailfisio"
+														v-model="editedItem.nombre"
+														label="emailfisio"
+														:rules="[rules.required]">
+													</v-text-field>
+												</v-col>                         
 											</v-row>
 											</v-container>
 										</v-card-text>
@@ -100,8 +109,8 @@ export default {
     },
     form () {
       return {
-        idcategoria: this.editedItem.idcategoria,
-        nombre: this.editedItem.nombre,
+			fecha: this.editedItem.idcategoria,
+			nombre: this.editedItem.nombre,
       }
     },
   },
@@ -116,9 +125,9 @@ export default {
     dialog: false,
     dialogDelete: false,
     headers: [
-        { text: 'ID', align: 'start', sortable: false, value: 'idcategoria', },
-        { text: 'Nombre', value: 'nombre', sortable: false },
-        { text: 'Acción', value: 'accion', sortable: false },
+        { text: 'Fecha', align: 'start', sortable: false, value: 'fecha'},
+        { text: 'Hora', value: 'hora', sortable: false },
+        { text: 'Fisio', value: 'emailfisio', sortable: false },
     ],
     editedIndex: -1,
     editedItem: {
@@ -216,6 +225,16 @@ export default {
 		let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.$store.state.user.email;
 		axios.get(urlListarCitas).then(response => {
 			this.listarCitas = response.data;
+			var i;
+			for(i = 0; i< this.listarCitas.length; i++){
+				console.log("Dentro");
+				var d = new Date(this.listarCitas[i].fecha);
+				var pad = function(num) { return ('00'+num).slice(-2) };
+                var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
+				console.log(fecha);
+				this.listarCitas[i].fecha = fecha;
+				this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
+			}
 			})
 		}
 	}

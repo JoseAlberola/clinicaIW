@@ -290,6 +290,21 @@ class UsuarioService {
         });
     }
 
+    listarReservas(res,email){
+        connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "'" + " ORDER BY fecha DESC;"
+        //connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "';"
+        , function (err, result) {
+            console.log(err);
+            console.log(result);
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                res.status(200).send(result);
+            }   
+        });
+    }
+
 }
 
 module.exports = UsuarioService;
