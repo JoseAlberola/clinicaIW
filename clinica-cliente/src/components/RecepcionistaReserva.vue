@@ -89,70 +89,74 @@ export default {
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
                     let urlCitas = "http://localhost:3000/clinica/citas/" + mail +"/"+fecha;
                     axios.get(urlCitas).then(response => {
-                        
-                        var tabla = document.querySelector("body");
+                        if(response.data === "dia festivo"){
+                            window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
+                        }else{
+                             var tabla = document.querySelector("body");
 
-                        for(var c=0; c < response.data.length; c++){
+                            for(var c=0; c < response.data.length; c++){
 
-                            this.citas.push(response.data[c].hora);
-                            
-                        }
-
-                        //BUcle de las franajs
-                        for(var z=0; z<this.franjas.length;z++){
-                            
-                            var encontrada = false;
-
-                            for(var x=0; x<this.citas.length;x++){
+                                this.citas.push(response.data[c].hora);
                                 
+                            }
+
+                            //BUcle de las franajs
+                            for(var z=0; z<this.franjas.length;z++){
                                 
-                                if(this.franjas[z]===this.citas[x]){
+                                var encontrada = false;
+
+                                for(var x=0; x<this.citas.length;x++){
                                     
-                                    encontrada = true;
+                                    
+                                    if(this.franjas[z]===this.citas[x]){
+                                        
+                                        encontrada = true;
+                                    }
                                 }
-                            }
-                            if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
-                                
-                                var nDiv = document.createElement("div");
-                                nDiv.style.margin = "auto";
-                                nDiv.style.width = "45%";
-                                nDiv.style.textAlign = "center";
-                                nDiv.classList.add('botonReserva');
-                                var nCita = document.createElement("Button");
-                                nCita.setAttribute("data-hora", this.franjas[z]);
-                                nCita.innerHTML = this.franjas[z] + ":00 Reservar";
-                                
-                                var fisio = mail;
-                                //var usuario = this.currentUser.email;
-                                var usuario = document.getElementById('cliente').value;
-                                var recep = this.currentUser.email;
-
-                                nCita.onclick = function(event){
+                                if(encontrada==false){  //Si no lo hemos encontrado lo añadimos
                                     
-                                    let json = {
-                                        "fisio": fisio,
-                                        "usuario": usuario,
-                                        "Fecha": fecha,
-                                        "hora": event.target.getAttribute("data-hora"),
-                                        "recepcionista": recep
-                                    };
-                                    axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+                                    var nDiv = document.createElement("div");
+                                    nDiv.style.margin = "auto";
+                                    nDiv.style.width = "45%";
+                                    nDiv.style.textAlign = "center";
+                                    nDiv.classList.add('botonReserva');
+                                    var nCita = document.createElement("Button");
+                                    nCita.setAttribute("data-hora", this.franjas[z]);
+                                    nCita.innerHTML = this.franjas[z] + ":00 Reservar";
+                                    
+                                    var fisio = mail;
+                                    //var usuario = this.currentUser.email;
+                                    var usuario = document.getElementById('cliente').value;
+                                    var recep = this.currentUser.email;
 
-                                    axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
-                                        .then(response => {
-                                            console.log(response);
-                                            document.location.href="/";
-                                        }).catch(function(error) {
-                                            console.log('Hubo un problema' + error.message);
-                                        });
+                                    nCita.onclick = function(event){
+                                        
+                                        let json = {
+                                            "fisio": fisio,
+                                            "usuario": usuario,
+                                            "Fecha": fecha,
+                                            "hora": event.target.getAttribute("data-hora"),
+                                            "recepcionista": recep
+                                        };
+                                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                                
+                                        axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
+                                            .then(response => {
+                                                console.log(response);
+                                                document.location.href="/";
+                                            }).catch(function(error) {
+                                                console.log('Hubo un problema' + error.message);
+                                            });
+
+                                    
+                                }
+                                nDiv.appendChild(nCita);
+                                tabla.append(nDiv);
                             }
-                            nDiv.appendChild(nCita);
-                            tabla.append(nDiv);
-                        }
 
-                    }
+                        }
+                       
+                        }
                         
                     })
                     this.currentTab = null;
