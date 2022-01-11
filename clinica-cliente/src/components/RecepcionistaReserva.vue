@@ -7,25 +7,30 @@
                 
                     <v-content>
                     <v-layout justify-center>
-                    <v-icon>mdi-calendar</v-icon>
-                       <datepicker v-model="date"  popover-align="center"
-                            
-                        >
-                        </datepicker>
+                    <h2>Reservar cita </h2>
                     </v-layout>
-                    Seleccionar fisio: 
-                    <select @change="elegirFisio" id="fisio" >
-                        <option  v-for="i in listaFisios" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
-                    </select>
-
-                    Seleccionar cliente: 
-                    <select @change="elegirFisio" id="cliente" >
-                        <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
-                    </select>
+                    <v-layout justify-center>
+                    <v-icon>mdi-calendar</v-icon>
+                       <datepicker v-model="date"  popover-align="center"></datepicker>
+                    </v-layout>
+                    <v-layout justify-center>
+                       &nbsp; Seleccionar fisio: 
+                        <select @change="elegirFisio" id="fisio" >
+                            <option  v-for="i in listaFisios" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;
+                        Seleccionar cliente: 
+                        <select @change="elegirFisio" id="cliente" >
+                            <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                        </select>
+                    </v-layout>
 
                     <div>
                         <button @click="buscarCitas">Listar citas disponibles</button>
                     </div>
+                    <div id="citas">
+                    </div>
+                    
                     </v-content>
                 </v-app>
 
@@ -92,7 +97,7 @@ export default {
                         if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
                         }else{
-                             var tabla = document.querySelector("body");
+                             var tabla = document.querySelector("#citas");
 
                             for(var c=0; c < response.data.length; c++){
 
@@ -143,7 +148,7 @@ export default {
                                         axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
                                             .then(response => {
                                                 console.log(response);
-                                                document.location.href="/";
+                                                document.location.href="/panelRecepcionista";
                                             }).catch(function(error) {
                                                 console.log('Hubo un problema' + error.message);
                                             });
@@ -209,10 +214,18 @@ export default {
 
 </script>
 <style>
+    #citas {
+        margin-top: 20px;
+        margin-bottom: 15px;
+    }
+    .layout {
+        margin-top: 10px;
+    }
  .v-application--wrap {
     min-height: 0px;
   }
   .vdp-datepicker *{
       text-align: center;
   }
+
 </style>
