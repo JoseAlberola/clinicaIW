@@ -2,7 +2,7 @@
   <v-app id="inspire">
 		<div class="wrapper">
 			<div class="left">
-				<img src="https://i.imgur.com/cMy8V5j.png" alt="user" width="100">
+				<img src="https://i1.wp.com/mundowin.com/wp-content/uploads/2019/06/windows-computer-user-profile.png?w=832&ssl=1" alt="user" width="300px">
 				<h4>{{this.$store.state.user.nombre}}</h4>
 				
 			</div>
@@ -23,13 +23,67 @@
 			
 			<div class="projects">
 					<h3>Mis citas</h3>
-					<div class="projects_data">
-						<div class="data">
-						<div>
-							<v-btn flat color="blue lighten-1" @click="logout">Cerrar Sesión</v-btn>
-						</div>
-						</div>
-					</div>
+							<v-data-table :headers="headers" :items="listarCitas" class="elevation-1" style="width:90%; margin:auto;">
+								<template v-slot:top>
+									<v-toolbar flat>
+									<v-dialog v-model="dialog" max-width="500px">                      
+										<v-card ref="form">
+										<v-card-title>
+											<span class="text-h5">{{ formTitle }}</span>
+										</v-card-title>
+
+										<v-card-text>
+											<v-container>
+											<v-row>
+												<v-col cols="12" sm="6" md="4">
+													<v-text-field
+														ref="idcategoria"
+														v-model="editedItem.idcategoria"
+														label="Fecha"                                    
+														readonly
+														></v-text-field>
+														</v-col>
+														<v-col cols="12" sm="6" md="4">
+														<v-text-field
+														ref="nombre"
+														v-model="editedItem.nombre"
+														label="Nombre"
+														:rules="[rules.required]">
+													</v-text-field>
+												</v-col>                          
+											</v-row>
+											</v-container>
+										</v-card-text>
+
+										<v-card-actions>
+											<v-spacer></v-spacer>
+											<v-btn color="blue darken-1" text @click="close">
+											CANCELAR
+											</v-btn>
+											<v-btn color="blue darken-1" text @click="save">
+											ACEPTAR
+											</v-btn>
+										</v-card-actions>
+										</v-card>
+									</v-dialog>
+									
+									<v-dialog v-model="dialogDelete" max-width="650px">
+										<v-card>
+										<v-card-title class="text-h5">¿Estás seguro de que quieres eliminar esta categoría?</v-card-title>
+										<v-card-actions>
+											<v-spacer></v-spacer>
+											<v-btn color="blue darken-1" text @click="closeDelete">CANCELAR</v-btn>
+											<v-btn color="blue darken-1" text @click="deleteItemConfirm">ACEPTAR</v-btn>
+											<v-spacer></v-spacer>
+										</v-card-actions>
+										</v-card>
+									</v-dialog>
+									</v-toolbar>
+								</template>
+								<template v-slot:no-data>
+									<v-btn color="primary" @click="initialize">Reset</v-btn>
+								</template>
+								</v-data-table>
 				</div>
 			</div>
 		</div>
@@ -54,6 +108,7 @@ export default {
   data: () => ({ 
     // user: JSON.parse(localStorage.user), 
     listaCategorias:[],
+	listarCitas:[],
     rules: {
       required: value => !!value || 'Required.',
     },
@@ -150,22 +205,20 @@ export default {
         this.editedItem = Object.assign({}, this.defaultItem)
         this.editedIndex = -1
         })
-    },
-	logout(){
-            console.log(this.$store.state.user);
     }
   },
-  mounted:function(){
-    if (!this.currentUser) {
-      this.$router.push('/');
-    }else{
-      axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-      let urlListarCategorias = "http://localhost:3000/biblioteca/categorias";
-      axios.get(urlListarCategorias).then(response => {
-          this.listaCategorias = response.data;
-      })
-    }
-  }
+	mounted:function(){
+	if (!this.currentUser) {
+		this.$router.push('/');
+	}else{
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+		console.log("Prueba");
+		let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.$store.state.user.email;
+		axios.get(urlListarCitas).then(response => {
+			this.listarCitas = response.data;
+			})
+		}
+	}
 }
 </script>
 

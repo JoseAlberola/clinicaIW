@@ -192,7 +192,7 @@ export default {
           if(response.data.tipo == "administrador"){
             this.$router.push('/homeAdmin');  
           }else{
-            this.$router.push('/home');
+            this.$router.push('/PanelUsuario');
           }
           
         }
