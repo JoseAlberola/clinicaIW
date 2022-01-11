@@ -18,7 +18,7 @@
             <div class="right" id="citas">
                     <div class="text-center mt-3" style = "padding-top: 10px;">
                     <div id="app">
-                        <h4>Seleccione fecha: </h4>
+                        <h3>Seleccione fecha: </h3>
                         <v-app id="inspire">
                             <v-content>
                             <v-layout justify-center>
@@ -140,7 +140,7 @@ export default {
                                         axios.post('http://localhost:3000/clinica/reservar', json)
                                             .then(response => {
                                                 console.log(response);
-                                                document.location.href="/home";
+                                                document.location.href="/panelUsuario";
                                             }).catch(function(error) {
                                                 console.log('Hubo un problema' + error.message);
                                             });
@@ -303,5 +303,9 @@ export default {
 		display: block;
 		font-size: 18px;
 	}
+
+    #app {
+        margin-bottom: 20px;
+    }
 
 </style>
