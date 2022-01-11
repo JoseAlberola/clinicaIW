@@ -10,6 +10,8 @@ class Usuario {
         this.password = password;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.telefono = null;
+        this.imagen = null;
     }
 
     registrar(res){
@@ -107,6 +109,14 @@ class Usuario {
         return this.tipo;
     }
 
+    get getTelefono(){
+        return this.telefono;
+    }
+
+    get getImagen(){
+        return this.getImagen;
+    }
+
     set setId(nuevoId){
         this.id = nuevoId;
     }
@@ -125,6 +135,14 @@ class Usuario {
 
     set setTipo(nuevoTipo){
         this.tipo = nuevoTipo;
+    }
+
+    set setTelefono(nuevoTipo){
+        this.telefono = nuevoTipo;
+    }
+
+    set setImagen(nuevoTipo){
+        this.imagen= nuevoTipo;
     }
 
 }

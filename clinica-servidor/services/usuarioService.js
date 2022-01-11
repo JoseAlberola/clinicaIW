@@ -24,8 +24,8 @@ class UsuarioService {
     registrar(usuario, res){
         var query1 = "SELECT * from usuario WHERE email='" + usuario.getEmail + "';";
         
-        var query2 = "INSERT INTO usuario (`email`, `password`, `nombre`, `tipo`) VALUES ('" + usuario.getEmail + "', '" + 
-            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "');";
+        var query2 = "INSERT INTO usuario (`email`, `password`, `nombre`, `tipo`, `telefono`, `imagen`) VALUES ('" + usuario.getEmail + "', '" + 
+            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "', '" + usuario.getTelefono + "', '" + usuario.getImagen + "');";
 
         connection.query(query1, function (err, result) {
             if (err) {
@@ -49,7 +49,9 @@ class UsuarioService {
                         email: usuario.getEmail,
                         nombre: usuario.getNombre,
                         tipo: usuario.getTipo,
-                        mensaje: "Usuario creado correctamente"
+                        mensaje: "Usuario creado correctamente",
+                        telefono: usuario.getTelefono,
+                        imagen: usuario.getImagen
                     });
                 });
             }

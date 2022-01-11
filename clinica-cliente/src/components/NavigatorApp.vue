@@ -69,7 +69,7 @@ export default {
             this.$router.push('/');
         },
         irPerfil(){
-            this.$router.push('/home');
+            this.$router.push('/panelUsuario');
         },
         irReservar(){
             this.$router.push('/home');

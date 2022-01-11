@@ -15,6 +15,7 @@ CREATE TABLE `clinicaiw`.`usuario` (
   `password` VARCHAR(255) NOT NULL,
   `nombre` VARCHAR(255) NOT NULL,
   `tipo` VARCHAR(255) NOT NULL,
+  `telefono` VARCHAR(255) DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE INDEX `email_UNIQUE` (`email` ASC) VISIBLE,
   INDEX `tipo_idx` (`tipo` ASC) VISIBLE,

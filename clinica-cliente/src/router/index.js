@@ -6,6 +6,8 @@ import ContenidoAdmin from '../components/ContenidoAdmin.vue'
 import Reservar from '../components/Reservar.vue'
 import Home from '../views/Home.vue'
 import Usuario from '../components/Home.vue'
+import RecepcionistaReserva from '../components/RecepcionistaReserva.vue'
+import PanelUsuario from '../components/PanelUsuario.vue'
 
 Vue.use(VueRouter)
 
@@ -44,6 +46,12 @@ const routes = [
       path: '/recepcionista/reservar',
       name: 'reservaRecepcionista',
       component: RecepcionistaReserva
+    },
+    {
+      path: '/panelUsuario',
+      name: PanelUsuario,
+      component: PanelUsuario
+
     }
 ]
   
