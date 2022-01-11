@@ -69,11 +69,16 @@ class UsuarioService {
                 var hash = transformarClaveAHash(result[0].password);
                 var passwordDesencriptada = decrypt(hash);
                 if(passwordDesencriptada == usuario.getPassword){
-                    console.log("Login correcto");
+                    console.log("Login correcto2");
                     usuario.setId = result[0].id;
                     usuario.setEmail = result[0].email;
                     usuario.setNombre = result[0].nombre;
                     usuario.setTipo = result[0].tipo;
+                    usuario.setImagen = result[0].imagen;
+                    console.log(result[0].imagen);
+                    console.log("sdfgo");
+                    console.log(result[0].telefono);
+                    usuario.setTelefono = result[0].telefono;
                     var token = generaToken(usuario)
                     guardarAutenticacionCliente(usuario, token);
                     res.status(201).location('http://localhost:3000/clinica/usuarios/' + usuario.getId).send({
@@ -82,7 +87,10 @@ class UsuarioService {
                         email: usuario.getEmail,
                         nombre: usuario.getNombre,
                         tipo: usuario.getTipo,
-                        mensaje: "Login correcto"});
+                        mensaje: "Login correcto 2",
+                        telefono: usuario.getTelefono,
+                        imagen: usuario.getImagen
+                    });
                 }else{
                     res.status(401).send({mensaje:"Login erróneo"});    
                 }

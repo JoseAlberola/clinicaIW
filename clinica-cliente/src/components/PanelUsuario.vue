@@ -196,12 +196,12 @@ export default {
 
 	.wrapper .left{
 		width: 35%;
-		background: linear-gradient(to right,#01a9ac,#01dbdf);
+		background: linear-gradient(to right, #42a5f5,#42a5f5);
 		padding: 30px 25px;
 		border-top-left-radius: 5px;
 		border-bottom-left-radius: 5px;
 		text-align: center;
-		color: #fff;
+		color: black;
 	}
 
 	.wrapper .left img{

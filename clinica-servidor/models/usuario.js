@@ -114,7 +114,7 @@ class Usuario {
     }
 
     get getImagen(){
-        return this.getImagen;
+        return this.imagen;
     }
 
     set setId(nuevoId){
