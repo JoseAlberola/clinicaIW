@@ -59,19 +59,17 @@
 														label="emailfisio"
 														:rules="[rules.required]">
 													</v-text-field>
-												</v-col>                         
+												</v-col>                    
 											</v-row>
 											</v-container>
 										</v-card-text>
 
 										<v-card-actions>
-											<v-spacer></v-spacer>
+											<v-flex>
 											<v-btn color="blue darken-1" text @click="close">
-											CANCELAR
+												CANCELAR
 											</v-btn>
-											<v-btn color="blue darken-1" text @click="save">
-											ACEPTAR
-											</v-btn>
+											</v-flex>
 										</v-card-actions>
 										</v-card>
 									</v-dialog>
@@ -88,6 +86,11 @@
 										</v-card>
 									</v-dialog>
 									</v-toolbar>
+								</template>
+								
+            
+								<template v-slot:item.accion="{item}">
+									<v-btn color="blue darken-1" text @click="closeDelete(item)">CANCELAR</v-btn>
 								</template>
 								<template v-slot:no-data>
 									<v-btn color="primary" @click="initialize">Reset</v-btn>
@@ -128,6 +131,7 @@ export default {
         { text: 'Fecha', align: 'start', sortable: false, value: 'fecha'},
         { text: 'Hora', value: 'hora', sortable: false },
         { text: 'Fisio', value: 'emailfisio', sortable: false },
+		{ text: 'Acción', value: 'accion', sortable: false },
     ],
     editedIndex: -1,
     editedItem: {
@@ -168,12 +172,20 @@ export default {
           this.closeDelete();
       }
     },
-    closeDelete () {
-      this.dialogDelete = false
-      this.$nextTick(() => {
-      this.editedItem = Object.assign({}, this.defaultItem)
-      this.editedIndex = -1
-      })
+    closeDelete (item) {
+      if (!this.currentUser) {
+          this.$router.push('/');
+      }else{
+		console.log(item);
+		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+		let urlCancelarReserva = "http://localhost:3000/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora;
+		axios.delete(urlCancelarReserva).then(response => {
+			console.log(response);
+			if(response.status == 204){
+				this.listaCategorias.splice(this.editedIndex, 1);
+			}
+		})
+      }
     },
     save () {            
         this.formHasErrors = false
