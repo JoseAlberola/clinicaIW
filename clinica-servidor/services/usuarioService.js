@@ -235,8 +235,6 @@ class UsuarioService {
                         console.log(err);
                         res.status(500).send({error:err});
                     }else{
-                        console.log("Hay "+result.length+ " citas");
-                        res.statusText("KO")
                         res.status(200).send(result);
                     }
                 });
