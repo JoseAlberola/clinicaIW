@@ -42,10 +42,6 @@
 									<v-toolbar flat>
 									<v-dialog v-model="dialog" max-width="500px">                      
 										<v-card ref="form">
-										<v-card-title>
-											<span class="text-h5">{{ formTitle }}</span>
-										</v-card-title>
-
 										<v-card-text>
 											<v-container>
 											<v-row>
@@ -78,36 +74,15 @@
 											</v-container>
 										</v-card-text>
 
-										<v-card-actions>
-											<v-flex>
-											<v-btn color="blue darken-1" text @click="close">
-												CANCELAR
-											</v-btn>
-											</v-flex>
-										</v-card-actions>
 										</v-card>
 									</v-dialog>
 									
-									<v-dialog v-model="dialogDelete" max-width="650px">
-										<v-card>
-										<v-card-title class="text-h5">¿Estás seguro de que quieres eliminar esta categoría?</v-card-title>
-										<v-card-actions>
-											<v-spacer></v-spacer>
-											<v-btn color="blue darken-1" text @click="closeDelete">CANCELAR</v-btn>
-											<v-btn color="blue darken-1" text @click="deleteItemConfirm">ACEPTAR</v-btn>
-											<v-spacer></v-spacer>
-										</v-card-actions>
-										</v-card>
-									</v-dialog>
 									</v-toolbar>
 								</template>
 								
             
 								<template v-slot:item.accion="{item}">
 									<v-btn color="blue darken-1" text @click="closeDelete(item)">CANCELAR</v-btn>
-								</template>
-								<template v-slot:no-data>
-									<v-btn color="primary" @click="initialize">Reset</v-btn>
 								</template>
 								</v-data-table>
 				</div>
@@ -171,7 +146,7 @@ export default {
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
           let urlEliminarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
           axios.delete(urlEliminarCategoria).then(response => {
-              console.log(response);
+              //console.log(response);
               if(response.status == 204){
                   this.listaCategorias.splice(this.editedIndex, 1);
               }
@@ -183,7 +158,7 @@ export default {
       if (!this.currentUser) {
           this.$router.push('/');
       }else{
-		console.log(item);
+		//console.log(item);
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 		var d = new Date(),
 					month = '' + (d.getMonth() + 1),
@@ -194,15 +169,15 @@ export default {
 				if (day.length < 2) 
 					day = '0' + day;
 				var fecha2 = [year,month,day].join('-');
-		console.log(item.fecha);
-		console.log(fecha2);
+		//console.log(item.fecha);
+		//console.log(fecha2);
 		if(item.fecha < fecha2 ){
             window.alert("Elige fecha posterior a la actual por favor"); 
         }else{
 			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
-			console.log(urlCancelarReserva);
+			//console.log(urlCancelarReserva);
 			axios.delete(urlCancelarReserva).then(response => {
-				console.log(response);
+				//console.log(response);
 				if(response.status == 204){
 					location.reload();
 					window.alert("Cita eliminada");
@@ -218,7 +193,7 @@ export default {
         this.formHasErrors = false
 
         Object.keys(this.form).forEach(f => {
-            console.log(f)
+            //console.log(f)
             if (!this.form[f]) this.formHasErrors = true
             this.$refs[f].validate(true)
         })
@@ -241,18 +216,11 @@ export default {
               axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
               let urlModificarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
               axios.put(urlModificarCategoria, json).then(response => {
-                  console.log(response);                        
+                  response;                      
               })
           }
           this.close();
         }
-    },
-    close () {
-        this.dialog = false
-        this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
-        })
     },
 	cambiarEmail(){
 		if (!this.currentUser) {
@@ -264,13 +232,12 @@ export default {
 		var emailnuevo = document.getElementById("cambioemail").value;
 		this.$store.state.user.email = emailnuevo
 		let urlCambiarEmail = "http://localhost:3000/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
-		console.log(urlCambiarEmail );
+		//console.log(urlCambiarEmail );
 		axios.put(urlCambiarEmail ).then(response => {
-			console.log(response);
-			console.log(response.status);
-			console.log("sdfffffffff");
+			//console.log(response);
+
 			if(response.status == 204){
-				console.log(this.$store.state.user.email);
+				//console.log(this.$store.state.user.email);
 				this.$store.state.user.email = emailnuevo;
 				window.alert("Email Cambiado a " + emailnuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
 				localStorage.removeItem('token');
@@ -282,8 +249,9 @@ export default {
 				window.alert("No se puede cambiar el email else");
 			}
 		}).catch(function (error) {
-			console.log("Catch error");
-			console.log(error);
+			error;
+			//console.log("Catch error");
+			//console.log(error);
 			window.alert("No se puede cambiar el email");
 			location.reload();
 			}
@@ -299,12 +267,12 @@ export default {
 		var emailactual = this.$store.state.user.email;
 		var telefononuevo = document.getElementById("cambiotelefono").value;
 		let urlCambiarTelefono = "http://localhost:3000/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
-		console.log(urlCambiarTelefono );
+		//console.log(urlCambiarTelefono );
 		axios.put(urlCambiarTelefono ).then(response => {
-			console.log(response);
+			//console.log(response);
 			if(response.status == 204){
 				this.$store.state.user.telefono = telefononuevo;
-				console.log(this.$store.state.user.telefono);
+				//console.log(this.$store.state.user.telefono);
 				this.$store.state.user.telefono = telefononuevo;
 				window.alert("Telefono cambiado a " + telefononuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
 				localStorage.removeItem('token');
@@ -319,7 +287,7 @@ export default {
 		}
 	},
 	cambiarNombre(){
-		console.log("Prueba");
+		//console.log("Prueba");
 		if (!this.currentUser) {
           this.$router.push('/');
 		}else{
@@ -328,12 +296,12 @@ export default {
 		var emailactual = this.$store.state.user.email;
 		var nombrenuevo = document.getElementById("cambionombre").value;
 		let urlCambiarNombre = "http://localhost:3000/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
-		console.log(urlCambiarNombre);
+		//console.log(urlCambiarNombre);
 		axios.put(urlCambiarNombre ).then(response => {
-			console.log(response);
+			//console.log(response);
 			if(response.status == 204){
 				this.$store.state.user.nombre = nombrenuevo;
-				console.log(this.$store.state.user.nombre);
+				//console.log(this.$store.state.user.nombre);
 				window.alert("Nombre cambiado a " + nombrenuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
 				localStorage.removeItem('token');
 				this.$store.commit('logout');
@@ -351,7 +319,7 @@ export default {
 		this.$router.push('/');
 	}else{
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		console.log("Prueba");
+		//console.log("Prueba");
 		let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.$store.state.user.email;
 		axios.get(urlListarCitas).then(response => {
 			this.listarCitas = response.data;
@@ -369,10 +337,10 @@ export default {
 					day = '0' + day;
 				var fecha = [year,month,day].join('-');
 
-				console.log(this.listarCitas[i].fecha);
+				//console.log(this.listarCitas[i].fecha);
 				//var pad = function(num) { return ('00'+num).slice(-2) };
                 //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
-				console.log(fecha)
+				//console.log(fecha)
 				this.listarCitas[i].fecha = fecha;
 				this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
 			}

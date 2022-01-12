@@ -46,9 +46,9 @@ export default {
     },
     methods: {
         cambio(value){
-            console.log("click");
+            //console.log("click");
             this.pagina = value - 1;
-            console.log(value);
+            //console.log(value);
             let urlListarFisios = "http://localhost:3000/clinica/fisios?page=" + this.pagina + "&size=4";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
@@ -83,7 +83,7 @@ export default {
             let urlListarFisios = "http://localhost:3000/clinica/fisios?page=" + this.pagina + "&size=4";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
-                console.log(response.data);
+                //console.log(response.data);
                 this.respuesta = this.listaFisios.pop();
                 this.totalPaginas = Math.ceil(this.respuesta.total_registros/this.respuesta.resultados_pagina);
                 this.totalFisios = this.respuesta.total_registros;
