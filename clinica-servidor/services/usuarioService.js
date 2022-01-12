@@ -325,35 +325,39 @@ class UsuarioService {
 
     cambiarEmail(res,email,nuevoEmail){
         console.log("Service");
-        try{
-            var query = "SELECT COUNT(*) FROM usuario where email=" + "'" + nuevoEmail + "'"  + ";";
+    
+            var query = "SELECT COUNT(*) as existe FROM usuario where email=" + "'" + nuevoEmail + "'"  + ";";
                 connection.query(query, function (err, result) {
                     if (err) {
                         res.status(500).send({mensaje:err});
-                    }
-                    console.log(result);
-                    console.log(result.length);
-                    if(result.length == 0){
-                        console.log("Dentro");
-                        try{
-                            var query = "UPDATE usuario SET email=" + "'" + nuevoEmail + "' where email=" + "'" + email + "'"  + ";";
-                                connection.query(query, function (err, result) {
-                                    if (err) {
-                                        res.status(500).send({mensaje:err});
-                                    }
-                                    res.status(204).send(result);
-                                });
-                        }catch(error){
-                            res.status(500).send({mensaje:err});
-                        }
                     }else{
-                        res.status(500).send();
+                        console.log(result);
+                        console.log(result.length);
+                        const resultado = Object.values(JSON.parse(JSON.stringify(result)));
+                        console.log(resultado[0].existe);
+                        if(resultado[0].existe == 0){
+                            console.log("Dentro");
+                            try{
+                                console.log("Dentro2");
+                                var query = "UPDATE usuario SET email=" + "'" + nuevoEmail + "' where email=" + "'" + email + "'"  + ";";
+                                    connection.query(query, function (err, result) {
+                                        if (err) {
+                                            console.log("Dentro3");
+                                            res.status(500).send({mensaje:err});
+                                        }
+                                        console.log("Dentro4");
+                                        res.status(204).send({mensaje:err});
+                                    });
+                            }catch(error){
+                                console.log("Dentro6");
+                                res.status(500).send({mensaje:err});
+                            }
+                        }else{
+                            console.log("Dentro5");
+                            res.status(500).send();
+                        }
                     }
                 });
-        }catch(error){
-            res.status(500).send({mensaje:err});
-        }
-        console.log(existe);
     }
 
     cambiarTelefono(res,email,telefono){

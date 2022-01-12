@@ -279,9 +279,10 @@ export default {
 				this.$router.go();	
 			}else{
 				this.$store.state.user.email = emailactual;
-				window.alert("No se puede cambiar el email");
+				window.alert("No se puede cambiar el email else");
 			}
 		}).catch(function (error) {
+			console.log("Catch error");
 			console.log(error);
 			window.alert("No se puede cambiar el email");
 			location.reload();
