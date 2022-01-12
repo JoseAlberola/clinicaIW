@@ -8,6 +8,7 @@ import Home from '../views/Home.vue'
 import Usuario from '../components/Home.vue'
 import RecepcionistaReserva from '../components/RecepcionistaReserva.vue'
 import PanelUsuario from '../components/PanelUsuario.vue'
+import PanelRecepcionista from '../components/PanelRecepcionista.vue'
 
 Vue.use(VueRouter)
 
@@ -51,6 +52,12 @@ const routes = [
       path: '/panelUsuario',
       name: PanelUsuario,
       component: PanelUsuario
+
+    },
+    {
+      path: '/panelRecepcionista',
+      name: PanelRecepcionista,
+      component: PanelRecepcionista
 
     }
 ]
