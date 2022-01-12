@@ -108,19 +108,19 @@ class Usuario {
     }
 
     cambiarEmail(res,email,nuevoEmail){
-        console.log("Usuario");
+        //console.log("Usuario");
         var usuarioService = new UsuarioService();
         usuarioService.cambiarEmail(res,email, nuevoEmail);
     }
 
     cambiarTelefono(res,email,telefono){
-        console.log("Usuario");
+        //console.log("Usuario");
         var usuarioService = new UsuarioService();
         usuarioService.cambiarTelefono(res,email, telefono);
     }
 
     cambiarNombre(res,email,nombre){
-        console.log("Usuario");
+        //console.log("Usuario");
         var usuarioService = new UsuarioService();
         usuarioService.cambiarNombre(res,email, nombre);
     }

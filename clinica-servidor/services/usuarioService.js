@@ -69,15 +69,15 @@ class UsuarioService {
                 var hash = transformarClaveAHash(result[0].password);
                 var passwordDesencriptada = decrypt(hash);
                 if(passwordDesencriptada == usuario.getPassword){
-                    console.log("Login correcto2");
+                    //console.log("Login correcto2");
                     usuario.setId = result[0].id;
                     usuario.setEmail = result[0].email;
                     usuario.setNombre = result[0].nombre;
                     usuario.setTipo = result[0].tipo;
                     usuario.setImagen = result[0].imagen;
-                    console.log(result[0].imagen);
-                    console.log("sdfgo");
-                    console.log(result[0].telefono);
+                    //console.log(result[0].imagen);
+                    //console.log("sdfgo");
+                    //console.log(result[0].telefono);
                     usuario.setTelefono = result[0].telefono;
                     var token = generaToken(usuario)
                     guardarAutenticacionCliente(usuario, token);
@@ -206,7 +206,7 @@ class UsuarioService {
         connection.query("SELECT * FROM usuario where id='" + id + "';"
         , function (err, result) {
             if (err) {
-                console.log
+                //console.log
                 res.status(500).send({error:err});
             }
             
@@ -275,8 +275,8 @@ class UsuarioService {
     listadoFisios(res){
         connection.query("SELECT id, email, nombre, imagen FROM usuario WHERE tipo='fisio';"
         , function (err, result) {
-            console.log(err);
-            console.log(result);
+            //console.log(err);
+            //console.log(result);
             if (err) {
                 res.status(500).send({error:err});
             }else{
@@ -289,7 +289,7 @@ class UsuarioService {
         connection.query("SELECT * FROM usuario WHERE tipo='usuario';"
         , function (err, result) {
             
-            console.log(result);
+            //console.log(result);
             if (err) {
                 res.status(500).send({error:err});
             }else{
@@ -302,8 +302,8 @@ class UsuarioService {
         connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "'" + " ORDER BY fecha DESC;"
         //connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "';"
         , function (err, result) {
-            console.log(err);
-            console.log(result);
+            //console.log(err);
+            //console.log(result);
             if (err) {
                 console.log(err);
                 res.status(500).send({error:err});
@@ -324,36 +324,36 @@ class UsuarioService {
     }
 
     cambiarEmail(res,email,nuevoEmail){
-        console.log("Service");
+        //console.log("Service");
     
             var query = "SELECT COUNT(*) as existe FROM usuario where email=" + "'" + nuevoEmail + "'"  + ";";
                 connection.query(query, function (err, result) {
                     if (err) {
                         res.status(500).send({mensaje:err});
                     }else{
-                        console.log(result);
-                        console.log(result.length);
+                        //console.log(result);
+                        //console.log(result.length);
                         const resultado = Object.values(JSON.parse(JSON.stringify(result)));
-                        console.log(resultado[0].existe);
+                        //console.log(resultado[0].existe);
                         if(resultado[0].existe == 0){
-                            console.log("Dentro");
+                            //console.log("Dentro");
                             try{
-                                console.log("Dentro2");
+                                //console.log("Dentro2");
                                 var query = "UPDATE usuario SET email=" + "'" + nuevoEmail + "' where email=" + "'" + email + "'"  + ";";
                                     connection.query(query, function (err, result) {
                                         if (err) {
-                                            console.log("Dentro3");
+                                            //console.log("Dentro3");
                                             res.status(500).send({mensaje:err});
                                         }
-                                        console.log("Dentro4");
+                                        //console.log("Dentro4");
                                         res.status(204).send({mensaje:err});
                                     });
                             }catch(error){
-                                console.log("Dentro6");
+                                //console.log("Dentro6");
                                 res.status(500).send({mensaje:err});
                             }
                         }else{
-                            console.log("Dentro5");
+                            //console.log("Dentro5");
                             res.status(500).send();
                         }
                     }
@@ -361,7 +361,7 @@ class UsuarioService {
     }
 
     cambiarTelefono(res,email,telefono){
-        console.log("Service");
+        //console.log("Service");
         var query = "UPDATE usuario SET telefono=" + "'" + telefono + "' where email=" + "'" + email + "'"  + ";";
         connection.query(query, function (err, result) {
             if (err) {
@@ -372,7 +372,7 @@ class UsuarioService {
     }
 
     cambiarNombre(res,email,nombre){
-        console.log("Service");
+        //console.log("Service");
         var query = "UPDATE usuario SET nombre=" + "'" + nombre + "' where email=" + "'" + email + "'"  + ";";
         connection.query(query, function (err, result) {
             if (err) {
