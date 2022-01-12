@@ -246,5 +246,16 @@ app.put('/cambiarNombre/:email/:nombre', chequeaJWT, async function(req, res) {
         res.status(500).send({error:error});
     }
 });
+
+
+app.post('/crearFestivo', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var user = new Usuario();
+    var date = body.dia;
+
+    user.crearFestivo(res,date);
+});
 module.exports = app;
 

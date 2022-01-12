@@ -382,6 +382,38 @@ class UsuarioService {
         });
     }
 
+    crearFestivo(res, date){
+        connection.query("SELECT * FROM reserva where fecha='" + date +"' ;"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else if(result.length === 0){
+                connection.query("SELECT * FROM festivo where fecha='" + date +"' ;"
+                , function (err, result) {
+                    if (err) {
+                        console.log(err);
+                        res.status(500).send({error:err});
+                    }else if(result.length === 0){
+                        connection.query("INSERT INTO festivo  (`fecha`) VALUES ('" + date +  "');"
+                        , function (err, result) {
+                            if (err) {
+                                console.log(err);
+                                res.status(500).send({error:err});
+                            }else{
+                                res.status(200).send(result);
+                            }
+                        });
+                    }else{
+                        res.status(200).send("dia festivo");
+                    }
+                });
+            }else{
+                res.status(200).send("dia con citas");
+            }
+        });
+    }
+
 }
 
 module.exports = UsuarioService;

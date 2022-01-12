@@ -124,6 +124,12 @@ class Usuario {
         var usuarioService = new UsuarioService();
         usuarioService.cambiarNombre(res,email, nombre);
     }
+
+    crearFestivo(res,date){
+        var usuarioService = new UsuarioService();
+        usuarioService.crearFestivo(res, date); 
+    }
+
     get getId(){
         return this.id;
     }
