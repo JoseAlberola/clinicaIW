@@ -2,7 +2,7 @@ var jwt = require('jwt-simple')
 var moment = require('moment')  // Para trabajar con fechas
 
 const secret = 'OhtpElP3ssGwqds1231Y3tu23O51p3946';
-const TIEMPO_EXP_TOKEN_MS = 900000;  
+const TIEMPO_EXP_TOKEN_MS = 90000000;  
 
 //En una app con autentificación basada en Token, el login genera y devuelve el token
 const generaToken = (usuario) => {

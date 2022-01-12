@@ -1,47 +1,49 @@
 <template>
-<v-app id="inspire">
-		<div class="wrapper">
-			<div class="left">
-            <img :src="getImgUrl(fisio.imagen)" alt="fisio" width="300px">
-				<h2>{{fisio.nombre}}</h2>
-				<div class="info">
-					<h3>Información de contacto</h3>
-					<div class="info_data">
-						<div class="data">
-							<h3>Email</h3>
-							<p>{{fisio.email}}</p>
-						</div>
-					</div>
-                    
-                </div>
-            </div>
-            <div class="right" id="citas">
-                    <div class="text-center mt-3" style = "padding-top: 10px;">
-                    <div id="app">
-                        <h3>Seleccione fecha: </h3>
-                        <v-app id="inspire">
-                            <v-content>
-                            <v-layout justify-center>
-                            <v-icon>mdi-calendar</v-icon>
-                            <datepicker v-model="date"  popover-align="center"
-                                    @selected="fechaSeleccionada"
-                                >
-                                </datepicker>
-                            </v-layout>
-                            </v-content>
-                        </v-app>
+    
+        <div class="text-center mt-3" style = "padding-top: 10px;">
+        
+            <div id="app">
+                <v-app id="inspire">
+                
+                    <v-content>
+                    <v-layout justify-center>
+                    <h2>Reservar cita </h2>
+                    </v-layout>
+                    <v-layout justify-center>
+                    <v-icon >mdi-calendar</v-icon>
+                       <datepicker v-model="date"  popover-align="center" style=" text-align: center;"></datepicker>
+                    </v-layout>
+                    <v-layout justify-center>
+                       &nbsp; Seleccionar fisio:  &nbsp;  
+                        <select @change="elegirFisio" id="fisio" style="margin-bottom: 15px;border: 1px solid; text-align: center;" >
+                            <option  v-for="i in listaFisios" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                        </select>
+                        &nbsp;&nbsp;&nbsp;
+                        Seleccionar cliente: &nbsp;
+                        <select @change="elegirFisio" id="cliente" style="margin-bottom: 15px;border: 1px solid; text-align: center;" >
+                            <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                        </select>
+                    </v-layout>
+
+                    <div>
+                        
+                        <v-flex>
+                            <v-btn style="margin-bottom: 15px" color="primary" @click="buscarCitas">
+                                Listar Citas disponibles
+                            </v-btn>
+						</v-flex>
                     </div>
+                    <div id="citas">
+                    </div>
+                    
+                    </v-content>
+                </v-app>
 
             </div>
         </div>
-        
-        
+       
 
-        </div>
-    
-    
 
-    </v-app>
 </template>
 <script>
 import axios from 'axios';
@@ -60,38 +62,47 @@ export default {
         getImgUrl(img) {
             return require('../assets/'+ img)
         },
-        fechaSeleccionada(date) {
+        fechaSeleccionada( f ) {
+            this.date = f;
+            
+        },elegirFisio() {
+            //console.log(e);
+            //console.log(document.getElementById('fisio').value);
+        },
+        buscarCitas(){
+            
+
             var actualDate = new Date();
-            if(date < actualDate ){
+            if(this.date < actualDate ){
                 window.alert("Elige fecha posterior a la actual por favor"); 
                  //Primero borramos las citas disponibles mostradas si estan
                 var citasError = document.querySelectorAll(".botonReserva");
-                //console.log(citasListadas);
                 for(var k = 0; k < citasError.length ; k++){
                     citasError[k].remove();
                 }   
+
             }else{
-                 //Primero borramos las citas disponibles mostradas si estan
+                var mail = document.getElementById('fisio').value;
+                
+                //Primero borramos las citas disponibles mostradas si estan
                 var citasListadas = document.querySelectorAll(".botonReserva");
-                //console.log(citasListadas);
+                
                 for(var i = 0; i < citasListadas.length ; i++){
                     citasListadas[i].remove();
                 }
             
                     this.citas = [];
                     //Metodo donde vamos a consultar las citas disponibles para un dia
-
                     //Convertimos el formato de la fecha de Date a formato YYYY-MM-DD para sql
                     var pad = function(num) { return ('00'+num).slice(-2) };
-                    var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
-                    //console.log(date);
+                    var fecha = this.date.getUTCFullYear()+ '-' +pad(this.date.getUTCMonth() + 1)  + '-' + pad(this.date.getUTCDate());
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+                    let urlCitas = "http://localhost:3000/clinica/citas/" + mail +"/"+fecha;
                     axios.get(urlCitas).then(response => {
                         if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
                         }else{
-                            var tabla = document.querySelector("#citas");
+                             var tabla = document.querySelector("#citas");
 
                             for(var c=0; c < response.data.length; c++){
 
@@ -123,24 +134,27 @@ export default {
                                     nCita.setAttribute("data-hora", this.franjas[z]);
                                     nCita.innerHTML = this.franjas[z] + ":00 Reservar";
                                     
-                                    var fisio = this.fisio.email;
-                                    var usuario = this.currentUser.email;
-                                
+                                    var fisio = mail;
+                                    //var usuario = this.currentUser.email;
+                                    var usuario = document.getElementById('cliente').value;
+                                    var recep = this.currentUser.email;
+
                                     nCita.onclick = function(event){
-                                        
                                         
                                         let json = {
                                             "fisio": fisio,
                                             "usuario": usuario,
                                             "Fecha": fecha,
-                                            "hora": event.target.getAttribute("data-hora")
+                                            "hora": event.target.getAttribute("data-hora"),
+                                            "recepcionista": recep
                                         };
                                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                                        axios.post('http://localhost:3000/clinica/reservar', json)
+                                        axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
                                             .then(response => {
-                                                console.log(response);
-                                                document.location.href="/panelUsuario";
+                                                //console.log(response);
+                                                response;
+                                                document.location.href="/panelRecepcionista";
                                             }).catch(function(error) {
                                                 console.log('Hubo un problema' + error.message);
                                             });
@@ -152,8 +166,8 @@ export default {
                             }
 
                         }
+                       
                         }
-                        
                         
                     })
                     this.currentTab = null;
@@ -161,9 +175,9 @@ export default {
 
                     
 
-                    
+                   
 
-        }
+            }
         }
     },
     data () {
@@ -172,7 +186,9 @@ export default {
         fisio:null,
         respuesta:null,
         citas: [],
-        date: new Date()
+        date: new Date(),
+        listaFisios:null,
+        listaClientes:null
       }
     },
     mounted:function(){
@@ -180,10 +196,21 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlDetallesFisio = "http://localhost:3000/clinica/fisios/" + this.$route.params.idFisio;
-            axios.get(urlDetallesFisio).then(response => {
-                this.fisio = response.data[0];
+            let urlListarFisios = "http://localhost:3000/clinica/listadofisios";
+            axios.get(urlListarFisios).then(response => {
+                this.listaFisios = response.data;
+                //console.log(this.listaFisios);
             })
+
+            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+            let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
+            axios.get(urlListarClientes).then(response => {
+                this.listaClientes = response.data;
+                //console.log(this.listaClientes);
+            })
+
+
+
             this.currentTab = null;
             this.activeTabName = null;
         }
@@ -193,119 +220,18 @@ export default {
 
 </script>
 <style>
-
-	@import url('https://fonts.googleapis.com/css?family=Josefin+Sans&display=swap');
-
-	*{
-		margin: 0;
-		padding: 0;
-		box-sizing: border-box;
-		list-style: none;
-		font-family: 'Josefin Sans', sans-serif;
-	}
-
-	body{
-		background-color: #f3f3f3;
-	}
-
-	.wrapper{
-		position: relative;
-		top: 60%;
-		left: 50%;
-		transform: translate(-50%,-50%);
-		width: 80%;
-		display: flex;
-		box-shadow: 0 1px 20px 0 rgba(69,90,100,.08);
-	}
-
-	.wrapper .left{
-		width: 35%;
-		background: linear-gradient(to right, #42a5f5,#42a5f5);
-		padding: 30px 25px;
-		border-top-left-radius: 5px;
-		border-bottom-left-radius: 5px;
-		text-align: center;
-		color: black;
-	}
-
-	.wrapper .left img{
-		border-radius: 5px;
-		margin-bottom: 10px;
-	}
-
-	.wrapper .left h4{
-		margin-bottom: 10px;
-	}
-
-	.wrapper .left p{
-		font-size: 12px;
-	}
-
-	.wrapper .right{
-		width: 65%;
-		background: #fff;
-		padding: 30px 25px;
-		border-top-right-radius: 5px;
-		border-bottom-right-radius: 5px;
-	}
-
-	.wrapper .right .info,
-	.wrapper .right .projects{
-		margin-bottom: 25px;
-	}
-
-	.wrapper .right .info h3,
-	.wrapper .right .projects h3{
-		margin-bottom: 15px;
-		padding-bottom: 5px;
-		border-bottom: 1px solid #e0e0e0;
-		color: #353c4e;
-		text-transform: uppercase;
-		letter-spacing: 5px;
-	}
-
-	.wrapper .right .info_data,
-	.wrapper .right .projects_data{
-		display: flex;
-		justify-content: space-between;
-	}
-
-	.wrapper .right .info_data .data,
-	.wrapper .right .projects_data .data{
-		width: 45%;
-	}
-
-	.wrapper .right .info_data .data h4,
-	.wrapper .right .projects_data .data h4{
-		color: #353c4e;
-		margin-bottom: 5px;
-	}
-
-	.wrapper .right .info_data .data p,
-	.wrapper .right .projects_data .data p{
-		font-size: 13px;
-		margin-bottom: 10px;
-		color: #000000;
-	}
-
-	.wrapper .social_media ul li{
-		width: 45px;
-		height: 45px;
-		background: linear-gradient(to right,#01a9ac,#01dbdf);
-		margin-right: 10px;
-		border-radius: 5px;
-		text-align: center;
-		line-height: 45px;
-	}
-
-	.wrapper .social_media ul li a{
-		color :#fff;
-		display: block;
-		font-size: 18px;
-	}
-
-    #app {
-        margin-bottom: 20px;
+    #citas {
+        margin-top: 20px;
+        margin-bottom: 15px;
     }
+    .layout {
+        margin-top: 10px;
+    }
+ .v-application--wrap {
+    min-height: 0px;
+  }
+  .vdp-datepicker *{
+      text-align: center;
+  }
 
 </style>

@@ -4,5 +4,7 @@ export default class Usuario {
         this.password = password;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.telefono = null;
+        this.imagen = null;
     }
 }

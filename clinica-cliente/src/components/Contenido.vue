@@ -2,7 +2,6 @@
     <div class="container-contenido d-flex">
         <div class="tabs-container">
             <div class="tabs-item" @click="handleTabClick(tabNames.HOME)" :class="{ 'tabs-item-active': activeTabName === tabNames.HOME}">
-                HOME
             </div>
         </div>
         <Component style="width:100%;" :is="currentTab"/>
@@ -49,7 +48,7 @@ export default {
 
 .tabs-container{
     display: flex;
-    background-color: #2196F3;
+    background-color: white;
     width: 100%;
     height: 50px;
     align-items: center;
@@ -64,7 +63,7 @@ export default {
 
 .tabs-item-active,
 .tabs-item:hover{
-    background-color: #1565C0;
+    background-color: white;
     color: white;
 }
 </style>

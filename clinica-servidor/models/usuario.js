@@ -10,6 +10,8 @@ class Usuario {
         this.password = password;
         this.nombre = nombre;
         this.tipo = tipo;
+        this.telefono = null;
+        this.imagen = null;
     }
 
     registrar(res){
@@ -65,6 +67,69 @@ class Usuario {
         usuarioService.listarFisios(res, limit, offset);
     }
 
+    datosId(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.usuarioId(res, this.getId); 
+    }
+
+    citasEmailFecha(res, date){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarCitasEmailFecha(res,date, this.getEmail); 
+    }
+
+    reservarCitasUser(res,date ,hora, cliente){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
+    }
+
+    reservarCitasRecepcionista(res,date ,hora, cliente,recepcionista){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarCitasRecepcionista(res, this.getEmail, date, hora, cliente,recepcionista); 
+    }
+
+    listadoFisios(res, limit, offset){
+        var usuarioService = new UsuarioService();
+        usuarioService.listadoFisios(res, limit, offset);
+    }
+
+    listarUsuarios(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarUsuarios(res);
+    }
+
+    listarReservas(res, email){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarReservas(res,email);
+    }
+
+    cancelarReserva(res,email,dia,hora){
+        var usuarioService = new UsuarioService();
+        usuarioService.cancelarReserva(res,email,dia,hora);
+    }
+
+    cambiarEmail(res,email,nuevoEmail){
+        //console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarEmail(res,email, nuevoEmail);
+    }
+
+    cambiarTelefono(res,email,telefono){
+        //console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarTelefono(res,email, telefono);
+    }
+
+    cambiarNombre(res,email,nombre){
+        //console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarNombre(res,email, nombre);
+    }
+
+    crearFestivo(res,date){
+        var usuarioService = new UsuarioService();
+        usuarioService.crearFestivo(res, date); 
+    }
+
     get getId(){
         return this.id;
     }
@@ -85,6 +150,14 @@ class Usuario {
         return this.tipo;
     }
 
+    get getTelefono(){
+        return this.telefono;
+    }
+
+    get getImagen(){
+        return this.imagen;
+    }
+
     set setId(nuevoId){
         this.id = nuevoId;
     }
@@ -103,6 +176,14 @@ class Usuario {
 
     set setTipo(nuevoTipo){
         this.tipo = nuevoTipo;
+    }
+
+    set setTelefono(nuevoTipo){
+        this.telefono = nuevoTipo;
+    }
+
+    set setImagen(nuevoTipo){
+        this.imagen= nuevoTipo;
     }
 
 }
