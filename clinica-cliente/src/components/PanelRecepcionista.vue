@@ -15,28 +15,27 @@
 						<h3>Teléfono</h3>
 							<p>{{this.$store.state.user.telefono}}</p>
 						</div>
-					
-						<h3>Modificar Datos Usuario</h3>
-						<div display:inline-block style="margin-bottom: 15px">
-							<input type="text" id="cambioemail" value="Introduce Nuevo Email">
-							<button type="button" @click="cambiarEmail" style="border: solid 1px">Actualizar</button>
-						</div>
-						<div display:inline-block style="margin-bottom: 15px">
-							<input type="text" id="cambiotelefono" value="Introduce Nuevo Telefono" style="top: 20px" >
-							<button type="button" @click="cambiarTelefono" style="border: solid 1px">Actualizar</button>
-						</div>
-						<div display:inline-block style="margin-bottom: 15px">
-							<input type="text" id="cambionombre" value="Introduce Nuevo Nombre">
-							<button type="button" @click="cambiarNombre" style="border: solid 1px">Actualizar</button>
-						</div>
-				</div>
+                    </div>
+                    
 				</div>
 			</div>
 			<div class="right">
 				
 			
 			<div class="projects">
-					<h3>Mis citas</h3>
+                    <h3>Seleccionar cliente</h3>
+                        <select id="cliente" style="margin-bottom: 15px;border: 1px solid; text-align: center;">
+                            <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
+                        </select>
+                        <div>
+                            <v-flex>
+                                <v-btn style="margin-bottom: 15px" color="primary" @click="buscarCitas">
+                                    Listar Citas
+                                </v-btn>
+							</v-flex>
+                        </div>
+
+					<h3>Citas Usuario</h3>
 							<v-data-table :headers="headers" :items="listarCitas" class="elevation-1" style="width:90%; margin:auto;">
 								<template v-slot:top>
 									<v-toolbar flat>
@@ -88,17 +87,7 @@
 										</v-card>
 									</v-dialog>
 									
-									<v-dialog v-model="dialogDelete" max-width="650px">
-										<v-card>
-										<v-card-title class="text-h5">¿Estás seguro de que quieres eliminar esta categoría?</v-card-title>
-										<v-card-actions>
-											<v-spacer></v-spacer>
-											<v-btn color="blue darken-1" text @click="closeDelete">CANCELAR</v-btn>
-											<v-btn color="blue darken-1" text @click="deleteItemConfirm">ACEPTAR</v-btn>
-											<v-spacer></v-spacer>
-										</v-card-actions>
-										</v-card>
-									</v-dialog>
+									
 									</v-toolbar>
 								</template>
 								
@@ -135,6 +124,7 @@ export default {
     // user: JSON.parse(localStorage.user), 
     listaCategorias:[],
 	listarCitas:[],
+    listaClientes:null,
     rules: {
       required: value => !!value || 'Required.',
     },
@@ -199,7 +189,7 @@ export default {
 		if(item.fecha < fecha2 ){
             window.alert("Elige fecha posterior a la actual por favor"); 
         }else{
-			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
+			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
 			console.log(urlCancelarReserva);
 			axios.delete(urlCancelarReserva).then(response => {
 				console.log(response);
@@ -247,137 +237,112 @@ export default {
           this.close();
         }
     },
-    close () {
-        this.dialog = false
-        this.$nextTick(() => {
-        this.editedItem = Object.assign({}, this.defaultItem)
-        this.editedIndex = -1
+    buscarCitas(){
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+        console.log("Prueba");
+        console.log(document.getElementById('cliente').value);
+
+        let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + document.getElementById('cliente').value;
+        console.log(urlListarCitas);
+        axios.get(urlListarCitas).then(response => {
+        this.listarCitas = response.data;
+        var i;
+        for(i = 0; i< this.listarCitas.length; i++){
+
+            var d = new Date(this.listarCitas[i].fecha),
+                month = '' + (d.getMonth() + 1),
+                day = '' + d.getDate(),
+                year = d.getFullYear();
+            if (month.length < 2) 
+                month = '0' + month;
+            if (day.length < 2) 
+                day = '0' + day;
+            var fecha = [year,month,day].join('-');
+
+            console.log(this.listarCitas[i].fecha);
+            console.log(fecha)
+            this.listarCitas[i].fecha = fecha;
+            this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
+        }
         })
-    },
-	cambiarEmail(){
-		if (!this.currentUser) {
-          this.$router.push('/');
-		}else{
-		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var emailnuevo = document.getElementById("cambioemail").value;
-		this.$store.state.user.email = emailnuevo
-		let urlCambiarEmail = "http://localhost:3000/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
-		console.log(urlCambiarEmail );
-		axios.put(urlCambiarEmail ).then(response => {
-			console.log(response);
-			console.log(response.status);
-			console.log("sdfffffffff");
-			if(response.status == 204){
-				console.log(this.$store.state.user.email);
-				this.$store.state.user.email = emailnuevo;
-				window.alert("Email Cambiado a " + emailnuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				this.$store.state.user.email = emailactual;
-				window.alert("No se puede cambiar el email else");
-			}
-		}).catch(function (error) {
-			console.log("Catch error");
-			console.log(error);
-			window.alert("No se puede cambiar el email");
-			location.reload();
-			}
-		)
-		}
-	},
-	cambiarTelefono(){
-		if (!this.currentUser) {
-          this.$router.push('/');
-		}else{
-		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var telefononuevo = document.getElementById("cambiotelefono").value;
-		let urlCambiarTelefono = "http://localhost:3000/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
-		console.log(urlCambiarTelefono );
-		axios.put(urlCambiarTelefono ).then(response => {
-			console.log(response);
-			if(response.status == 204){
-				this.$store.state.user.telefono = telefononuevo;
-				console.log(this.$store.state.user.telefono);
-				this.$store.state.user.telefono = telefononuevo;
-				window.alert("Telefono cambiado a " + telefononuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				this.$store.state.user.telefono
-				window.alert("No se puede cambiar el telefono");
-			}
-		})
-		}
-	},
-	cambiarNombre(){
-		console.log("Prueba");
-		if (!this.currentUser) {
-          this.$router.push('/');
-		}else{
-		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var nombrenuevo = document.getElementById("cambionombre").value;
-		let urlCambiarNombre = "http://localhost:3000/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
-		console.log(urlCambiarNombre);
-		axios.put(urlCambiarNombre ).then(response => {
-			console.log(response);
-			if(response.status == 204){
-				this.$store.state.user.nombre = nombrenuevo;
-				console.log(this.$store.state.user.nombre);
-				window.alert("Nombre cambiado a " + nombrenuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				window.alert("No se puede cambiar el nombre");
-			}
-		})
-		}
-	}
+    }
   },
 	mounted:function(){
 	if (!this.currentUser) {
 		this.$router.push('/');
 	}else{
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		console.log("Prueba");
-		let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.$store.state.user.email;
-		axios.get(urlListarCitas).then(response => {
-			this.listarCitas = response.data;
-			var i;
-			for(i = 0; i< this.listarCitas.length; i++){
-				//var d = new Date(this.listarCitas[i].fecha);
-				//console.log(d);
-				var d = new Date(this.listarCitas[i].fecha),
-					month = '' + (d.getMonth() + 1),
-					day = '' + d.getDate(),
-					year = d.getFullYear();
-				if (month.length < 2) 
-					month = '0' + month;
-				if (day.length < 2) 
-					day = '0' + day;
-				var fecha = [year,month,day].join('-');
+        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+            let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
+            axios.get(urlListarClientes).then(response => {
+                this.listaClientes = response.data;
+                console.log(this.listaClientes);
+                axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+                console.log("Prueba");
+                console.log(document.getElementById('cliente').value);
+                if(this.listaClientes.length > 0){
+                    let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.listaClientes[0].email;
+                    console.log(urlListarCitas);
+                    axios.get(urlListarCitas).then(response => {
+                    this.listarCitas = response.data;
+                    var i;
+                    for(i = 0; i< this.listarCitas.length; i++){
+                        //var d = new Date(this.listarCitas[i].fecha);
+                        //console.log(d);
+                        var d = new Date(this.listarCitas[i].fecha),
+                            month = '' + (d.getMonth() + 1),
+                            day = '' + d.getDate(),
+                            year = d.getFullYear();
+                        if (month.length < 2) 
+                            month = '0' + month;
+                        if (day.length < 2) 
+                            day = '0' + day;
+                        var fecha = [year,month,day].join('-');
 
-				console.log(this.listarCitas[i].fecha);
-				//var pad = function(num) { return ('00'+num).slice(-2) };
-                //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
-				console.log(fecha)
-				this.listarCitas[i].fecha = fecha;
-				this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
-			}
-			})
+                        console.log(this.listarCitas[i].fecha);
+                        //var pad = function(num) { return ('00'+num).slice(-2) };
+                        //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
+                        console.log(fecha)
+                        this.listarCitas[i].fecha = fecha;
+                        this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
+                    }
+                    })
+                }else{
+                    let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/";
+                    console.log(urlListarCitas);
+                    axios.get(urlListarCitas).then(response => {
+                    this.listarCitas = response.data;
+                    var i;
+                    for(i = 0; i< this.listarCitas.length; i++){
+                        //var d = new Date(this.listarCitas[i].fecha);
+                        //console.log(d);
+                        var d = new Date(this.listarCitas[i].fecha),
+                            month = '' + (d.getMonth() + 1),
+                            day = '' + d.getDate(),
+                            year = d.getFullYear();
+                        if (month.length < 2) 
+                            month = '0' + month;
+                        if (day.length < 2) 
+                            day = '0' + day;
+                        var fecha = [year,month,day].join('-');
+
+                        console.log(this.listarCitas[i].fecha);
+                        //var pad = function(num) { return ('00'+num).slice(-2) };
+                        //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
+                        console.log(fecha)
+                        this.listarCitas[i].fecha = fecha;
+                        this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
+                    }
+                    })
+                }
+            })
+		
 		}
+        
+
+
+
+            this.currentTab = null;
+            this.activeTabName = null;
 	}
 }
 </script>
