@@ -10,23 +10,28 @@
                     <h2>Reservar cita </h2>
                     </v-layout>
                     <v-layout justify-center>
-                    <v-icon>mdi-calendar</v-icon>
-                       <datepicker v-model="date"  popover-align="center"></datepicker>
+                    <v-icon >mdi-calendar</v-icon>
+                       <datepicker v-model="date"  popover-align="center" style=" text-align: center;"></datepicker>
                     </v-layout>
                     <v-layout justify-center>
-                       &nbsp; Seleccionar fisio: 
-                        <select @change="elegirFisio" id="fisio" >
+                       &nbsp; Seleccionar fisio:  &nbsp;  
+                        <select @change="elegirFisio" id="fisio" style="margin-bottom: 15px;border: 1px solid; text-align: center;" >
                             <option  v-for="i in listaFisios" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
                         </select>
                         &nbsp;&nbsp;&nbsp;
-                        Seleccionar cliente: 
-                        <select @change="elegirFisio" id="cliente" >
+                        Seleccionar cliente: &nbsp;
+                        <select @change="elegirFisio" id="cliente" style="margin-bottom: 15px;border: 1px solid; text-align: center;" >
                             <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
                         </select>
                     </v-layout>
 
                     <div>
-                        <button @click="buscarCitas">Listar citas disponibles</button>
+                        
+                        <v-flex>
+                            <v-btn style="margin-bottom: 15px" color="primary" @click="buscarCitas">
+                                Listar Citas disponibles
+                            </v-btn>
+						</v-flex>
                     </div>
                     <div id="citas">
                     </div>

@@ -15,15 +15,29 @@
 						<h3>Teléfono</h3>
 							<p>{{this.$store.state.user.telefono}}</p>
 						</div>
+						
                     </div>
-                    
 				</div>
+					<v-layout justify-center>
+						<v-icon >mdi-calendar</v-icon>
+                       <datepicker v-model="date"  popover-align="center" style=" text-align: center;"></datepicker>
+                    </v-layout>
+					<v-flex>
+						<v-btn style="margin-bottom: 15px" color="primary" @click="crearFestivo">
+							Crear dia festivo
+						</v-btn>
+					</v-flex>
 			</div>
 			<div class="right">
 				
 			
 			<div class="projects">
-                    <h3>Seleccionar cliente</h3>
+                    <h3>Gestionar citas</h3>
+						<v-flex>
+                            <v-btn style="margin-bottom: 15px" color="primary" @click="nuevaCita">
+								Crear nueva cita
+                            </v-btn>
+						</v-flex>
                         <select id="cliente" style="margin-bottom: 15px;border: 1px solid; text-align: center;">
                             <option  v-for="i in listaClientes" v-bind:value="i.email" :key="i.email">{{ i.nombre }}</option>
                         </select>
@@ -107,8 +121,12 @@
 
 <script>
 import axios from 'axios';
+import Datepicker from 'vuejs-datepicker';
 export default {
   name: 'PanelUsuario',
+	components: {
+		Datepicker
+	},
   computed:{
     currentUser() {
       return this.$store.state.user;
@@ -122,6 +140,7 @@ export default {
   },
   data: () => ({ 
     // user: JSON.parse(localStorage.user), 
+	date: new Date(),
     listaCategorias:[],
 	listarCitas:[],
     listaClientes:null,
@@ -169,6 +188,36 @@ export default {
           this.closeDelete();
       }
     },
+	nuevaCita(){
+		document.location.href="/recepcionista/reservar";
+	},crearFestivo(){
+		var actualDate = new Date();
+		if(this.date < actualDate ){
+			window.alert("Elige fecha posterior a la actual por favor"); 
+		}else{
+			var pad = function(num) { return ('00'+num).slice(-2) };
+			var fecha = this.date.getUTCFullYear()+ '-' +pad(this.date.getUTCMonth() + 1)  + '-' + pad(this.date.getUTCDate());
+						
+			let json = {
+				"dia": fecha
+			};
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+
+			axios.post('http://localhost:3000/clinica/crearFestivo', json)
+			.then(response => {
+				if(response.data === "dia festivo"){
+					window.alert("El dia elegido ya esta dado de alta como festivo");
+				}else if(response.data === "dia con citas"){
+					window.alert("No se puede marcar como festivo el dia, debido a que ya hay citas programadas ese dia");
+				}else{
+					window.alert("Dia festivo creado con exito");
+				}
+			}).catch(function(error) {
+				console.log('Hubo un problema' + error.message);
+			});
+		}
+
+	},
     closeDelete (item) {
       if (!this.currentUser) {
           this.$router.push('/');
@@ -457,4 +506,8 @@ export default {
 		display: block;
 		font-size: 18px;
 	}
+	.vdp-datepicker *{
+		text-align: center;
+	}
+
 </style>
