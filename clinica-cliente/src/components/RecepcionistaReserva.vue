@@ -65,9 +65,9 @@ export default {
         fechaSeleccionada( f ) {
             this.date = f;
             
-        },elegirFisio(e) {
-            console.log(e);
-            console.log(document.getElementById('fisio').value);
+        },elegirFisio() {
+            //console.log(e);
+            //console.log(document.getElementById('fisio').value);
         },
         buscarCitas(){
             
@@ -152,7 +152,8 @@ export default {
 
                                         axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
                                             .then(response => {
-                                                console.log(response);
+                                                //console.log(response);
+                                                response;
                                                 document.location.href="/panelRecepcionista";
                                             }).catch(function(error) {
                                                 console.log('Hubo un problema' + error.message);
@@ -198,14 +199,14 @@ export default {
             let urlListarFisios = "http://localhost:3000/clinica/listadofisios";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
-                console.log(this.listaFisios);
+                //console.log(this.listaFisios);
             })
 
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
             let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
             axios.get(urlListarClientes).then(response => {
                 this.listaClientes = response.data;
-                console.log(this.listaClientes);
+                //console.log(this.listaClientes);
             })
 
 

@@ -55,9 +55,7 @@
 									<v-toolbar flat>
 									<v-dialog v-model="dialog" max-width="500px">                      
 										<v-card ref="form">
-										<v-card-title>
-											<span class="text-h5">{{ formTitle }}</span>
-										</v-card-title>
+
 
 										<v-card-text>
 											<v-container>
@@ -91,13 +89,6 @@
 											</v-container>
 										</v-card-text>
 
-										<v-card-actions>
-											<v-flex>
-											<v-btn color="blue darken-1" text @click="close">
-												CANCELAR
-											</v-btn>
-											</v-flex>
-										</v-card-actions>
 										</v-card>
 									</v-dialog>
 									
@@ -108,9 +99,6 @@
             
 								<template v-slot:item.accion="{item}">
 									<v-btn color="blue darken-1" text @click="closeDelete(item)">CANCELAR</v-btn>
-								</template>
-								<template v-slot:no-data>
-									<v-btn color="primary" @click="initialize">Reset</v-btn>
 								</template>
 								</v-data-table>
 				</div>
@@ -180,7 +168,7 @@ export default {
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
           let urlEliminarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
           axios.delete(urlEliminarCategoria).then(response => {
-              console.log(response);
+              //console.log(response);
               if(response.status == 204){
                   this.listaCategorias.splice(this.editedIndex, 1);
               }
@@ -222,7 +210,7 @@ export default {
       if (!this.currentUser) {
           this.$router.push('/');
       }else{
-		console.log(item);
+		//console.log(item);
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 		var d = new Date(),
 					month = '' + (d.getMonth() + 1),
@@ -233,15 +221,15 @@ export default {
 				if (day.length < 2) 
 					day = '0' + day;
 				var fecha2 = [year,month,day].join('-');
-		console.log(item.fecha);
-		console.log(fecha2);
+		//console.log(item.fecha);
+		//console.log(fecha2);
 		if(item.fecha < fecha2 ){
             window.alert("Elige fecha posterior a la actual por favor"); 
         }else{
 			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
-			console.log(urlCancelarReserva);
+			//console.log(urlCancelarReserva);
 			axios.delete(urlCancelarReserva).then(response => {
-				console.log(response);
+				//console.log(response);
 				if(response.status == 204){
 					location.reload();
 					window.alert("Cita eliminada");
@@ -257,7 +245,7 @@ export default {
         this.formHasErrors = false
 
         Object.keys(this.form).forEach(f => {
-            console.log(f)
+            //console.log(f)
             if (!this.form[f]) this.formHasErrors = true
             this.$refs[f].validate(true)
         })
@@ -288,11 +276,11 @@ export default {
     },
     buscarCitas(){
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-        console.log("Prueba");
-        console.log(document.getElementById('cliente').value);
+        //console.log("Prueba");
+        //console.log(document.getElementById('cliente').value);
 
         let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + document.getElementById('cliente').value;
-        console.log(urlListarCitas);
+        //console.log(urlListarCitas);
         axios.get(urlListarCitas).then(response => {
         this.listarCitas = response.data;
         var i;
@@ -308,8 +296,8 @@ export default {
                 day = '0' + day;
             var fecha = [year,month,day].join('-');
 
-            console.log(this.listarCitas[i].fecha);
-            console.log(fecha)
+            //console.log(this.listarCitas[i].fecha);
+            //console.log(fecha)
             this.listarCitas[i].fecha = fecha;
             this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
         }
@@ -324,13 +312,13 @@ export default {
             let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
             axios.get(urlListarClientes).then(response => {
                 this.listaClientes = response.data;
-                console.log(this.listaClientes);
+                //console.log(this.listaClientes);
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                console.log("Prueba");
-                console.log(document.getElementById('cliente').value);
+                //console.log("Prueba");
+                //console.log(document.getElementById('cliente').value);
                 if(this.listaClientes.length > 0){
                     let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.listaClientes[0].email;
-                    console.log(urlListarCitas);
+                    //console.log(urlListarCitas);
                     axios.get(urlListarCitas).then(response => {
                     this.listarCitas = response.data;
                     var i;
@@ -347,17 +335,17 @@ export default {
                             day = '0' + day;
                         var fecha = [year,month,day].join('-');
 
-                        console.log(this.listarCitas[i].fecha);
+                        //console.log(this.listarCitas[i].fecha);
                         //var pad = function(num) { return ('00'+num).slice(-2) };
                         //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
-                        console.log(fecha)
+                        //console.log(fecha)
                         this.listarCitas[i].fecha = fecha;
                         this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
                     }
                     })
                 }else{
                     let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/";
-                    console.log(urlListarCitas);
+                    //console.log(urlListarCitas);
                     axios.get(urlListarCitas).then(response => {
                     this.listarCitas = response.data;
                     var i;
@@ -374,10 +362,10 @@ export default {
                             day = '0' + day;
                         var fecha = [year,month,day].join('-');
 
-                        console.log(this.listarCitas[i].fecha);
+                        //console.log(this.listarCitas[i].fecha);
                         //var pad = function(num) { return ('00'+num).slice(-2) };
                         //var fecha = d.getUTCFullYear()+ '-' +pad(d.getUTCMonth() + 1)  + '-' + pad(d.getUTCDate());
-                        console.log(fecha)
+                        //console.log(fecha)
                         this.listarCitas[i].fecha = fecha;
                         this.listarCitas[i].hora = this.listarCitas[i].hora + ":00";
                     }
