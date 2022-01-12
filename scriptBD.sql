@@ -60,17 +60,17 @@ CREATE TABLE `clinicaiw`.`reserva` (
     FOREIGN KEY (`emailcliente`)
     REFERENCES `clinicaiw`.`usuario` (`email`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `emailfisio`
     FOREIGN KEY (`emailfisio`)
     REFERENCES `clinicaiw`.`usuario` (`email`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `emailrecepcionista`
     FOREIGN KEY (`emailrecepcionista`)
     REFERENCES `clinicaiw`.`usuario` (`email`)
     ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
+    ON UPDATE CASCADE,
   CONSTRAINT `idmaquina`
     FOREIGN KEY (`idmaquina`)
     REFERENCES `clinicaiw`.`maquina` (`id`)

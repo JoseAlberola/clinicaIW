@@ -314,13 +314,67 @@ class UsuarioService {
     }
 
     cancelarReserva(res,email,dia,hora){
-        console.log("aqui");
         var query = "DELETE FROM reserva WHERE emailcliente=" + "'" + email + "' AND fecha=" + "'" + dia + "' AND hora=" + hora + ";";
         connection.query(query, function (err, result) {
             if (err) {
                 res.status(500).send({mensaje:err});
             }
             res.status(204).send({mensaje:"Cita eliminada"});
+        });
+    }
+
+    cambiarEmail(res,email,nuevoEmail){
+        console.log("Service");
+        try{
+            var query = "SELECT COUNT(*) FROM usuario where email=" + "'" + nuevoEmail + "'"  + ";";
+                connection.query(query, function (err, result) {
+                    if (err) {
+                        res.status(500).send({mensaje:err});
+                    }
+                    console.log(result);
+                    console.log(result.length);
+                    if(result.length == 0){
+                        console.log("Dentro");
+                        try{
+                            var query = "UPDATE usuario SET email=" + "'" + nuevoEmail + "' where email=" + "'" + email + "'"  + ";";
+                                connection.query(query, function (err, result) {
+                                    if (err) {
+                                        res.status(500).send({mensaje:err});
+                                    }
+                                    res.status(204).send(result);
+                                });
+                        }catch(error){
+                            res.status(500).send({mensaje:err});
+                        }
+                    }else{
+                        res.status(500).send();
+                    }
+                });
+        }catch(error){
+            res.status(500).send({mensaje:err});
+        }
+        console.log(existe);
+    }
+
+    cambiarTelefono(res,email,telefono){
+        console.log("Service");
+        var query = "UPDATE usuario SET telefono=" + "'" + telefono + "' where email=" + "'" + email + "'"  + ";";
+        connection.query(query, function (err, result) {
+            if (err) {
+                res.status(500).send({mensaje:err});
+            }
+            res.status(204).send({mensaje:"Telefono Actualizado"});
+        });
+    }
+
+    cambiarNombre(res,email,nombre){
+        console.log("Service");
+        var query = "UPDATE usuario SET nombre=" + "'" + nombre + "' where email=" + "'" + email + "'"  + ";";
+        connection.query(query, function (err, result) {
+            if (err) {
+                res.status(500).send({mensaje:err});
+            }
+            res.status(204).send({mensaje:"Nombre Actualizado"});
         });
     }
 

@@ -88,9 +88,7 @@ class Usuario {
     }
 
     listadoFisios(res, limit, offset){
-        console.log("hola");
         var usuarioService = new UsuarioService();
-        console.log("hola2");
         usuarioService.listadoFisios(res, limit, offset);
     }
 
@@ -100,7 +98,6 @@ class Usuario {
     }
 
     listarReservas(res, email){
-        console.log("hola");
         var usuarioService = new UsuarioService();
         usuarioService.listarReservas(res,email);
     }
@@ -108,6 +105,24 @@ class Usuario {
     cancelarReserva(res,email,dia,hora){
         var usuarioService = new UsuarioService();
         usuarioService.cancelarReserva(res,email,dia,hora);
+    }
+
+    cambiarEmail(res,email,nuevoEmail){
+        console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarEmail(res,email, nuevoEmail);
+    }
+
+    cambiarTelefono(res,email,telefono){
+        console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarTelefono(res,email, telefono);
+    }
+
+    cambiarNombre(res,email,nombre){
+        console.log("Usuario");
+        var usuarioService = new UsuarioService();
+        usuarioService.cambiarNombre(res,email, nombre);
     }
     get getId(){
         return this.id;

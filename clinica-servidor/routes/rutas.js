@@ -196,5 +196,55 @@ app.delete('/cancelarReserva/:email/:fecha/:hora', chequeaJWT, async function(re
     }
 });
 
+app.put('/cambiarEmail/:email/:nuevoemail', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    console.log("aqui rutas 1");
+    try{
+        console.log("aqui rutas 2");
+        if(req.params.nuevoemail == "" || req.params.nuevoemail == undefined || req.params.nuevoemail == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            console.log("aqui rutas 3");
+            usuario.cambiarEmail(res,req.params.email,req.params.nuevoemail);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.put('/cambiarTelefono/:email/:telefono', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    console.log("aqui rutas 1");
+    try{
+        console.log("aqui rutas 2");
+        if(req.params.telefono == "" || req.params.telefono == undefined || req.params.telefono == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            console.log("aqui rutas 3");
+            usuario.cambiarTelefono(res,req.params.email,req.params.telefono);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.put('/cambiarNombre/:email/:nombre', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    console.log("aqui rutas 1");
+    try{
+        console.log("aqui rutas 2");
+        if(req.params.nombreS == "" || req.params.nombre == undefined || req.params.nombre == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            console.log("aqui rutas 3");
+            usuario.cambiarNombre(res,req.params.email,req.params.nombre);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
 module.exports = app;
 
