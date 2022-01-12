@@ -304,6 +304,7 @@ class UsuarioService {
         , function (err, result) {
             //console.log(err);
             //console.log(result);
+            
             if (err) {
                 console.log(err);
                 res.status(500).send({error:err});
