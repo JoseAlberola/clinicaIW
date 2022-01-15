@@ -90,7 +90,6 @@ app.get('/usuarios', chequeaJWT, chequeaAdmin, function(req, res) {
 });
 
 app.get('/fisios', chequeaJWT, function(req, res) {
-
     const {page, size} = req.query;
     
     const limit = size;
@@ -103,5 +102,160 @@ app.get('/fisios', chequeaJWT, function(req, res) {
     }
 });
 
+app.get('/fisios/:fisioId', chequeaJWT, function(req, res) {
+    //console.log("hola");
+    var usuarioId = req.params.fisioId;
+
+    try{
+        var usuario = new Usuario();
+        usuario.id = usuarioId;
+        usuario.datosId(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+})
+
+app.get('/citas/:fisioEmail/:fecha', chequeaJWT, function(req, res) {
+    //console.log("hola");
+    var usuarioEmail = req.params.fisioEmail;
+    var date = req.params.fecha;
+
+    try{
+        var usuario = new Usuario();
+        usuario.email = usuarioEmail;
+        usuario.citasEmailFecha(res,date);
+    }catch(error){console.log(error);
+        res.status(500).send({error:error});
+    }
+})
+
+
+app.post('/reservar', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario);
+});
+
+app.get('/listadofisios', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listadoFisios(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.get('/listadoclientes', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listarUsuarios(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.post('/reservarRecepcionista', chequeaJWT,  function(req, res) {
+//console.log("hola");
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarCitasRecepcionista(res,body.Fecha,body.hora,body.usuario,body.recepcionista);
+});
+
+app.get('/citasUsuario/:email', chequeaJWT, function(req, res) {
+    
+    try{
+        var usuario = new Usuario();
+        usuario.email = req.params.email;
+        //console.log(req.params.email);
+        //console.log("sfdgdfg");
+        usuario.listarReservas(res,req.params.email);
+    }catch(error){
+        console.log(error);
+        res.status(500).send({error:error});
+    }
+});
+
+app.delete('/cancelarReserva/:email/:fecha/:hora', chequeaJWT, async function(req, res) {
+    
+    try{
+        //console.log("aqui");
+        var usuario = new Usuario();
+        usuario.email = req.params.email;
+        usuario.cancelarReserva(res,req.params.email,req.params.fecha,req.params.hora);
+    }catch(error){
+        //console.log("aqui2");
+        console.log(error);
+        res.status(500).send({error:error});
+    }
+});
+
+app.put('/cambiarEmail/:email/:nuevoemail', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    //console.log("aqui rutas 1");
+    try{
+        //console.log("aqui rutas 2");
+        if(req.params.nuevoemail == "" || req.params.nuevoemail == undefined || req.params.nuevoemail == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            //console.log("aqui rutas 3");
+            usuario.cambiarEmail(res,req.params.email,req.params.nuevoemail);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.put('/cambiarTelefono/:email/:telefono', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    //console.log("aqui rutas 1");
+    try{
+        //console.log("aqui rutas 2");
+        if(req.params.telefono == "" || req.params.telefono == undefined || req.params.telefono == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            //console.log("aqui rutas 3");
+            usuario.cambiarTelefono(res,req.params.email,req.params.telefono);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.put('/cambiarNombre/:email/:nombre', chequeaJWT, async function(req, res) {
+    var usuario = new Usuario(); 
+    usuario.email= req.params.email;
+    //console.log("aqui rutas 1");
+    try{
+        //console.log("aqui rutas 2");
+        if(req.params.nombreS == "" || req.params.nombre == undefined || req.params.nombre == null){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            //console.log("aqui rutas 3");
+            usuario.cambiarNombre(res,req.params.email,req.params.nombre);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+
+app.post('/crearFestivo', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var user = new Usuario();
+    var date = body.dia;
+
+    user.crearFestivo(res,date);
+});
 module.exports = app;
 

@@ -113,6 +113,17 @@
                             :rules="rules.name"
                             v-model="password"
                           />
+                          <v-text-field
+                            id="telefono"
+                            label="Telefono"
+                            name="telefono"
+                            prepend-icon="phone"
+                            type="text"
+                            color="blue"
+                            required
+                            :rules="rules.name"
+                            v-model="telefono"
+                          />
                         </v-form>
                         <h3 class="text-center mt-4">{{mensajeRegistro}}</h3>
                       </v-card-text>
@@ -148,7 +159,9 @@ export default {
       mensajeRegistro:"",
       email: "",
       nombre:"",
-      password: ""
+      password: "",
+      telefono: "",
+      imagen: ""
     }
   },
   props: {
@@ -180,8 +193,9 @@ export default {
             this.$router.push('/homeAdmin');  
           }else if(response.data.tipo == "fisio"){
             this.$router.push('/homeFisio');
-          } else{
-            this.$router.push('/home');
+          
+          }else{
+            this.$router.push('/PanelUsuario');
           }
           
         }
@@ -198,7 +212,8 @@ export default {
       let json = {
         "email" : this.email,
         "password" : this.password,
-        "nombre" : this.nombre
+        "nombre" : this.nombre,
+        "telefono" : this.telefono
       };
       axios.post('http://localhost:3000/clinica/registro', json)
       .then(response => {      
