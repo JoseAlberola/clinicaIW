@@ -19,9 +19,9 @@ app.get('/', function(req, res) {
 
 app.post('/registro', function(req, res) {
     var nuevoUsuario = req.body;
-    var usuario = new Usuario(nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.nombre, TipoUsuario.USUARIO);
+    var usuario = new Usuario(nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.nombre, TipoUsuario.USUARIO, nuevoUsuario.telefono);
     
-    if(usuario.getEmail == undefined || usuario.getPassword == undefined || usuario.getNombre == undefined){
+    if(usuario.getEmail == undefined || usuario.getPassword == undefined || usuario.getNombre == undefined || usuario.getTelefono == undefined){
         res.status(400).send("Petición incorrecta");
     }else{
         usuario.registrar(res);
@@ -30,9 +30,9 @@ app.post('/registro', function(req, res) {
 
 app.post('/registroTrabajador', chequeaJWT, chequeaAdmin, function(req, res) {
     var nuevoUsuario = req.body;
-    var usuario = new Usuario(nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.nombre, nuevoUsuario.tipo);
+    var usuario = new Usuario(nuevoUsuario.email, nuevoUsuario.password, nuevoUsuario.nombre, nuevoUsuario.tipo, nuevoUsuario.telefono);
     
-    if(usuario.getEmail == undefined || usuario.getPassword == undefined || usuario.getNombre == undefined || usuario.getTipo == undefined){
+    if(usuario.getEmail == undefined || usuario.getPassword == undefined || usuario.getNombre == undefined || usuario.getTipo == undefined || usuario.getTelefono == undefined){
         res.status(400).send("Petición incorrecta");
     }else{
         usuario.registrar(res);
@@ -60,17 +60,18 @@ app.delete('/usuarios/:idUsuario', chequeaJWT, chequeaAdmin, async function(req,
     }
 });
 
-app.put('/usuarios/:idUsuario', chequeaJWT, chequeaAdmin,async function(req, res) {
+app.put('/usuarios/:idUsuario', chequeaJWT, chequeaAdmin, async function(req, res) {
     var usuario = new Usuario(); 
     usuario.setId = req.params.idUsuario;
     usuario.setEmail = req.body.email;
     usuario.setNombre = req.body.nombre;
+    usuario.setTelefono = req.body.telefono
 
     try{
         var existeUsuario = await usuario.existeUsuario();
         if(!existeUsuario){
             res.status(404).send("No existe ese usuario.");
-        }else if(usuario.getId == undefined || usuario.getEmail == undefined || usuario.getNombre == undefined){
+        }else if(usuario.getId == undefined || usuario.getEmail == undefined || usuario.getNombre == undefined || usuario.getTelefono == undefined){
             res.status(400).send("Petición incorrecta");
         }else{
             usuario.modificarUsuario(res);

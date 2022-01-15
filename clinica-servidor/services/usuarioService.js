@@ -123,7 +123,7 @@ class UsuarioService {
     }
 
     modificarUsuario(usuario, res){
-        var query = "UPDATE usuario SET `email`='" + usuario.getEmail + "', `nombre`='" + usuario.getNombre + "' WHERE id=" + usuario.getId;
+        var query = "UPDATE usuario SET `email`='" + usuario.getEmail + "', `nombre`='" + usuario.getNombre + "', `telefono`='" + usuario.getTelefono + "' WHERE id=" + usuario.getId;
 
         connection.query(query, function (err, result) {
             if (err) {
@@ -194,6 +194,7 @@ class UsuarioService {
                     if(index != limit)
                         delete result[index].total;
                 }
+                console.log(result);
                 res.status(200).send(result);
             }
         });

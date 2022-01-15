@@ -5,12 +5,12 @@ const UsuarioService = require('../services/usuarioService.js');
 const { encrypt, decrypt, concatenarPartesClave, transformarClaveAHash} = require('../crypto.js');
 
 class Usuario {
-    constructor(email, password, nombre, tipo){
+    constructor(email, password, nombre, tipo, telefono){
         this.email = email;
         this.password = password;
         this.nombre = nombre;
         this.tipo = tipo;
-        this.telefono = null;
+        this.telefono = telefono;
         this.imagen = null;
     }
 
