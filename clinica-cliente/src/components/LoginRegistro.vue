@@ -178,7 +178,9 @@ export default {
           
           if(response.data.tipo == "administrador"){
             this.$router.push('/homeAdmin');  
-          }else{
+          }else if(response.data.tipo == "fisio"){
+            this.$router.push('/homeFisio');
+          } else{
             this.$router.push('/home');
           }
           

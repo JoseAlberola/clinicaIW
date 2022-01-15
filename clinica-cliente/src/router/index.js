@@ -4,6 +4,8 @@ import LoginRegistro from '../components/LoginRegistro.vue'
 import DetallesFisio from '../components/DetallesFisio.vue'
 import Contenido from '../components/Contenido.vue'
 import ContenidoAdmin from '../components/ContenidoAdmin.vue'
+import ContenidoFisio from '../components/ContenidoFisio.vue'
+
 
 Vue.use(VueRouter)
 
@@ -27,6 +29,11 @@ const routes = [
       path: '/homeAdmin',
       name: 'ContenidoAdmin',
       component: ContenidoAdmin
+    },
+    {
+      path: '/homeFisio',
+      name: 'ContenidoFisio',
+      component: ContenidoFisio
     }
 ]
   
