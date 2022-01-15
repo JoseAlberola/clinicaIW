@@ -33,6 +33,13 @@
                     <v-list-item-title >Mi perfil</v-list-item-title>
                 </v-list-item>
 
+                <v-list-item v-if="this.currentUser && this.currentUser.tipo=='administrador'" @click="irUsuarios">
+                    <v-list-item-icon>
+                    <v-icon>mdi-pencil</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Usuarios</v-list-item-title>
+                </v-list-item>
+
                 <v-list-item @click="irReservar">
                     <v-list-item-icon>
                     <v-icon>mdi-calendar</v-icon>
@@ -73,6 +80,9 @@ export default {
         },
         irReservar(){
             this.$router.push('/home');
+        },
+        irUsuarios(){
+            this.$router.push('/usuarios');
         }
     }
 };
