@@ -9,6 +9,7 @@ import RecepcionistaReserva from '../components/RecepcionistaReserva.vue'
 import PanelUsuario from '../components/PanelUsuario.vue'
 import PanelRecepcionista from '../components/PanelRecepcionista.vue'
 import Usuarios from '../components/Usuarios.vue'
+import FestivosAdmin from '../components/FestivosAdmin.vue'
 
 Vue.use(VueRouter)
 
@@ -59,6 +60,12 @@ const routes = [
       path: '/usuarios',
       name: Usuarios,
       component: Usuarios
+
+    },
+    {
+      path: '/festivos',
+      name: FestivosAdmin,
+      component: FestivosAdmin
 
     },
 ]

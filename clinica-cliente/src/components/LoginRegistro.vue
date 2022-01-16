@@ -190,7 +190,7 @@ export default {
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
           
           if(response.data.tipo == "administrador"){
-            this.$router.push('/homeAdmin');  
+            this.$router.push('/usuarios');  
           }else{
             this.$router.push('/PanelUsuario');
           }

@@ -6,6 +6,7 @@ app.use(bodyParser.json());
 
 // Conexión con Modelos
 const Usuario = require('../models/usuario.js');
+const Festivo = require('../models/festivo.js');
 
 // Autenticacion Tokens
 const { chequeaJWT, chequeaAdmin } = require('../authentication.js');
@@ -253,10 +254,50 @@ app.post('/crearFestivo', chequeaJWT,  function(req, res) {
 
     var body = req.body;
 
-    var user = new Usuario();
+    var festivo = new Festivo();
     var date = body.dia;
 
-    user.crearFestivo(res,date);
+    festivo.crearFestivo(res,date);
 });
+
+app.get('/festivos', chequeaJWT, chequeaAdmin, function(req, res) {
+    try{
+        var festivo = new Festivo();
+        festivo.listarTodos(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.delete('/festivos/:fecha', chequeaJWT, chequeaAdmin, async function(req, res) {
+    var fecha = req.params.fecha;
+    var festivo = new Festivo(fecha);
+
+    var existeFestivo = await festivo.existeFestivo();  
+    if(existeFestivo){
+        festivo.eliminarFestivo(fecha, res);
+    }else{
+        res.status(404).send("Ese festivo NO EXISTE.");
+    }
+});
+
+app.put('/festivos/:fecha', chequeaJWT, chequeaAdmin, async function(req, res) {
+    var festivoAntiguo = new Festivo(req.params.fecha); 
+    var festivoNuevo = new Festivo(req.body.fecha);
+    
+    try{
+        var existeFestivo = await festivoAntiguo.existeFestivo();
+        if(!existeFestivo){
+            res.status(404).send("No existe ese festivo.");
+        }else if(festivoNuevo.getFecha == undefined){
+            res.status(400).send("Petición incorrecta");
+        }else{
+            festivoAntiguo.modificarFestivo(festivoNuevo, res);
+        }
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
 module.exports = app;
 
