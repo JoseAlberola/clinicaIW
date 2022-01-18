@@ -10,6 +10,7 @@ import PanelUsuario from '../components/PanelUsuario.vue'
 import PanelRecepcionista from '../components/PanelRecepcionista.vue'
 import Usuarios from '../components/Usuarios.vue'
 import FestivosAdmin from '../components/FestivosAdmin.vue'
+import Informes from '../components/Informes.vue'
 
 Vue.use(VueRouter)
 
@@ -66,6 +67,12 @@ const routes = [
       path: '/festivos',
       name: FestivosAdmin,
       component: FestivosAdmin
+
+    },
+    {
+      path: '/informes',
+      name: Informes,
+      component: Informes
 
     },
 ]

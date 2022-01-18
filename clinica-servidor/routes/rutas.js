@@ -299,5 +299,23 @@ app.put('/festivos/:fecha', chequeaJWT, chequeaAdmin, async function(req, res) {
     }
 });
 
+app.get('/informes/clientes', chequeaJWT, chequeaAdmin, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.informesClientes(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.get('/informes/fisios', chequeaJWT, chequeaAdmin, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.informesFisios(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
 module.exports = app;
 

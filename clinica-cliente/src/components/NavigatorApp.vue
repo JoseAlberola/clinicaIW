@@ -47,6 +47,13 @@
                     <v-list-item-title>Festivos</v-list-item-title>
                 </v-list-item>
 
+                <v-list-item v-if="this.currentUser && this.currentUser.tipo=='administrador'" @click="irInformes">
+                    <v-list-item-icon>
+                    <v-icon >mdi-folder-open</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Informes</v-list-item-title>
+                </v-list-item>
+
                 <v-list-item @click="irReservar">
                     <v-list-item-icon>
                     <v-icon>mdi-calendar</v-icon>
@@ -93,6 +100,9 @@ export default {
         },
         irFestivos(){
             this.$router.push('/festivos');
+        },
+        irInformes(){
+            this.$router.push('/informes');
         }
     }
 };

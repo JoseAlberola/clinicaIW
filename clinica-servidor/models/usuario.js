@@ -130,6 +130,16 @@ class Usuario {
         usuarioService.crearFestivo(res, date); 
     }
 
+    informesClientes(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.informesClientes(res);
+    }
+
+    informesFisios(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.informesFisios(res);
+    }
+
     get getId(){
         return this.id;
     }
