@@ -46,6 +46,14 @@
                                             ></v-text-field>
                                         </v-col>
                                         <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                            ref="telefono"
+                                            v-model="editedItem.telefono"
+                                            label="Telefono"
+                                            :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
                                             <v-select
                                             ref="tipo"
                                             v-model="editedItem.tipo"
@@ -80,7 +88,7 @@
                             <v-card-text>
                                 <v-container>
                                     <v-row>
-                                        <v-col cols="12" sm="6" md="4">
+                                        <v-col cols="12" sm="6" md="6">
                                             <v-text-field
                                             ref="id"
                                             v-model="editedItem.id"
@@ -88,7 +96,7 @@
                                             readonly
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="4">
+                                        <v-col cols="12" sm="6" md="6">
                                             <v-text-field
                                             ref="email"
                                             v-model="editedItem.email"
@@ -96,11 +104,19 @@
                                             :rules="[rules.required]"
                                             ></v-text-field>
                                         </v-col>
-                                        <v-col cols="12" sm="6" md="4">
+                                        <v-col cols="12" sm="6" md="6">
                                             <v-text-field
                                             ref="nombre"
                                             v-model="editedItem.nombre"
                                             label="Nombre"
+                                            :rules="[rules.required]"
+                                            ></v-text-field>
+                                        </v-col>
+                                        <v-col cols="12" sm="6" md="6">
+                                            <v-text-field
+                                            ref="telefono"
+                                            v-model="editedItem.telefono"
+                                            label="Telefono"
                                             :rules="[rules.required]"
                                             ></v-text-field>
                                         </v-col>
@@ -168,6 +184,7 @@ export default {
                 id: this.editedItem.id,
                 email: this.editedItem.email,
                 nombre: this.editedItem.nombre,
+                telefono: this.editedItem.telefono,
             }
         },
         formCrear () {
@@ -175,6 +192,7 @@ export default {
                 email: this.editedItem.email,
                 nombre: this.editedItem.nombre,
                 password: this.editedItem.password,
+                telefono: this.editedItem.telefono,
                 tipo: this.editedItem.tipo
             }
         },
@@ -193,6 +211,7 @@ export default {
             { text: 'ID', align: 'start', value: 'id', sortable: false },
             { text: 'Email', value: 'email', sortable: false },
             { text: 'Nombre', value: 'nombre', sortable: false },
+            { text: 'Teléfono', value: 'telefono', sortable: false },
             { text: 'Password', value: 'password', sortable: false, align: ' d-none'},
             { text: 'Tipo', value: 'tipo', sortable: false, align: ' d-none'},
             { text: 'Acción', value: 'accion', sortable: false },
@@ -204,6 +223,7 @@ export default {
             email: '',
             nombre: '',
             password: '',
+            telefono: '',
             tipo: ''
         },
         defaultItem: {
@@ -211,6 +231,7 @@ export default {
             email: '',
             nombre: '',
             password: '',
+            telefono: '',
             tipo: ''
         },
     }),
@@ -281,7 +302,8 @@ export default {
                     }else{
                         let json = {
                             "email" : this.editedItem.email,
-                            "nombre" : this.editedItem.nombre
+                            "nombre" : this.editedItem.nombre,
+                            "telefono": this.editedItem.telefono
                         };
 
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
@@ -309,7 +331,8 @@ export default {
                             "email" : this.editedItem.email,
                             "password": this.editedItem.password,
                             "nombre" : this.editedItem.nombre,
-                            "tipo": this.editedItem.tipo
+                            "tipo": this.editedItem.tipo,
+                            "telefono": this.editedItem.telefono
                         };
 
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

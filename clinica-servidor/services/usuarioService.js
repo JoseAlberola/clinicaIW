@@ -123,7 +123,7 @@ class UsuarioService {
     }
 
     modificarUsuario(usuario, res){
-        var query = "UPDATE usuario SET `email`='" + usuario.getEmail + "', `nombre`='" + usuario.getNombre + "' WHERE id=" + usuario.getId;
+        var query = "UPDATE usuario SET `email`='" + usuario.getEmail + "', `nombre`='" + usuario.getNombre + "', `telefono`='" + usuario.getTelefono + "' WHERE id=" + usuario.getId;
 
         connection.query(query, function (err, result) {
             if (err) {
@@ -209,6 +209,7 @@ class UsuarioService {
                     if(index != limit)
                         delete result[index].total;
                 }
+                console.log(result);
                 res.status(200).send(result);
             }
         });
@@ -470,6 +471,36 @@ class UsuarioService {
                 });
             }else{
                 res.status(200).send("dia con citas");
+            }
+        });
+    }
+
+    async informesClientes(res){                              
+        connection.query("SELECT email, count(emailcliente) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailcliente WHERE tipo='usuario' GROUP BY email;"
+        , function (err, result) {
+            if (err) {
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
+            }
+        });
+    }
+
+    async informesFisios(res){                              
+        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' GROUP BY email;"
+        , function (err, result) {
+            if (err) {
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
             }
         });
     }

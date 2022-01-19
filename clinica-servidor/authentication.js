@@ -24,11 +24,8 @@ const chequeaUsuarioLogueado = (idUsuarioToken, idUsuarioLocalStorage) => {
     }
 }
 
-const usuarioEsAdmin = () => {
-    console.log("Ha entrado a usuario es admin")
+const usuarioEsAdmin = () => {    
     var tipoUsuario = JSON.parse(localStorage.user).tipo;
-    console.log(JSON.parse(localStorage.user))
-    console.log(tipoUsuario);
     if(tipoUsuario == "administrador"){
         return true;
     }else{
@@ -39,11 +36,9 @@ const usuarioEsAdmin = () => {
 //Middleware: lo pondremos ANTES de procesar cualquier petición que requiera autentificación
 const chequeaJWT = (pet, resp, next) => {
     // var token = localStorage.token;
-    var token = getTokenFromAuthHeader(pet)
-    console.log("Ha entrado a chequeaJWT")
+    var token = getTokenFromAuthHeader(pet)    
     try{
-        var decoded = jwt.decode(token, secret) // Si no lanza excepcion pasamos al siguiente middleware
-        console.log("chequeaJWT hace next")
+        var decoded = jwt.decode(token, secret) // Si no lanza excepcion pasamos al siguiente middleware      
         next();
     }
     catch(error){
@@ -54,9 +49,7 @@ const chequeaJWT = (pet, resp, next) => {
 
 //Middleware: lo pondremos ANTES de procesar cualquier petición que requiera ser ADMINISTRADOR
 const chequeaAdmin = (req, resp, next) => {
-    console.log("Ha entrado a chequeaAdmin")
     if(usuarioEsAdmin()){
-        console.log("Checquea admin hace next")
         next();
     }else{
         resp.status(403).send({mensaje: "No tienes permiso para esta operación."});
