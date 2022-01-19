@@ -305,9 +305,10 @@ export default {
     }
   },
 	mounted:function(){
-	if (!this.currentUser) {
-		this.$router.push('/');
-	}else{
+	
+	if (!this.currentUser || this.currentUser.tipo != "recepcionista") {
+                this.$router.push('/');
+    }else{
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
             let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
             axios.get(urlListarClientes).then(response => {

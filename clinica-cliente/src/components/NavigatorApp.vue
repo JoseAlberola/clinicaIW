@@ -26,7 +26,7 @@
                     <v-list-item-title>Home</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item @click="irPerfil">
+                <v-list-item v-if="this.currentUser && this.currentUser.tipo!='administrador'" @click="irPerfil">
                     <v-list-item-icon>
                     <v-icon>mdi-account</v-icon>
                     </v-list-item-icon>
@@ -61,7 +61,7 @@
                     <v-list-item-title>Horario</v-list-item-title>
                 </v-list-item>
 
-                <v-list-item @click="irReservar">
+                <v-list-item v-if="this.currentUser && this.currentUser.tipo=='usuario'" @click="irReservar">
                     <v-list-item-icon>
                     <v-icon>mdi-calendar</v-icon>
                     </v-list-item-icon>
@@ -97,7 +97,13 @@ export default {
             this.$router.push('/');
         },
         irPerfil(){
-            this.$router.push('/panelUsuario');
+            if(this.currentUser.tipo=="fisio"){
+                this.$router.push('/panelFisio');
+            } else if(this.currentUser.tipo=="usuario"){
+                this.$router.push('/panelUsuario');
+            } else{
+                this.$router.push('/panelRecepcionista');
+            }
         },
         irReservar(){
             this.$router.push('/home');
