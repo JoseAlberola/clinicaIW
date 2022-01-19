@@ -63,8 +63,7 @@ export default {
           return (this.owner && this.number && this.ccv && this.expiry)
         },
     },
-    data: () => ({ 
-        listaUsuarios: [],
+    data: () => ({
         owner: "",
         number:"",
         ccv: "",
@@ -94,6 +93,16 @@ export default {
       validarCCV(num){        
         return this.esNumero(num) && num.length == 3;
       },
+      obtenerReferencia(){
+        var n1 = Math.floor(Math.random() * (10 - 0) + 0);
+        var n2 = Math.floor(Math.random() * (10 - 0) + 0);
+        var n3 = Math.floor(Math.random() * (10 - 0) + 0);
+        var n4 = Math.floor(Math.random() * (10 - 0) + 0);
+        var n5 = Math.floor(Math.random() * (10 - 0) + 0);
+        var n6 = Math.floor(Math.random() * (10 - 0) + 0);
+        var resultado = "";
+        return resultado + n1 + n2 + n3 + n4 + n5 + n6 + "x";
+      },
       pagar(){
         if(this.validarExp(this.expiry) && this.validarNumeroTarjeta(this.number) && this.validarCCV(this.ccv) ){
           
@@ -107,11 +116,12 @@ export default {
             .then(response => {
               console.log(response.data.authToken);
               tokenTPV = response.data.authToken;
-              
+              var numeroReferencia = this.obtenerReferencia();
+
               let bodyPay = {
                 "amount": "50",
                 "concept": "Reserva clinica fisioterapeuta",
-                "reference": "124234x",
+                "reference": numeroReferencia,
                 "creditCard": {
                   "owner": this.owner,
                   "number": this.number,
@@ -158,15 +168,9 @@ export default {
       }
     },
     mounted:function(){
-        if (!this.currentUser) {
-            this.$router.push('/');
-        }else{
-            axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarUsuarios = "http://localhost:3000/clinica/usuarios";
-            axios.get(urlListarUsuarios).then(response => {
-                this.listaUsuarios = response.data;
-            })
-        }
+      if (!this.currentUser || this.currentUser.tipo != "usuario") {
+        this.$router.push('/');
+      }
     },    
   }
 </script>
