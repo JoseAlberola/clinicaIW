@@ -119,7 +119,7 @@ export default {
               var numeroReferencia = this.obtenerReferencia();
 
               let bodyPay = {
-                "amount": "50",
+                "amount": 50,
                 "concept": "Reserva clinica fisioterapeuta",
                 "reference": numeroReferencia,
                 "creditCard": {
@@ -141,7 +141,8 @@ export default {
                       "usuario": this.$route.params.emailUsuario,
                       "Fecha": this.$route.params.fecha,
                       "hora": this.$route.params.hora,
-                      "pago": idPago
+                      "pago": idPago,
+                      "referencia": numeroReferencia
                     };
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 

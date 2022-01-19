@@ -103,9 +103,9 @@ class Usuario {
         usuarioService.comprobarReservaSala(res, idSala, date); 
     }
 
-    reservarCitasUser(res,date ,hora, cliente, pago){
+    reservarCitasUser(res,date ,hora, cliente, pago, referencia){
         var usuarioService = new UsuarioService();
-        usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente, pago); 
+        usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente, pago, referencia); 
     }
 
     reservarMaquina(res, idReserva, idMaquina){
