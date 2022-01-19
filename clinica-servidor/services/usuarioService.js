@@ -314,8 +314,8 @@ class UsuarioService {
     }
 
 
-    ReservarCitasUser(res, fisio, date, hora, cliente, pago){
-        connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora, pago) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' , '" + pago + "');"
+    ReservarCitasUser(res, fisio, date, hora, cliente, pago, referencia){
+        connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora, pago, referencia) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' , '" + pago + "', '" + referencia + "');"
         , function (err, result) {
             if (err) {
                 console.log(err);
@@ -397,7 +397,7 @@ class UsuarioService {
     }
 
     listarReservas(res,email){
-        connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "'" + " ORDER BY fecha DESC;"
+        connection.query("SELECT fecha, hora, emailfisio, pago, referencia FROM reserva WHERE emailcliente=" + "'" +  email + "'" + " ORDER BY fecha DESC;"
         //connection.query("SELECT fecha, hora, emailfisio FROM reserva WHERE emailcliente=" + "'" +  email + "';"
         , function (err, result) {
             //console.log(err);

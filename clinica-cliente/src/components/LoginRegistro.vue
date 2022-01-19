@@ -193,8 +193,10 @@ export default {
             this.$router.push('/usuarios');    
           }else if(response.data.tipo == "fisio"){
             this.$router.push('/homeFisio');
-          }else{
+          }else if(response.data.tipo == "usuario"){
             this.$router.push('/PanelUsuario');
+          }else{
+            this.$router.push('/PanelRecepcionista');
           }
           
         }

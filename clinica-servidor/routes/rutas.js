@@ -195,7 +195,7 @@ app.post('/reservar', chequeaJWT,  function(req, res) {
     var fisio = new Usuario();
     fisio.email = body.fisio;
 
-    fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario, body.pago);
+    fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario, body.pago, body.referencia);
 });
 
 

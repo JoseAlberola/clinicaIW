@@ -174,18 +174,76 @@ export default {
 		if(item.fecha < fecha2 ){
             window.alert("Elige fecha posterior a la actual por favor"); 
         }else{
-			let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
-			//console.log(urlCancelarReserva);
-			axios.delete(urlCancelarReserva).then(response => {
-				//console.log(response);
-				if(response.status == 204){
-					location.reload();
-					window.alert("Cita eliminada");
 
-				}else{
-					window.alert("No se pudo eliminar la cita. Citas pasadas no se puede eliminar");
+			for(var i = 0; i< this.listarCitas.length; i++){
+				if(this.listarCitas[i].fecha == item.fecha && this.listarCitas[i].hora == item.hora && this.listarCitas[i].fisio == item.fisio){
+					var citaSeleccionada = this.listarCitas[i];
 				}
-			})
+			}
+			if(citaSeleccionada.pago != null){	
+				let bodyAuth = {
+					"apiKey": "92de6f3a-d9a8-474c-a764-2a92e3fbbd46"
+				};
+
+				let tokenTPV = "";
+
+				axios.post('https://tpvviw.tk/api/v1/auth/authtoken', bodyAuth)
+					.then(response => {
+					console.log(response.data.authToken);
+					tokenTPV = response.data.authToken;
+
+					let bodyPay = {
+						"paymentId": citaSeleccionada.pago,
+						"amount": 50,
+						"concept": "Cancelar reserva",
+						"reference": citaSeleccionada.referencia 
+						}
+					
+					axios.defaults.headers.common['Authorization'] = 'Bearer ' + tokenTPV;
+					axios.post('https://tpvviw.tk/api/v1/refunds/', bodyPay)
+						.then(response2 => {
+						// Reservar
+						console.log(response2.data.status);
+						if(response2.data.status == "ACCEPTED"){
+							axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+							let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
+							axios.delete(urlCancelarReserva).then(response => {
+								//console.log(response);
+								if(response.status == 204){
+									location.reload();
+									window.alert("Cita eliminada");
+
+								}else{
+									window.alert("No se pudo eliminar la cita. Citas pasadas no se puede eliminar");
+								}
+							})                   
+						}else{
+							alert("Error en el pago.");
+						}
+						}).catch(function(error) {
+						console.log('Hubo un problema' + error.message);
+						});
+
+					}).catch(function(error) {
+					console.log('Hubo un problema' + error.message);
+					});
+						
+			} else{
+				let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
+				//console.log(urlCancelarReserva);
+				axios.delete(urlCancelarReserva).then(response => {
+					//console.log(response);
+					if(response.status == 204){
+						location.reload();
+						window.alert("Cita eliminada");
+
+					}else{
+						window.alert("No se pudo eliminar la cita. Citas pasadas no se puede eliminar");
+					}
+				}).catch(function(error) {
+					console.log('Hubo un problema' + error.message);
+				});
+			}
 		}
       }
     },
