@@ -12,6 +12,7 @@ import PanelRecepcionista from '../components/PanelRecepcionista.vue'
 import Usuarios from '../components/Usuarios.vue'
 import FestivosAdmin from '../components/FestivosAdmin.vue'
 import Informes from '../components/Informes.vue'
+import Pagar from '../components/Pagar.vue'
 
 Vue.use(VueRouter)
 
@@ -78,7 +79,11 @@ const routes = [
       path: '/informes',
       name: Informes,
       component: Informes
-
+    },
+    {
+      path: '/pagar/:emailFisio/:emailUsuario/:fecha/:hora',
+      name: Pagar,
+      component: Pagar
     },
 ]
   
