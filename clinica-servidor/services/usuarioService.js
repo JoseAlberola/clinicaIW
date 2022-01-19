@@ -148,6 +148,36 @@ class UsuarioService {
         });
     }
 
+    async listarMaquinas(res){
+        connection.query("SELECT * FROM maquina;"
+        , function (err, result) {
+            if (err) {
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
+            }
+        });
+    }
+
+    async listarSalas(res){
+        connection.query("SELECT * FROM sala;"
+        , function (err, result) {
+            if (err) {
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
+            }
+        });
+    }
+
     async listarFisios(res,  limit, offset){
         connection.query("SELECT id, nombre, imagen, (SELECT COUNT(*) FROM usuario WHERE tipo='fisio') AS total FROM usuario WHERE tipo='fisio' LIMIT " + limit + " OFFSET " + offset
         , function (err, result, fields) {
@@ -194,7 +224,6 @@ class UsuarioService {
                     if(index != limit)
                         delete result[index].total;
                 }
-                console.log(result);
                 res.status(200).send(result);
             }
         });
@@ -215,6 +244,24 @@ class UsuarioService {
             }
         });
 
+    }
+
+    findByEmail(res, email){
+        console.log(email);
+        connection.query("SELECT * FROM usuario where email='" + email + "';"
+        , function (err, result) {
+            console.log(result);
+            if (err) {
+                //console.log
+                res.status(500).send({error:err});
+            }
+            
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
+            }
+        });
     }
 
 
@@ -242,6 +289,31 @@ class UsuarioService {
         });
     }
 
+
+    comprobarReservaMaquina(res, idMaquina, date) {
+        connection.query("SELECT * FROM reserva where fecha='" + date +"' AND idmaquina ='" + idMaquina +"';"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else   
+                res.status(200).send(result);
+        });
+    }
+
+
+    comprobarReservaSala(res, idSala, date) {
+        connection.query("SELECT * FROM reserva where fecha='" + date +"' AND idsala ='" + idSala +"';"
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else   
+                res.status(200).send(result);
+        });
+    }
+
+
     ReservarCitasUser(res, fisio, date, hora, cliente){
         connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' ) ;"
         , function (err, result) {
@@ -250,6 +322,34 @@ class UsuarioService {
                 res.status(500).send({error:err});
             }else{
                 console.log("Se ha insertado con exito la cita");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
+    ReservarMaquina(res, idReserva, idMaquina){
+        connection.query("UPDATE reserva SET idmaquina = " + idMaquina + " WHERE id = " + idReserva + " ;" 
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                console.log("Se ha reservado la máquina con éxito");
+                res.status(200).send(result);
+            }
+        });
+
+    }
+
+    ReservarSala(res, idReserva, idSala){
+        connection.query("UPDATE reserva SET idsala = " + idSala + " WHERE id = " + idReserva + " ;" 
+        , function (err, result) {
+            if (err) {
+                console.log(err);
+                res.status(500).send({error:err});
+            }else{
+                console.log("Se ha reservado la máquina con éxito");
                 res.status(200).send(result);
             }
         });
@@ -409,36 +509,6 @@ class UsuarioService {
                 });
             }else{
                 res.status(200).send("dia con citas");
-            }
-        });
-    }
-
-    async informesClientes(res){                              
-        connection.query("SELECT email, count(emailcliente) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailcliente WHERE tipo='usuario' GROUP BY email;"
-        , function (err, result) {
-            if (err) {
-                res.status(500).send({error:err});
-            }
-            
-            if(result.length == 0){
-                res.status(500).send({error:err});
-            } else{
-                res.status(200).send(result);
-            }
-        });
-    }
-
-    async informesFisios(res){                              
-        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' GROUP BY email;"
-        , function (err, result) {
-            if (err) {
-                res.status(500).send({error:err});
-            }
-            
-            if(result.length == 0){
-                res.status(500).send({error:err});
-            } else{
-                res.status(200).send(result);
             }
         });
     }

@@ -62,6 +62,16 @@ class Usuario {
         usuarioService.listarTodos(res);
     }
 
+    listarMaquinas(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarMaquinas(res);
+    }
+
+    listarSalas(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarSalas(res);
+    }
+
     listarFisios(res, limit, offset){
         var usuarioService = new UsuarioService();
         usuarioService.listarFisios(res, limit, offset);
@@ -72,14 +82,40 @@ class Usuario {
         usuarioService.usuarioId(res, this.getId); 
     }
 
+    findByEmail(res){
+        var usuarioService = new UsuarioService();
+        console.log(this.email);
+        usuarioService.findByEmail(res, this.getEmail); 
+    }
+
     citasEmailFecha(res, date){
         var usuarioService = new UsuarioService();
         usuarioService.listarCitasEmailFecha(res,date, this.getEmail); 
     }
 
+    comprobarReservaMaquina(res, idMaquina, date){
+        var usuarioService = new UsuarioService();
+        usuarioService.comprobarReservaMaquina(res, idMaquina, date); 
+    }
+
+    comprobarReservaSala(res, idSala, date){
+        var usuarioService = new UsuarioService();
+        usuarioService.comprobarReservaSala(res, idSala, date); 
+    }
+
     reservarCitasUser(res,date ,hora, cliente){
         var usuarioService = new UsuarioService();
         usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
+    }
+
+    reservarMaquina(res, idReserva, idMaquina){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarMaquina(res, idReserva, idMaquina); 
+    }
+
+    reservarSala(res, idReserva, idSala){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarSala(res, idReserva, idSala); 
     }
 
     reservarCitasRecepcionista(res,date ,hora, cliente,recepcionista){

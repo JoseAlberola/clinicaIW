@@ -91,6 +91,38 @@ app.get('/usuarios', chequeaJWT, chequeaAdmin, function(req, res) {
     }
 });
 
+app.get('/maquinas', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listarMaquinas(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.get('/salas', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listarSalas(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
+app.get('/usuarios/:usuarioEmail', chequeaJWT, function(req, res) {
+    var usuarioEmail = req.params.usuarioEmail;
+    console.log(usuarioEmail);
+
+    try{
+        var usuario = new Usuario();
+        usuario.email = usuarioEmail;
+        usuario.findByEmail(res);
+    }catch(error){
+        
+        res.status(500).send({error:error});
+    }
+})
+
 app.get('/fisios', chequeaJWT, function(req, res) {
     const {page, size} = req.query;
     
@@ -131,6 +163,30 @@ app.get('/citas/:fisioEmail/:fecha', chequeaJWT, function(req, res) {
     }
 })
 
+app.get('/reservaMaquina/:idMaquina/:fecha', chequeaJWT, function(req, res) {
+    var idMaquina = req.params.idMaquina;
+    var date = req.params.fecha;
+
+    try{
+        var usuario = new Usuario();
+        usuario.comprobarReservaMaquina(res, idMaquina, date);
+    }catch(error){console.log(error);
+        res.status(500).send({error:error});
+    }
+})
+
+app.get('/reservaSala/:idSala/:fecha', chequeaJWT, function(req, res) {
+    var idSala = req.params.idSala;
+    var date = req.params.fecha;
+
+    try{
+        var usuario = new Usuario();
+        usuario.comprobarReservaSala(res, idSala, date);
+    }catch(error){console.log(error);
+        res.status(500).send({error:error});
+    }
+})
+
 
 app.post('/reservar', chequeaJWT,  function(req, res) {
 
@@ -141,6 +197,28 @@ app.post('/reservar', chequeaJWT,  function(req, res) {
 
     fisio.reservarCitasUser(res,body.Fecha,body.hora,body.usuario);
 });
+
+
+app.post('/reservarMaquina', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarMaquina(res,body.idReserva, body.idMaquina);
+});
+
+app.post('/reservarSala', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarSala(res,body.idReserva, body.idSala);
+});
+
 
 app.get('/listadofisios', chequeaJWT, function(req, res) {
     try{
