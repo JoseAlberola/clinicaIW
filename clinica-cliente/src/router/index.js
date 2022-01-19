@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import LoginRegistro from '../components/LoginRegistro.vue'
 import DetallesFisio from '../components/DetallesFisio.vue'
+import ContenidoFisio from '../components/ContenidoFisio.vue'
 import Reservar from '../components/Reservar.vue'
 import Home from '../views/Home.vue'
 import Usuario from '../components/Home.vue'
@@ -31,6 +32,11 @@ const routes = [
       component: DetallesFisio
     },
     {
+      path: '/homeFisio',
+      name: 'ContenidoFisio',
+      component: ContenidoFisio
+    },
+    {
       path: '/reservar',
       name: 'ReservarUsuario',
       component: Reservar
@@ -55,7 +61,6 @@ const routes = [
       path: '/panelRecepcionista',
       name: PanelRecepcionista,
       component: PanelRecepcionista
-
     },
     {
       path: '/usuarios',
