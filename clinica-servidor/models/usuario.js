@@ -67,6 +67,11 @@ class Usuario {
         usuarioService.listarMaquinas(res);
     }
 
+    listarSalas(res){
+        var usuarioService = new UsuarioService();
+        usuarioService.listarSalas(res);
+    }
+
     listarFisios(res, limit, offset){
         var usuarioService = new UsuarioService();
         usuarioService.listarFisios(res, limit, offset);
@@ -93,6 +98,11 @@ class Usuario {
         usuarioService.comprobarReservaMaquina(res, idMaquina, date); 
     }
 
+    comprobarReservaSala(res, idSala, date){
+        var usuarioService = new UsuarioService();
+        usuarioService.comprobarReservaSala(res, idSala, date); 
+    }
+
     reservarCitasUser(res,date ,hora, cliente){
         var usuarioService = new UsuarioService();
         usuarioService.ReservarCitasUser(res, this.getEmail, date, hora, cliente); 
@@ -101,6 +111,11 @@ class Usuario {
     reservarMaquina(res, idReserva, idMaquina){
         var usuarioService = new UsuarioService();
         usuarioService.ReservarMaquina(res, idReserva, idMaquina); 
+    }
+
+    reservarSala(res, idReserva, idSala){
+        var usuarioService = new UsuarioService();
+        usuarioService.ReservarSala(res, idReserva, idSala); 
     }
 
     reservarCitasRecepcionista(res,date ,hora, cliente,recepcionista){

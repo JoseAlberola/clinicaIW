@@ -54,6 +54,13 @@
                     <v-list-item-title>Informes</v-list-item-title>
                 </v-list-item>
 
+                <v-list-item v-if="this.currentUser && this.currentUser.tipo=='fisio'" @click="irHorario">
+                    <v-list-item-icon>
+                    <v-icon >mdi-calendar</v-icon>
+                    </v-list-item-icon>
+                    <v-list-item-title>Horario</v-list-item-title>
+                </v-list-item>
+
                 <v-list-item @click="irReservar">
                     <v-list-item-icon>
                     <v-icon>mdi-calendar</v-icon>
@@ -103,6 +110,9 @@ export default {
         },
         irInformes(){
             this.$router.push('/informes');
+        },
+        irHorario(){
+            this.$router.push('/homeFisio');
         }
     }
 };
