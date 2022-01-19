@@ -86,3 +86,14 @@ CREATE TABLE `clinicaiw`.`horario` (
 CREATE TABLE `clinicaiw`.`festivo` (
   `fecha` DATE NOT NULL,
   PRIMARY KEY (`fecha`));
+  
+ALTER TABLE `clinicaiw`.`reserva` 
+ADD COLUMN `idsala` INT NULL AFTER `idmaquina`,
+ADD INDEX `idsala_idx` (`idsala` ASC) VISIBLE;
+;
+ALTER TABLE `clinicaiw`.`reserva` 
+ADD CONSTRAINT `idsala`
+  FOREIGN KEY (`idsala`)
+  REFERENCES `clinicaiw`.`sala` (`id`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;

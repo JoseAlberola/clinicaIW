@@ -44,7 +44,7 @@ export default {
     computed:{
         currentUser() {
             return this.$store.state.user;
-        },        
+        },
     },
     data: () => ({ 
         tab: null,
@@ -53,8 +53,8 @@ export default {
           { tab: 'Fisioterapeutas'}
         ],
         headers: [
-            { text: 'Email', align: 'start', value: 'email', sortable: true },
-            { text: 'Número de reservas', value: 'reservas', sortable: true, align: 'center' }            
+          { text: 'Email', align: 'start', value: 'email', sortable: true },
+          { text: 'Número de reservas', value: 'reservas', sortable: true, align: 'center' }         
         ],
         listaClientes:[],
         listaFisios:[],
