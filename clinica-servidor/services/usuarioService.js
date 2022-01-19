@@ -314,8 +314,8 @@ class UsuarioService {
     }
 
 
-    ReservarCitasUser(res, fisio, date, hora, cliente){
-        connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' ) ;"
+    ReservarCitasUser(res, fisio, date, hora, cliente, pago){
+        connection.query("INSERT INTO reserva (emailcliente, emailfisio, fecha, hora, pago) VALUES ('" + cliente + "' , '" + fisio + "' , '" + date + "' , '" + hora + "' , '" + pago + "');"
         , function (err, result) {
             if (err) {
                 console.log(err);

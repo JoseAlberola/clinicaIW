@@ -16,7 +16,7 @@
                 </div>
             </div>
             <div class="right" id="citas">
-                    <div class="text-center mt-3" style = "padding-top: 10px;">
+                <div class="text-center mt-3" style = "padding-top: 10px;">
                     <div id="app">
                         <h3>Seleccione fecha: </h3>
                         <v-app id="inspire">
@@ -31,15 +31,9 @@
                             </v-content>
                         </v-app>
                     </div>
-
+                </div>
             </div>
         </div>
-        
-        
-
-        </div>
-    
-    
 
     </v-app>
 </template>
@@ -129,9 +123,10 @@ export default {
                                     var usuario = this.currentUser.email;
                                 
                                     nCita.onclick = function(event){
-                                        
-                                        
-                                        let json = {
+                                                                                
+                                        // this.$router.push('/pagar/' + fisio + '/' + usuario + '/' + fecha + '/' + event.target.getAttribute("data-hora"))
+                                        document.location.href='/pagar/' + fisio + '/' + usuario + '/' + fecha + '/' + event.target.getAttribute("data-hora");
+                                        /*let json = {
                                             "fisio": fisio,
                                             "usuario": usuario,
                                             "Fecha": fecha,
@@ -146,9 +141,8 @@ export default {
                                             }).catch(function(error) {
                                                 console.log('Hubo un problema' + error.message);
                                             });
-
-                                    
-                                }
+                                        */                                    
+                                    }
                                 nDiv.appendChild(nCita);
                                 tabla.append(nDiv);
                             }
@@ -174,7 +168,7 @@ export default {
         fisio:null,
         respuesta:null,
         citas: [],
-        date: new Date()
+        date: new Date(),
       }
     },
     mounted:function(){
