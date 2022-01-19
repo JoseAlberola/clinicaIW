@@ -32,61 +32,7 @@
 				</div>
 				</div>
 			</div>
-			<div class="right">
-				
 			
-			<div class="projects">
-					<h3>Mis citas</h3>
-							<v-data-table :headers="headers" :items="listarCitas" class="elevation-1" style="width:90%; margin:auto;">
-								<template v-slot:top>
-									<v-toolbar flat>
-									<v-dialog v-model="dialog" max-width="500px">                      
-										<v-card ref="form">
-										<v-card-text>
-											<v-container>
-											<v-row>
-												<v-col cols="12" sm="6" md="4">
-													<v-text-field
-														ref="fecha"
-														v-model="editedItem.idcategoria"
-														label="fecha"                                    
-														readonly
-														>
-													</v-text-field>
-												</v-col>
-												<v-col cols="12" sm="6" md="4">
-													<v-text-field
-														ref="hora"
-														v-model="editedItem.nombre"
-														label="hora"
-														:rules="[rules.required]">
-													</v-text-field>
-												</v-col>
-												<v-col cols="12" sm="6" md="4">
-													<v-text-field
-														ref="emailfisio"
-														v-model="editedItem.nombre"
-														label="emailfisio"
-														:rules="[rules.required]">
-													</v-text-field>
-												</v-col>                    
-											</v-row>
-											</v-container>
-										</v-card-text>
-
-										</v-card>
-									</v-dialog>
-									
-									</v-toolbar>
-								</template>
-								
-            
-								<template v-slot:item.accion="{item}">
-									<v-btn color="blue darken-1" text @click="closeDelete(item)">CANCELAR</v-btn>
-								</template>
-								</v-data-table>
-				</div>
-			</div>
 		</div>
   </v-app>
 </template>
@@ -315,7 +261,7 @@ export default {
 	}
   },
 	mounted:function(){
-	if (!this.currentUser || this.currentUser.tipo != "usuario") {
+	if (!this.currentUser || this.currentUser.tipo != "fisio") {
         this.$router.push('/');
 	}else{
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

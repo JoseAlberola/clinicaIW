@@ -8,6 +8,7 @@ import Home from '../views/Home.vue'
 import Usuario from '../components/Home.vue'
 import RecepcionistaReserva from '../components/RecepcionistaReserva.vue'
 import PanelUsuario from '../components/PanelUsuario.vue'
+import PanelFisio from '../components/PanelFisio.vue'
 import PanelRecepcionista from '../components/PanelRecepcionista.vue'
 import Usuarios from '../components/Usuarios.vue'
 import FestivosAdmin from '../components/FestivosAdmin.vue'
@@ -56,6 +57,12 @@ const routes = [
       path: '/panelUsuario',
       name: PanelUsuario,
       component: PanelUsuario
+
+    },
+    {
+      path: '/panelFisio',
+      name: PanelFisio,
+      component: PanelFisio
 
     },
     {

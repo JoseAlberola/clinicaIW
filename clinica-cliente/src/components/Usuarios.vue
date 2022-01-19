@@ -369,7 +369,7 @@ export default {
             },
     },
     mounted:function(){
-        if (!this.currentUser) {
+        if (!this.currentUser || this.currentUser.tipo != "administrador") {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
