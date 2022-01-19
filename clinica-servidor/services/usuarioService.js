@@ -480,35 +480,33 @@ class UsuarioService {
             res.status(204).send({mensaje:"Nombre Actualizado"});
         });
     }
-
-    crearFestivo(res, date){
-        connection.query("SELECT * FROM reserva where fecha='" + date +"' ;"
+    
+    async informesClientes(res){                              
+        connection.query("SELECT email, count(emailcliente) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailcliente WHERE tipo='usuario' GROUP BY email;"
         , function (err, result) {
             if (err) {
-                console.log(err);
                 res.status(500).send({error:err});
-            }else if(result.length === 0){
-                connection.query("SELECT * FROM festivo where fecha='" + date +"' ;"
-                , function (err, result) {
-                    if (err) {
-                        console.log(err);
-                        res.status(500).send({error:err});
-                    }else if(result.length === 0){
-                        connection.query("INSERT INTO festivo  (`fecha`) VALUES ('" + date +  "');"
-                        , function (err, result) {
-                            if (err) {
-                                console.log(err);
-                                res.status(500).send({error:err});
-                            }else{
-                                res.status(200).send(result);
-                            }
-                        });
-                    }else{
-                        res.status(200).send("dia festivo");
-                    }
-                });
-            }else{
-                res.status(200).send("dia con citas");
+            }
+
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
+            }
+        });
+    }
+
+    async informesFisios(res){                              
+        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' GROUP BY email;"
+        , function (err, result) {
+            if (err) {
+                res.status(500).send({error:err});
+            }
+
+            if(result.length == 0){
+                res.status(500).send({error:err});
+            } else{
+                res.status(200).send(result);
             }
         });
     }

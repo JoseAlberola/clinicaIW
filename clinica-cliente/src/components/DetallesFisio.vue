@@ -178,7 +178,7 @@ export default {
       }
     },
     mounted:function(){
-        if (!this.currentUser || this.currentUser.tipo != "usuario" || this.currentUser.tipo != "recepcionista") {
+        if (!this.currentUser || this.currentUser.tipo != "usuario") {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

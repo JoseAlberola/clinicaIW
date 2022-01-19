@@ -1,5 +1,5 @@
 <template>
-  <div class="text-center mt-3" style = "padding-top: 10px;">
+  <div class="text-center mt-3" style = "padding-top: 10px; height:900px">
             <div id="app">
                 <v-app id="inspire">
                     <v-content>
@@ -354,9 +354,6 @@ import Datepicker from 'vuejs-datepicker';
 </script>
 
 <style>
-.v-main__wrap{
-    height:700px;
-}
 </style>
 
 

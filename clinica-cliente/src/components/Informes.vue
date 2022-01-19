@@ -74,6 +74,7 @@ export default {
             let urlInformeFisios = "http://localhost:3000/clinica/informes/fisios";
             axios.get(urlInformeFisios).then(response => {
                 this.listaFisios = response.data;
+                console.log(this.listaFisios)
             })
         }
     },    
