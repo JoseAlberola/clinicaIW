@@ -46,6 +46,7 @@
 <script>
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
+
 export default {
     name: "DetallesFisio",
     components: {
@@ -56,6 +57,7 @@ export default {
             return this.$store.state.user;
         },
     },
+    
     methods: {
         getImgUrl(img) {
             return require('../assets/'+ img)
@@ -176,7 +178,7 @@ export default {
       }
     },
     mounted:function(){
-        if (!this.currentUser) {
+        if (!this.currentUser || this.currentUser.tipo != "usuario" || this.currentUser.tipo != "recepcionista") {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;

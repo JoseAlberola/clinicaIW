@@ -18,7 +18,7 @@
                         </v-layout>
                     </div>
 
-                    <div id="divOculto" onload="cargarDiv();" style="margin-left:37%;margin-top:30px;position:absolute;">
+                    <div id="divOculto" onload="cargarDiv();" style="margin-left:33%;margin-top:30px;position:absolute;">
                         
                         <div style="">
                             <template>
@@ -44,6 +44,30 @@
                                         </v-card>
                                     </v-dialog>
 
+
+
+                                    <v-dialog v-model="dialogSala" max-width="500px">                        
+                                        <v-card ref="form">
+                                           <v-card-title>
+                                                <span class="text-h5">Reservar sala</span>
+                                            </v-card-title> 
+                                            <v-card-text>
+                                                <ul id="v-for-object" class="demo">
+                                                    <li v-for="sala in salas" :key="sala.id">
+                                                        <div style="text-align:left; font-size: 20px; padding-top:10px; position:absolute;">
+                                                            {{sala.nombre}}
+                                                        </div>
+                                                        <div id="botonReserva" style="text-align:right; padding-bottom:10px;padding-top:10px;">
+                                                            <v-btn class="mr-2" depressed  @click="reservarSala(sala)">Reservar</v-btn>
+                                                        </div>
+                                                        
+                                                    </li>
+                                                </ul>
+                                            </v-card-text>
+                                        </v-card>
+                                    </v-dialog>
+
+
                                 <v-data-table
                                     :headers="headers"
                                     :items="horas"
@@ -63,6 +87,8 @@
                                     <template v-slot:item.accion="{ item }">
                                         <v-btn class="mr-2" depressed  @click="abrirDialogMaquina(item)"
                                         >Reservar máquina</v-btn>
+                                        <v-btn class="mr-2" depressed  @click="abrirDialogSala(item)"
+                                        >Reservar sala</v-btn>
                                         <v-btn depressed color="error" @click="bloquear(item)"
                                         >Bloquear</v-btn>
                                     </template>
@@ -87,7 +113,9 @@ import Datepicker from 'vuejs-datepicker';
         date: new Date(),
         fecha: null,
         dialog: false,
-        maquinas: null, 
+        dialogSala: false,
+        maquinas: null,
+        salas: null, 
         idReserva: null,
         horaCita: null, 
         citas: null,
@@ -121,6 +149,11 @@ import Datepicker from 'vuejs-datepicker';
             { name: '20:00', reserva:''},
         ]
     }),
+    computed:{
+        currentUser() {
+            return this.$store.state.user;
+        },
+    },
     components: {
         Datepicker
     },
@@ -215,8 +248,28 @@ import Datepicker from 'vuejs-datepicker';
                 }
             }
         },
+        abrirDialogSala(item){
+            if(item.reserva == "Sin reserva"){
+                window.alert("No hay reserva para esa hora"); 
+            } else{
+                if(item.reserva == this.$store.state.user.email){
+                    window.alert("La hora está bloqueada"); 
+                } else{
+                    this.horaCita = item.name.split(":")[0];
+                    this.dialogSala = true;
+                    let urlCitas= "http://localhost:3000/clinica/salas";
+                    axios.get(urlCitas).then(responseSala => {
+                        this.salas = responseSala.data;
+                        console.log(this.salas);
+                    })
+                }
+            }
+        },
         close () {
             this.dialog = false;
+        },
+        closeSala () {
+            this.dialogSala = false;
         },
         reservarMaquina(maquina){
             let urlMaquina= "http://localhost:3000/clinica/reservaMaquina/" + maquina.id +"/"+this.fecha;
@@ -248,9 +301,42 @@ import Datepicker from 'vuejs-datepicker';
                         window.alert("La máquina ya se encuentra reservada a esta hora.");
                     }
             })
+        },
+        reservarSala(sala){
+            let urlSala= "http://localhost:3000/clinica/reservaSala/" + sala.id +"/"+this.fecha;
+            axios.get(urlSala).then(response => {
+                    if(response.data.length == 0){
+                        for(var i = 0; i< this.citas.length; i++){
+                            if(this.citas[i].hora == this.horaCita){
+                                this.idReserva = this.citas[0].id;
+                            }
+                        }
+
+                        let json = {
+                            "fisio": this.$store.state.user.email,
+                            "idReserva": this.idReserva,
+                            "idSala": sala.id,
+                        };
+                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+
+                        axios.post('http://localhost:3000/clinica/reservarSala', json)
+                            .then(response => {
+                                console.log(response);
+                                window.alert("Se ha realizado la reserva de la sala " + sala.nombre + " correctamente.");
+                            }).catch(function(error) {
+                                console.log('Hubo un problema' + error.message);
+                            });
+
+                    } else{
+                        window.alert("La sala ya se encuentra reservada a esta hora.");
+                    }
+            })
         }
     },
     mounted:function(){
+            if (!this.currentUser || this.currentUser.tipo != "fisio") {
+                this.$router.push('/');
+            }
             var x = document.getElementById("divOculto");
             console.log(x.style.display);
             x.style.display = "none";
@@ -259,6 +345,9 @@ import Datepicker from 'vuejs-datepicker';
     watch: {
       dialog (val) {
         val || this.close()
+      },
+      dialogSala (val) {
+        val || this.closeSala()
       },
     },
   }

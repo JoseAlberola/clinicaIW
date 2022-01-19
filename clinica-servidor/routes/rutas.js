@@ -100,6 +100,15 @@ app.get('/maquinas', chequeaJWT, function(req, res) {
     }
 });
 
+app.get('/salas', chequeaJWT, function(req, res) {
+    try{
+        var usuario = new Usuario();
+        usuario.listarSalas(res);
+    }catch(error){
+        res.status(500).send({error:error});
+    }
+});
+
 app.get('/usuarios/:usuarioEmail', chequeaJWT, function(req, res) {
     var usuarioEmail = req.params.usuarioEmail;
     console.log(usuarioEmail);
@@ -166,6 +175,18 @@ app.get('/reservaMaquina/:idMaquina/:fecha', chequeaJWT, function(req, res) {
     }
 })
 
+app.get('/reservaSala/:idSala/:fecha', chequeaJWT, function(req, res) {
+    var idSala = req.params.idSala;
+    var date = req.params.fecha;
+
+    try{
+        var usuario = new Usuario();
+        usuario.comprobarReservaSala(res, idSala, date);
+    }catch(error){console.log(error);
+        res.status(500).send({error:error});
+    }
+})
+
 
 app.post('/reservar', chequeaJWT,  function(req, res) {
 
@@ -186,6 +207,16 @@ app.post('/reservarMaquina', chequeaJWT,  function(req, res) {
     fisio.email = body.fisio;
 
     fisio.reservarMaquina(res,body.idReserva, body.idMaquina);
+});
+
+app.post('/reservarSala', chequeaJWT,  function(req, res) {
+
+    var body = req.body;
+
+    var fisio = new Usuario();
+    fisio.email = body.fisio;
+
+    fisio.reservarSala(res,body.idReserva, body.idSala);
 });
 
 
