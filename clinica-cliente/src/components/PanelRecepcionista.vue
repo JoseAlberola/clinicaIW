@@ -171,7 +171,7 @@ export default {
 			};
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-			axios.post(global.serverSrc+'clinica/crearFestivo', json)
+			axios.post(global.serverSrc+'/clinica/crearFestivo', json)
 			.then(response => {
 				if(response.data === "dia festivo"){
 					window.alert("El dia elegido ya esta dado de alta como festivo");

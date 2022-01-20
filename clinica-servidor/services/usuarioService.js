@@ -25,7 +25,7 @@ class UsuarioService {
         var query1 = "SELECT * from usuario WHERE email='" + usuario.getEmail + "';";
         
         var query2 = "INSERT INTO usuario (`email`, `password`, `nombre`, `tipo`, `telefono`, `imagen`) VALUES ('" + usuario.getEmail + "', '" + 
-            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "', '" + usuario.getTelefono + "', '" + usuario.getImagen + "');";
+            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "', '" + usuario.getTelefono + "', '" + "fotoPerfil.jpg" + "');";
 
         connection.query(query1, function (err, result) {
             if (err) {
