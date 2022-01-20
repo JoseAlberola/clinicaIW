@@ -162,7 +162,10 @@ ADD COLUMN `referencia` VARCHAR(255) NULL DEFAULT NULL AFTER `pago`;
 -- -----------------------------------------------------
 -- Población de la base de datos
 -- -----------------------------------------------------
-
+INSERT INTO `clinicaiw`.`tipousuario` (`tipo`) VALUES ('administrador');
+INSERT INTO `clinicaiw`.`tipousuario` (`tipo`) VALUES ('recepcionista');
+INSERT INTO `clinicaiw`.`tipousuario` (`tipo`) VALUES ('fisio');
+INSERT INTO `clinicaiw`.`tipousuario` (`tipo`) VALUES ('usuario');
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('1', 'albaperez@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alba Pérez Álvarez', 'fisio', 'alba.jpg', '674734683');
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('2', 'jose@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Jose', 'usuario', '', '634574867');
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('3', 'miguelgil@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Miguel Gil Sánchez', 'fisio', 'miguel.jpg', '689463968');
