@@ -158,3 +158,43 @@ ADD COLUMN pago VARCHAR(255) NULL AFTER idsala;
 
 ALTER TABLE `clinicaiw`.`reserva` 
 ADD COLUMN `referencia` VARCHAR(255) NULL DEFAULT NULL AFTER `pago`;
+
+-- -----------------------------------------------------
+-- Población de la base de datos
+-- -----------------------------------------------------
+
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('1', 'albaperez@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alba Pérez Álvarez', 'fisio', 'alba.jpg', '674734683');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('2', 'jose@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Jose', 'usuario', '', '634574867');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('3', 'miguelgil@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Miguel Gil Sánchez', 'fisio', 'miguel.jpg', '689463968');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('4', 'cesarleon@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'César León Capitán', 'fisio', 'cesar.jpg', '625374947');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('5', 'victorlledo@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Víctor Lledó', 'fisio', 'victor.jpg', '643859473');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('6', 'joaquimvaldivia@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Joaquim Valdivia Tor', 'fisio', 'joaquim.jpg', '694637178');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('7', 'nicolasmoreno@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Nicolás Moreno Fortes', 'fisio', 'nicolas.jpg', '648572984');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('8', 'maria@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'María del Mar Parrón', 'fisio', 'maria.jpg', '648672131');
+UPDATE `clinicaiw`.`usuario` SET `imagen` = 'fotoPerfil.jpg' WHERE (`id` = '2');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('9', 'pedro@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Pedro', 'usuario', 'fotoPerfil.jpg', '674243729');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('10', 'alfredo@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alfredo', 'usuario', 'fotoPerfil.jpg', '672345467');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('11', 'alberto@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alberto Frías Cartagena', 'recepcionista', 'alberto.jpg', '687945635');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('12', 'fabiana@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Fabiana Michelena', 'recepcionista', 'fabiana.jpg', '645624657');
+INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('1', 'Box 1');
+INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('2', 'Box 2');
+INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('3', 'Box 3');
+INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('4', 'Box 4');
+INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('5', 'Box 5');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('1', 'Elíptica');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('2', 'Máquina de presoterapia');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('3', 'Electroestimulador');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('4', 'Ultrasonidos');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('5', 'Electrólisis percutanea');
+INSERT INTO `clinicaiw`.`maquina` (`id`, `nombre`) VALUES ('6', 'Equipo de diatermia');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-01-25');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-02-10');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-02-22');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-02-27');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-02-25');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-03-12');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-03-17');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-04-25');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-05-15');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-06-18');
+INSERT INTO `clinicaiw`.`festivo` (`fecha`) VALUES ('2022-07-14');
