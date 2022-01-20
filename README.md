@@ -1,6 +1,6 @@
 # clinicaIW
 ## Compilación
-1. Ver script de base de datos y ejecutarlo para crearla
+1. Ver script de base de datos y ejecutarlo para crearla (scriptBD.sql)
 2. Entrar en el proyecto clinica-servidor
    1. npm i
    2. node app.js
