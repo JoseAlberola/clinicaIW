@@ -46,6 +46,7 @@
 
 </template>
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
 export default {
@@ -97,7 +98,7 @@ export default {
                     var pad = function(num) { return ('00'+num).slice(-2) };
                     var fecha = this.date.getUTCFullYear()+ '-' +pad(this.date.getUTCMonth() + 1)  + '-' + pad(this.date.getUTCDate());
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCitas = "http://localhost:3000/clinica/citas/" + mail +"/"+fecha;
+                    let urlCitas = global.serverSrc+"/clinica/citas/" + mail +"/"+fecha;
                     axios.get(urlCitas).then(response => {
                         if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
@@ -150,7 +151,7 @@ export default {
                                         };
                                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                                        axios.post('http://localhost:3000/clinica/reservarRecepcionista', json)
+                                        axios.post(global.serverSrc+'/clinica/reservarRecepcionista', json)
                                             .then(response => {
                                                 //console.log(response);
                                                 response;
@@ -196,14 +197,14 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarFisios = "http://localhost:3000/clinica/listadofisios";
+            let urlListarFisios = global.serverSrc+"/clinica/listadofisios";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
                 //console.log(this.listaFisios);
             })
 
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
+            let urlListarClientes = global.serverSrc+"/clinica/listadoclientes";
             axios.get(urlListarClientes).then(response => {
                 this.listaClientes = response.data;
                 //console.log(this.listaClientes);

@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
     name: "Pagar",
@@ -146,7 +147,7 @@ export default {
                     };
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                    axios.post('http://localhost:3000/clinica/reservar', jsonReserva)
+                    axios.post(global.serverSrc+'clinica/reservar', jsonReserva)
                       .then(response => {
                           console.log(response);
                           document.location.href="/panelUsuario";

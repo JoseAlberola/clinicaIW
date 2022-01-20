@@ -169,6 +169,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
     name: "Usuarios",
@@ -241,7 +242,7 @@ export default {
                     this.$router.push('/');
                 }else{
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlListarUsuarios = "http://localhost:3000/clinica/usuarios";
+                    let urlListarUsuarios = global.serverSrc+"/clinica/usuarios";
                     axios.get(urlListarUsuarios).then(response => {
                         this.listaUsuarios = response.data;
                     })
@@ -265,7 +266,7 @@ export default {
                     this.$router.push('/');
                 }else{
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlEliminarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;
+                    let urlEliminarUsuario = global.serverSrc+"/clinica/usuarios/" + this.editedItem.id;
                     axios.delete(urlEliminarUsuario).then(response => {                        
                         if(response.status == 204){                        
                             this.listaUsuarios.splice(this.editedIndex, 1);
@@ -307,7 +308,7 @@ export default {
                         };
 
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                        let urlModificarUsuario = "http://localhost:3000/clinica/usuarios/" + this.editedItem.id;                        
+                        let urlModificarUsuario = global.serverSrc+"/clinica/usuarios/" + this.editedItem.id;                        
                         axios.put(urlModificarUsuario, json).then(response => {
                             console.log(response);                      
                         })
@@ -336,7 +337,7 @@ export default {
                         };
 
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                        let urlCrearUsuario = "http://localhost:3000/clinica/registroTrabajador";
+                        let urlCrearUsuario = global.serverSrc+"/clinica/registroTrabajador";
                         axios.post(urlCrearUsuario, json).then(response => {
                             console.log(response);
                             this.editedItem.id = response.data.id; 
@@ -373,7 +374,7 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarUsuarios = "http://localhost:3000/clinica/usuarios";
+            let urlListarUsuarios = global.serverSrc+"/clinica/usuarios";
             axios.get(urlListarUsuarios).then(response => {
                 this.listaUsuarios = response.data;
             })

@@ -92,6 +92,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
   name: 'PanelUsuario',
@@ -144,7 +145,7 @@ export default {
           this.$router.push('/');
       }else{
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-          let urlEliminarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
+          let urlEliminarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
           axios.delete(urlEliminarCategoria).then(response => {
               //console.log(response);
               if(response.status == 204){
@@ -206,7 +207,7 @@ export default {
 						console.log(response2.data.status);
 						if(response2.data.status == "ACCEPTED"){
 							axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-							let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
+							let urlCancelarReserva = global.serverSrc+"/clinica/cancelarReserva/" + this.$store.state.user.email + "/" + item.fecha + "/" + item.hora.substring(0,2);
 							axios.delete(urlCancelarReserva).then(response => {
 								//console.log(response);
 								if(response.status == 204){
@@ -229,7 +230,7 @@ export default {
 					});
 						
 			} else{
-				let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
+				let urlCancelarReserva = global.serverSrc+"/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
 				//console.log(urlCancelarReserva);
 				axios.delete(urlCancelarReserva).then(response => {
 					//console.log(response);
@@ -272,7 +273,7 @@ export default {
               };
 
               axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-              let urlModificarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
+              let urlModificarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
               axios.put(urlModificarCategoria, json).then(response => {
                   response;                      
               })
@@ -289,7 +290,7 @@ export default {
 		var emailactual = this.$store.state.user.email;
 		var emailnuevo = document.getElementById("cambioemail").value;
 		this.$store.state.user.email = emailnuevo
-		let urlCambiarEmail = "http://localhost:3000/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
+		let urlCambiarEmail = global.serverSrc+"/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
 		//console.log(urlCambiarEmail );
 		axios.put(urlCambiarEmail ).then(response => {
 			//console.log(response);
@@ -324,7 +325,7 @@ export default {
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 		var emailactual = this.$store.state.user.email;
 		var telefononuevo = document.getElementById("cambiotelefono").value;
-		let urlCambiarTelefono = "http://localhost:3000/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
+		let urlCambiarTelefono = global.serverSrc+"/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
 		//console.log(urlCambiarTelefono );
 		axios.put(urlCambiarTelefono ).then(response => {
 			//console.log(response);
@@ -353,7 +354,7 @@ export default {
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 		var emailactual = this.$store.state.user.email;
 		var nombrenuevo = document.getElementById("cambionombre").value;
-		let urlCambiarNombre = "http://localhost:3000/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
+		let urlCambiarNombre = global.serverSrc+"/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
 		//console.log(urlCambiarNombre);
 		axios.put(urlCambiarNombre ).then(response => {
 			//console.log(response);
@@ -378,7 +379,7 @@ export default {
 	}else{
 		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 		//console.log("Prueba");
-		let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.$store.state.user.email;
+		let urlListarCitas = global.serverSrc+"/clinica/citasUsuario/" + this.$store.state.user.email;
 		axios.get(urlListarCitas).then(response => {
 			this.listarCitas = response.data;
 			var i;
