@@ -36,6 +36,8 @@
 </template>
 
 <script>
+import global from '../App.vue';
+
 import axios from 'axios';
 export default {
     name: "Home",
@@ -49,7 +51,7 @@ export default {
             //console.log("click");
             this.pagina = value - 1;
             //console.log(value);
-            let urlListarFisios = "http://localhost:3000/clinica/fisios?page=" + this.pagina + "&size=4";
+            let urlListarFisios = global.serverSrc+"/clinica/fisios?page=" + this.pagina + "&size=4";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
                 this.respuesta = this.listaFisios.pop();
@@ -79,8 +81,9 @@ export default {
         if (!this.currentUser) {
             this.$router.push('/');
         }else{
+            //console.log("holaaa"+global.serverSrc);
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarFisios = "http://localhost:3000/clinica/fisios?page=" + this.pagina + "&size=4";
+            let urlListarFisios = global.serverSrc+"/clinica/fisios?page=" + this.pagina + "&size=4";
             axios.get(urlListarFisios).then(response => {
                 this.listaFisios = response.data;
                 this.respuesta = this.listaFisios.pop();
@@ -95,7 +98,7 @@ export default {
     },
     next:function(){
       this.pagina = this.pagina++;
-      let urlListarFisios = "http://localhost:3000/clinica/fisios?page=" + this.pagina + "&size=4";
+      let urlListarFisios = global.serverSrc+"/clinica/fisios?page=" + this.pagina + "&size=4";
         axios.get(urlListarFisios).then(response => {
             this.listaFisios = response.data;
             this.respuesta = this.listaFisios.pop();

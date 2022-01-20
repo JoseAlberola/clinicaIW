@@ -38,6 +38,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
     name: "Informes",
@@ -67,11 +68,11 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlInformeClientes = "http://localhost:3000/clinica/informes/clientes";
+            let urlInformeClientes = global.serverSrc+"/clinica/informes/clientes";
             axios.get(urlInformeClientes).then(response => {
                 this.listaClientes = response.data;
             })
-            let urlInformeFisios = "http://localhost:3000/clinica/informes/fisios";
+            let urlInformeFisios = global.serverSrc+"/clinica/informes/fisios";
             axios.get(urlInformeFisios).then(response => {
                 this.listaFisios = response.data;
                 console.log(this.listaFisios)

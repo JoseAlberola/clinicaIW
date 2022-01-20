@@ -14,7 +14,7 @@
       <br/>
       <v-text-field
         id="number"
-        label="Número de cuenta"
+        label="Número de cuenta (16 digitos)"
         name="number"
         type="text"
         color="blue"
@@ -25,7 +25,7 @@
       <br/>
       <v-text-field
         id="ccv"
-        label="CCV"
+        label="CCV (3 digitos)"
         name="ccv"
         type="text"
         color="blue"
@@ -36,7 +36,7 @@
       <br/>
       <v-text-field
         id="expiry"
-        label="Expiración (mm/aa)"
+        label="Expiración (mm/aaaa)"
         name="expiry"
         type="text"
         color="blue"
@@ -52,6 +52,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
     name: "Pagar",
@@ -145,8 +146,8 @@ export default {
                       "referencia": numeroReferencia
                     };
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-
-                    axios.post('http://localhost:3000/clinica/reservar', jsonReserva)
+                    console.log(global.serverSrc);
+                    axios.post(global.serverSrc+'/clinica/reservar', jsonReserva)
                       .then(response => {
                           console.log(response);
                           document.location.href="/panelUsuario";

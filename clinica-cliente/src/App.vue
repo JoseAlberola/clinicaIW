@@ -8,9 +8,11 @@
 </template>
 
 <script>
+
 import AppNavigation from '@/components/NavigatorApp';
 export default {
   name: 'App',
+  serverSrc: 'http://localhost:3000',
   components: {
     AppNavigation
   }

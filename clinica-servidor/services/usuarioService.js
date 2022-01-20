@@ -25,7 +25,7 @@ class UsuarioService {
         var query1 = "SELECT * from usuario WHERE email='" + usuario.getEmail + "';";
         
         var query2 = "INSERT INTO usuario (`email`, `password`, `nombre`, `tipo`, `telefono`, `imagen`) VALUES ('" + usuario.getEmail + "', '" + 
-            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "', '" + usuario.getTelefono + "', '" + usuario.getImagen + "');";
+            usuario.getPassword + "', '" + usuario.getNombre + "', '" + usuario.getTipo + "', '" + usuario.getTelefono + "', '" + "fotoPerfil.jpg" + "');";
 
         connection.query(query1, function (err, result) {
             if (err) {
@@ -496,8 +496,8 @@ class UsuarioService {
         });
     }
 
-    async informesFisios(res){                              
-        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' GROUP BY email;"
+    async informesFisios(res){                            
+        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' AND emailcliente <> email GROUP BY email;"
         , function (err, result) {
             if (err) {
                 res.status(500).send({error:err});

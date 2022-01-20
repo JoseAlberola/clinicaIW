@@ -105,6 +105,7 @@
 
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
 
@@ -178,7 +179,7 @@ import Datepicker from 'vuejs-datepicker';
                 var pad = function(num) { return ('00'+num).slice(-2) };
                 this.fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
                 console.log(this.fecha);
-                let urlCitas= "http://localhost:3000/clinica/citas/" + this.$store.state.user.email +"/"+this.fecha;
+                let urlCitas= global.serverSrc+"/clinica/citas/" + this.$store.state.user.email +"/"+this.fecha;
                 axios.get(urlCitas).then(response => {
                     if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
@@ -221,7 +222,7 @@ import Datepicker from 'vuejs-datepicker';
                 };
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                axios.post('http://localhost:3000/clinica/reservar', json)
+                axios.post(global.serverSrc+'/clinica/reservar', json)
                     .then(response => {
                         console.log(response);
                         item.reserva = this.$store.state.user.email;
@@ -243,7 +244,7 @@ import Datepicker from 'vuejs-datepicker';
                 } else{
                     this.horaCita = item.name.split(":")[0];
                     this.dialog = true;
-                    let urlCitas= "http://localhost:3000/clinica/maquinas";
+                    let urlCitas= global.serverSrc+"/clinica/maquinas";
                     axios.get(urlCitas).then(responseMaquina => {
                         this.maquinas = responseMaquina.data;
                         console.log(this.maquinas);
@@ -260,7 +261,7 @@ import Datepicker from 'vuejs-datepicker';
                 } else{
                     this.horaCita = item.name.split(":")[0];
                     this.dialogSala = true;
-                    let urlCitas= "http://localhost:3000/clinica/salas";
+                    let urlCitas= global.serverSrc+"/clinica/salas";
                     axios.get(urlCitas).then(responseSala => {
                         this.salas = responseSala.data;
                         console.log(this.salas);
@@ -275,7 +276,7 @@ import Datepicker from 'vuejs-datepicker';
             this.dialogSala = false;
         },
         reservarMaquina(maquina){
-            let urlMaquina= "http://localhost:3000/clinica/reservaMaquina/" + maquina.id +"/"+this.fecha;
+            let urlMaquina= global.serverSrc+"/clinica/reservaMaquina/" + maquina.id +"/"+this.fecha;
             axios.get(urlMaquina).then(response => {
                     if(response.data.length == 0){
                         for(var i = 0; i< this.citas.length; i++){
@@ -292,7 +293,7 @@ import Datepicker from 'vuejs-datepicker';
                         };
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                        axios.post('http://localhost:3000/clinica/reservarMaquina', json)
+                        axios.post(global.serverSrc+'/clinica/reservarMaquina', json)
                             .then(response => {
                                 console.log(response);
                                 window.alert("Se ha realizado la reserva de la máquina " + maquina.nombre + " correctamente.");
@@ -306,7 +307,7 @@ import Datepicker from 'vuejs-datepicker';
             })
         },
         reservarSala(sala){
-            let urlSala= "http://localhost:3000/clinica/reservaSala/" + sala.id +"/"+this.fecha;
+            let urlSala= global.serverSrc+"/clinica/reservaSala/" + sala.id +"/"+this.fecha;
             axios.get(urlSala).then(response => {
                     if(response.data.length == 0){
                         for(var i = 0; i< this.citas.length; i++){
@@ -322,7 +323,7 @@ import Datepicker from 'vuejs-datepicker';
                         };
                         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-                        axios.post('http://localhost:3000/clinica/reservarSala', json)
+                        axios.post(global.serverSrc+'/clinica/reservarSala', json)
                             .then(response => {
                                 console.log(response);
                                 window.alert("Se ha realizado la reserva de la sala " + sala.nombre + " correctamente.");

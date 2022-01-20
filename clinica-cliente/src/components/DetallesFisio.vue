@@ -38,6 +38,9 @@
     </v-app>
 </template>
 <script>
+import global from '../App.vue';
+
+
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
 
@@ -82,7 +85,7 @@ export default {
                     var fecha = date.getUTCFullYear()+ '-' +pad(date.getUTCMonth() + 1)  + '-' + pad(date.getUTCDate());
                     //console.log(date);
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCitas= "http://localhost:3000/clinica/citas/" + this.fisio.email +"/"+fecha;
+                    let urlCitas= global.serverSrc+"/clinica/citas/" + this.fisio.email +"/"+fecha;
                     axios.get(urlCitas).then(response => {
                         if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
@@ -123,25 +126,7 @@ export default {
                                     var usuario = this.currentUser.email;
                                 
                                     nCita.onclick = function(event){
-                                                                                
-                                        // this.$router.push('/pagar/' + fisio + '/' + usuario + '/' + fecha + '/' + event.target.getAttribute("data-hora"))
-                                        document.location.href='/pagar/' + fisio + '/' + usuario + '/' + fecha + '/' + event.target.getAttribute("data-hora");
-                                        /*let json = {
-                                            "fisio": fisio,
-                                            "usuario": usuario,
-                                            "Fecha": fecha,
-                                            "hora": event.target.getAttribute("data-hora")
-                                        };
-                                        axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-
-                                        axios.post('http://localhost:3000/clinica/reservar', json)
-                                            .then(response => {
-                                                console.log(response);
-                                                document.location.href="/panelUsuario";
-                                            }).catch(function(error) {
-                                                console.log('Hubo un problema' + error.message);
-                                            });
-                                        */                                    
+                                        document.location.href='/pagar/' + fisio + '/' + usuario + '/' + fecha + '/' + event.target.getAttribute("data-hora");                                   
                                     }
                                 nDiv.appendChild(nCita);
                                 tabla.append(nDiv);
@@ -176,7 +161,7 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlDetallesFisio = "http://localhost:3000/clinica/fisios/" + this.$route.params.idFisio;
+            let urlDetallesFisio = global.serverSrc+"/clinica/fisios/" + this.$route.params.idFisio;
             axios.get(urlDetallesFisio).then(response => {
                 this.fisio = response.data[0];
             })

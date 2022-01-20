@@ -146,6 +146,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
   data: function(){
@@ -181,7 +182,7 @@ export default {
         "email" : this.email,
         "password" : this.password
       };
-      axios.post('http://localhost:3000/clinica/login', json)
+      axios.post(global.serverSrc+'/clinica/login', json)
       .then(response => {
         if (response.data.accessToken) {
           var user = response.data
@@ -216,7 +217,7 @@ export default {
         "nombre" : this.nombre,
         "telefono" : this.telefono
       };
-      axios.post('http://localhost:3000/clinica/registro', json)
+      axios.post(global.serverSrc+'/clinica/registro', json)
       .then(response => {      
         if (response.status == 201) {         
           this.step--;
