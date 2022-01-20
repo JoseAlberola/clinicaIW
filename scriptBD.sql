@@ -17,6 +17,12 @@ SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='ONLY_FULL_GROUP_BY,STRICT_TRANS_TABLES,N
 CREATE SCHEMA IF NOT EXISTS `clinicaiw` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci ;
 USE `clinicaiw` ;
 
+CREATE USER 'iw'@'%' IDENTIFIED BY 'password';
+
+GRANT ALL PRIVILEGES ON clinicaiw.* TO 'iw'@'%';
+ALTER USER 'iw' IDENTIFIED WITH mysql_native_password BY 'password';
+
+
 -- -----------------------------------------------------
 -- Table `clinicaiw`.`festivo`
 -- -----------------------------------------------------
