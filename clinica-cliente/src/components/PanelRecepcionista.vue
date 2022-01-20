@@ -156,27 +156,6 @@ export default {
     },
   }),
   methods:{
-    editItem (item) {
-      this.editedIndex = this.listaCategorias.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-    deleteItemConfirm () {
-      // Borrar categoria
-      if (!this.currentUser) {
-          this.$router.push('/');
-      }else{
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-          let urlEliminarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
-          axios.delete(urlEliminarCategoria).then(response => {
-              //console.log(response);
-              if(response.status == 204){
-                  this.listaCategorias.splice(this.editedIndex, 1);
-              }
-          })
-          this.closeDelete();
-      }
-    },
 	nuevaCita(){
 		document.location.href="/recepcionista/reservar";
 	},crearFestivo(){
