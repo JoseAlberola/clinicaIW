@@ -182,27 +182,29 @@ import Datepicker from 'vuejs-datepicker';
                 axios.get(urlCitas).then(response => {
                     if(response.data === "dia festivo"){
                             window.alert("El dia elegido la clinica esta cerrada, por favor eliga un nuevo dia");
-                    }
-                    this.citas = response.data;
-                    console.log(response);
-                    console.log(this.fecha);
-                    var x = document.getElementById("divOculto");
-                    x.style.display = "block";
+                            var y = document.getElementById("divOculto");
+                            y.style.display = "none";
+                    } else{
+                        this.citas = response.data;
+                        console.log(response);
+                        console.log(this.fecha);
+                        var x = document.getElementById("divOculto");
+                        x.style.display = "block";
 
-                    for(var j = 0; j<this.horas.length; j++){
-                        this.horas[j].reserva = "Sin reserva";
-                    }
+                        for(var j = 0; j<this.horas.length; j++){
+                            this.horas[j].reserva = "Sin reserva";
+                        }
 
-                    for(var i = 0; i< this.citas.length; i++){
-                        for(j = 0; j<this.horas.length; j++){
-                            var partes = this.horas[j].name.split(":");
-                            if(this.citas[i].hora == partes[0]){
-                                this.horas[j].reserva = this.citas[i].emailcliente;
-                                console.log("Es igual!");
+                        for(var i = 0; i< this.citas.length; i++){
+                            for(j = 0; j<this.horas.length; j++){
+                                var partes = this.horas[j].name.split(":");
+                                if(this.citas[i].hora == partes[0]){
+                                    this.horas[j].reserva = this.citas[i].emailcliente;
+                                    console.log("Es igual!");
+                                }
                             }
                         }
                     }
-
                 })
             }
         },
@@ -223,6 +225,7 @@ import Datepicker from 'vuejs-datepicker';
                     .then(response => {
                         console.log(response);
                         item.reserva = this.$store.state.user.email;
+                        window.alert("Se ha bloqueado con exíto la hora.");
                      }).catch(function(error) {
                         console.log('Hubo un problema' + error.message);
                      });
