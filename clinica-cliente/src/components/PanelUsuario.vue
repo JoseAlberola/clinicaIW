@@ -231,65 +231,74 @@ export default {
 		if (!this.currentUser) {
           this.$router.push('/');
 		}else{
-		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var emailnuevo = document.getElementById("cambioemail").value;
-		this.$store.state.user.email = emailnuevo
-		let urlCambiarEmail = global.serverSrc+"/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
-		//console.log(urlCambiarEmail );
-		axios.put(urlCambiarEmail ).then(response => {
-			//console.log(response);
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+			var emailactual = this.$store.state.user.email;
+			var emailnuevo = document.getElementById("cambioemail").value;
+			if(emailnuevo != "Introduce Nuevo Email"){
+				this.$store.state.user.email = emailnuevo
+				let urlCambiarEmail = global.serverSrc+"/clinica/cambiarEmail/" + emailactual + "/" + emailnuevo;
+				//console.log(urlCambiarEmail );
+				axios.put(urlCambiarEmail ).then(response => {
+					//console.log(response);
 
-			if(response.status == 204){
-				//console.log(this.$store.state.user.email);
-				this.$store.state.user.email = emailnuevo;
-				window.alert("Email Cambiado a " + emailnuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				this.$store.state.user.email = emailactual;
-				window.alert("No se puede cambiar el email else");
+					if(response.status == 204){
+						//console.log(this.$store.state.user.email);
+						this.$store.state.user.email = emailnuevo;
+						window.alert("Email Cambiado a " + emailnuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
+						localStorage.removeItem('token');
+						this.$store.commit('logout');
+						this.$router.push('/');
+						this.$router.go();	
+					}else{
+						this.$store.state.user.email = emailactual;
+						window.alert("No se puede cambiar el email else");
+					}
+				}).catch(function (error) {
+					error;
+					//console.log("Catch error");
+					//console.log(error);
+					window.alert("No se puede cambiar el email");
+					location.reload();
+					}
+				)
+			} else{
+				window.alert("Introduce un email válido.");
 			}
-		}).catch(function (error) {
-			error;
-			//console.log("Catch error");
-			//console.log(error);
-			window.alert("No se puede cambiar el email");
-			location.reload();
-			}
-		)
 		}
+		
 	},
 	cambiarTelefono(){
 		if (!this.currentUser) {
           this.$router.push('/');
 		}else{
-		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var telefononuevo = document.getElementById("cambiotelefono").value;
-		let urlCambiarTelefono = global.serverSrc+"/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
-		//console.log(urlCambiarTelefono );
-		axios.put(urlCambiarTelefono ).then(response => {
-			//console.log(response);
-			if(response.status == 204){
-				this.$store.state.user.telefono = telefononuevo;
-				//console.log(this.$store.state.user.telefono);
-				this.$store.state.user.telefono = telefononuevo;
-				window.alert("Telefono cambiado a " + telefononuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				this.$store.state.user.telefono
-				window.alert("No se puede cambiar el telefono");
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+			var emailactual = this.$store.state.user.email;
+			var telefononuevo = document.getElementById("cambiotelefono").value;
+			if(telefononuevo != "Introduce Nuevo Telefono"){
+				let urlCambiarTelefono = global.serverSrc+"/clinica/cambiarTelefono/" + emailactual + "/" + telefononuevo;
+				//console.log(urlCambiarTelefono );
+				axios.put(urlCambiarTelefono ).then(response => {
+					//console.log(response);
+					if(response.status == 204){
+						this.$store.state.user.telefono = telefononuevo;
+						//console.log(this.$store.state.user.telefono);
+						this.$store.state.user.telefono = telefononuevo;
+						window.alert("Telefono cambiado a " + telefononuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
+						localStorage.removeItem('token');
+						this.$store.commit('logout');
+						this.$router.push('/');
+						this.$router.go();	
+					}else{
+						this.$store.state.user.telefono
+						window.alert("No se puede cambiar el telefono");
+					}
+				})
+				
+			} else{
+				window.alert("Introduce un teléfono válido.");
 			}
-		})
 		}
+		
 	},
 	cambiarNombre(){
 		//console.log("Prueba");
@@ -297,25 +306,29 @@ export default {
           this.$router.push('/');
 		}else{
 		
-		axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-		var emailactual = this.$store.state.user.email;
-		var nombrenuevo = document.getElementById("cambionombre").value;
-		let urlCambiarNombre = global.serverSrc+"/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
-		//console.log(urlCambiarNombre);
-		axios.put(urlCambiarNombre ).then(response => {
-			//console.log(response);
-			if(response.status == 204){
-				this.$store.state.user.nombre = nombrenuevo;
-				//console.log(this.$store.state.user.nombre);
-				window.alert("Nombre cambiado a " + nombrenuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
-				localStorage.removeItem('token');
-				this.$store.commit('logout');
-				this.$router.push('/');
-				this.$router.go();	
-			}else{
-				window.alert("No se puede cambiar el nombre");
+			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
+			var emailactual = this.$store.state.user.email;
+			var nombrenuevo = document.getElementById("cambionombre").value;
+			if(nombrenuevo != "Introduce Nuevo Nombre"){
+				let urlCambiarNombre = global.serverSrc+"/clinica/cambiarNombre/" + emailactual + "/" + nombrenuevo;
+				//console.log(urlCambiarNombre);
+				axios.put(urlCambiarNombre ).then(response => {
+					//console.log(response);
+					if(response.status == 204){
+						this.$store.state.user.nombre = nombrenuevo;
+						//console.log(this.$store.state.user.nombre);
+						window.alert("Nombre cambiado a " + nombrenuevo + ". Pruebe a iniciar sesión de nuevo por favor.");
+						localStorage.removeItem('token');
+						this.$store.commit('logout');
+						this.$router.push('/');
+						this.$router.go();	
+					}else{
+						window.alert("No se puede cambiar el nombre");
+					}
+				})
+			} else{
+				window.alert("Introduce un nombre válido");
 			}
-		})
 		}
 	}
   },
