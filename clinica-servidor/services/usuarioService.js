@@ -497,7 +497,7 @@ class UsuarioService {
     }
 
     async informesFisios(res){                            
-        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' AND emailcliente <> email GROUP BY email;"
+        connection.query("SELECT email, count(emailfisio) reservas FROM usuario LEFT JOIN reserva ON usuario.email = reserva.emailfisio WHERE tipo='fisio' AND (emailcliente IS NULL OR emailcliente <> email) GROUP BY email;"
         , function (err, result) {
             if (err) {
                 res.status(500).send({error:err});
@@ -506,6 +506,7 @@ class UsuarioService {
             if(result.length == 0){
                 res.status(500).send({error:err});
             } else{
+                console.log(result)
                 res.status(200).send(result);
             }
         });
