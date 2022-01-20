@@ -72,6 +72,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
   name: 'CategoriasAdmin',
@@ -132,7 +133,7 @@ export default {
           this.$router.push('/');
       }else{
           axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-          let urlEliminarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
+          let urlEliminarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
           axios.delete(urlEliminarCategoria).then(response => {
               console.log(response);
               if(response.status == 204){
@@ -174,7 +175,7 @@ export default {
               };
 
               axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-              let urlModificarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
+              let urlModificarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
               axios.put(urlModificarCategoria, json).then(response => {
                   console.log(response);                        
               })
@@ -195,7 +196,7 @@ export default {
       this.$router.push('/');
     }else{
       axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-      let urlListarCategorias = "http://localhost:3000/biblioteca/categorias";
+      let urlListarCategorias = global.serverSrc+"/biblioteca/categorias";
       axios.get(urlListarCategorias).then(response => {
           this.listaCategorias = response.data;
       })

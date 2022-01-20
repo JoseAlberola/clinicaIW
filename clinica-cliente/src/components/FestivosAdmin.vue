@@ -118,6 +118,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 export default {
     name: "FestivosAdmin",
@@ -167,7 +168,7 @@ export default {
                 this.$router.push('/');
             }else{
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                let urlListarFestivos = "http://localhost:3000/clinica/festivos";
+                let urlListarFestivos = global.serverSrc+"/clinica/festivos";
                 axios.get(urlListarFestivos).then(response => {
                     this.listaFestivos = response.data;
                     this.formatearFecha(this.listaFestivos);
@@ -193,7 +194,7 @@ export default {
                 this.$router.push('/');
             }else{
                 axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                let urlEliminarFestivo = "http://localhost:3000/clinica/festivos/" + this.editedItem.fecha;
+                let urlEliminarFestivo = global.serverSrc+"/clinica/festivos/" + this.editedItem.fecha;
                 axios.delete(urlEliminarFestivo).then(response => {                        
                     if(response.status == 204){                        
                         this.listaFestivos.splice(this.editedIndex, 1);
@@ -233,7 +234,7 @@ export default {
                     };
 
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlModificarFestivo = "http://localhost:3000/clinica/festivos/" + this.defaultItem.fecha;                        
+                    let urlModificarFestivo = global.serverSrc+"/clinica/festivos/" + this.defaultItem.fecha;                        
                     axios.put(urlModificarFestivo, json).then(response => {
                         console.log(response);                              
                     })
@@ -259,7 +260,7 @@ export default {
                     };
 
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-                    let urlCrearFestivo = "http://localhost:3000/clinica/crearFestivo";
+                    let urlCrearFestivo = global.serverSrc+"/clinica/crearFestivo";
                     axios.post(urlCrearFestivo, json).then(response => {
                         console.log(response); 
                         if (this.editedIndex > -1) {
@@ -308,7 +309,7 @@ export default {
             this.$router.push('/');
         }else{
             axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarFestivos = "http://localhost:3000/clinica/festivos";
+            let urlListarFestivos = global.serverSrc+"/clinica/festivos";
             axios.get(urlListarFestivos).then(response => {
                 this.listaFestivos = response.data;
                 this.formatearFecha(this.listaFestivos);

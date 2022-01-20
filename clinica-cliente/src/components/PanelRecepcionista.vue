@@ -108,6 +108,7 @@
 </template>
 
 <script>
+import global from '../App.vue';
 import axios from 'axios';
 import Datepicker from 'vuejs-datepicker';
 export default {
@@ -155,27 +156,6 @@ export default {
     },
   }),
   methods:{
-    editItem (item) {
-      this.editedIndex = this.listaCategorias.indexOf(item)
-      this.editedItem = Object.assign({}, item)
-      this.dialog = true
-    },
-    deleteItemConfirm () {
-      // Borrar categoria
-      if (!this.currentUser) {
-          this.$router.push('/');
-      }else{
-          axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-          let urlEliminarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
-          axios.delete(urlEliminarCategoria).then(response => {
-              //console.log(response);
-              if(response.status == 204){
-                  this.listaCategorias.splice(this.editedIndex, 1);
-              }
-          })
-          this.closeDelete();
-      }
-    },
 	nuevaCita(){
 		document.location.href="/recepcionista/reservar";
 	},crearFestivo(){
@@ -191,7 +171,7 @@ export default {
 			};
 			axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
 
-			axios.post('http://localhost:3000/clinica/crearFestivo', json)
+			axios.post(global.serverSrc+'clinica/crearFestivo', json)
 			.then(response => {
 				if(response.data === "dia festivo"){
 					window.alert("El dia elegido ya esta dado de alta como festivo");
@@ -260,7 +240,7 @@ export default {
 						console.log(response2.data.status);
 						if(response2.data.status == "ACCEPTED"){
 							axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-							let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
+							let urlCancelarReserva = global.serverSrc+"/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
 							axios.delete(urlCancelarReserva).then(response => {
 								//console.log(response);
 								if(response.status == 204){
@@ -283,7 +263,7 @@ export default {
 					});
 						
 			} else{
-				let urlCancelarReserva = "http://localhost:3000/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
+				let urlCancelarReserva = global.serverSrc+"/clinica/cancelarReserva/" + document.getElementById('cliente').value + "/" + item.fecha + "/" + item.hora.substring(0,2);
 				//console.log(urlCancelarReserva);
 				axios.delete(urlCancelarReserva).then(response => {
 					//console.log(response);
@@ -326,7 +306,7 @@ export default {
               };
 
               axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-              let urlModificarCategoria = "http://localhost:3000/biblioteca/categorias/" + this.editedItem.idcategoria;
+              let urlModificarCategoria = global.serverSrc+"/biblioteca/categorias/" + this.editedItem.idcategoria;
               axios.put(urlModificarCategoria, json).then(response => {
                   console.log(response);                        
               })
@@ -339,7 +319,7 @@ export default {
         //console.log("Prueba");
         //console.log(document.getElementById('cliente').value);
 
-        let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + document.getElementById('cliente').value;
+        let urlListarCitas = global.serverSrc+"/clinica/citasUsuario/" + document.getElementById('cliente').value;
         //console.log(urlListarCitas);
         axios.get(urlListarCitas).then(response => {
         this.listarCitas = response.data;
@@ -370,7 +350,7 @@ export default {
                 this.$router.push('/');
     }else{
         axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-            let urlListarClientes = "http://localhost:3000/clinica/listadoclientes";
+            let urlListarClientes = global.serverSrc+"/clinica/listadoclientes";
             axios.get(urlListarClientes).then(response => {
                 this.listaClientes = response.data;
                 //console.log(this.listaClientes);
@@ -378,7 +358,7 @@ export default {
                 //console.log("Prueba");
                 //console.log(document.getElementById('cliente').value);
                 if(this.listaClientes.length > 0){
-                    let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/" + this.listaClientes[0].email;
+                    let urlListarCitas = global.serverSrc+"/clinica/citasUsuario/" + this.listaClientes[0].email;
                     //console.log(urlListarCitas);
                     axios.get(urlListarCitas).then(response => {
                     this.listarCitas = response.data;
@@ -405,7 +385,7 @@ export default {
                     }
                     })
                 }else{
-                    let urlListarCitas = "http://localhost:3000/clinica/citasUsuario/";
+                    let urlListarCitas = global.serverSrc+"/clinica/citasUsuario/";
                     //console.log(urlListarCitas);
                     axios.get(urlListarCitas).then(response => {
                     this.listarCitas = response.data;
