@@ -14,7 +14,7 @@
       <br/>
       <v-text-field
         id="number"
-        label="Número de cuenta"
+        label="Número de cuenta (16 digitos)"
         name="number"
         type="text"
         color="blue"
@@ -25,7 +25,7 @@
       <br/>
       <v-text-field
         id="ccv"
-        label="CCV"
+        label="CCV (3 digitos)"
         name="ccv"
         type="text"
         color="blue"
@@ -36,7 +36,7 @@
       <br/>
       <v-text-field
         id="expiry"
-        label="Expiración (mm/aa)"
+        label="Expiración (mm/aaaa)"
         name="expiry"
         type="text"
         color="blue"
