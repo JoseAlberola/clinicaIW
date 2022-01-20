@@ -179,6 +179,7 @@ INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, 
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('10', 'alfredo@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alfredo', 'usuario', 'fotoPerfil.jpg', '672345467');
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('11', 'alberto@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Alberto Frías Cartagena', 'recepcionista', 'alberto.jpg', '687945635');
 INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('12', 'fabiana@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Fabiana Michelena', 'recepcionista', 'fabiana.jpg', '645624657');
+INSERT INTO `clinicaiw`.`usuario` (`id`, `email`, `password`, `nombre`, `tipo`, `imagen`, `telefono`) VALUES ('13', 'admin@ua', '161ae283fdab5886fe86fd65fe0d647e5fbef6', 'Admin', 'administrador', 'fotoPerfil.jpg', '634523465');
 INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('1', 'Box 1');
 INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('2', 'Box 2');
 INSERT INTO `clinicaiw`.`sala` (`id`, `nombre`) VALUES ('3', 'Box 3');
