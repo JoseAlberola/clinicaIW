@@ -146,8 +146,8 @@ export default {
                       "referencia": numeroReferencia
                     };
                     axios.defaults.headers.common['Authorization'] = 'Bearer ' + localStorage.token;
-
-                    axios.post(global.serverSrc+'clinica/reservar', jsonReserva)
+                    console.log(global.serverSrc);
+                    axios.post(global.serverSrc+'/clinica/reservar', jsonReserva)
                       .then(response => {
                           console.log(response);
                           document.location.href="/panelUsuario";
